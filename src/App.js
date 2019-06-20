@@ -1,26 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import CreateAppointment from './containers/CreateAppointment'
+import CounterClinicAppBar from './components/AppBar/CounterClinicAppBar';
+import Grid from '@material-ui/core/Grid';
+import NavigationDrawer from './components/NavigationDrawer';
+import { Route, BrowserRouter } from 'react-router-dom';
 
 function App() {
-  return (
+
+  const routing = (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <CounterClinicAppBar title="Create Appointment" />
+
+      <div style={{ marginTop: 20, padding: 30}}>
+        <Grid container>
+          <Grid container item xs={6}>
+            <BrowserRouter>
+              <div>
+                  <Route exact path="/create-appointment" component={CreateAppointment}></Route>
+              </div>
+            </BrowserRouter>
+          </Grid>
+        </Grid>
+      </div>
+      
     </div>
+    
   );
+
+  return routing;
 }
 
 export default App;
