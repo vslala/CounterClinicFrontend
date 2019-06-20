@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
-import Grid from '@material-ui/core/Grid';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { TextField, Select, InputLabel, Button, List, ListItem, Box, Container, FormControl, MenuItem } from '@material-ui/core';
-import axios from 'axios';
+import { TextField, Select, InputLabel, Button, Container, FormControl, MenuItem, Fade, LinearProgress } from '@material-ui/core';
 
 export default function CreateAppointment() {
     
     const [walkInAppointment, setWalkInAppointment] = useState({
         patientFirstName: '',
         patientLastName: '',
-        selectedDoctorId: 0
+        doctorId: 0
     });
 
     const handleChange = (name) => (e) => {
@@ -17,22 +14,27 @@ export default function CreateAppointment() {
     }
 
     const handleFormSubmit = function(e) {
+        setLoading(true);
         let data = JSON.stringify(walkInAppointment);
         console.log(walkInAppointment.patientFirstName);
         console.log(walkInAppointment.patientLastName);
-        console.log(walkInAppointment.selectedDoctorId);
+        console.log(walkInAppointment.doctorId);
         console.log(data);
 
         fetch('http://localhost:8080/user/create-appointment', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJpc3MiOiJjb3VudGVyY2xpbmljIn0.W00g99FmJCpnaWCRB2xlBlX1AVKPHja8TbYTsiMJiIo'
+                'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJpc3MiOiJjb3VudGVyY2xpbmljIn0.W00g99FmJCpnaWCRB2xlBlX1AVKPHja8TbYTsiMJiIo'
             },
             body: data
         })
         .then( (resp) => resp.json())
-        .then( (respJson) => console.log(respJson) );
+        .then( (respJson) => {
+            setLoading(false);
+            console.log(respJson);
+        })
+        .catch( () => setLoading(false) );
         
         // axios.defaults.headers.common['authorization'] = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJpc3MiOiJjb3VudGVyY2xpbmljIn0.W00g99FmJCpnaWCRB2xlBlX1AVKPHja8TbYTsiMJiIo';
         // axios.post("http://localhost:8080/user/create-appointment", walkInAppointment)
@@ -40,6 +42,8 @@ export default function CreateAppointment() {
         //     console.log(response);
         // });
     }
+
+    const [loading, setLoading] = useState(false);
 
     return (
         <div>
@@ -72,9 +76,9 @@ export default function CreateAppointment() {
                     <InputLabel htmlFor="selected-doctor">Select...</InputLabel>
                         <Select
                             id="selected-doctor"
-                            name="selectedDoctorId"
-                            value={walkInAppointment.selectedDoctorId}
-                            onChange={handleChange('selectedDoctorId')}
+                            name="doctorId"
+                            value={walkInAppointment.doctorId}
+                            onChange={handleChange('doctorId')}
                             
                         >
                             <MenuItem>None</MenuItem>
@@ -87,6 +91,9 @@ export default function CreateAppointment() {
                             Create Appointment
                         </Button>
                     </FormControl>
+                    <Fade in={loading} unmountOnExit>
+                        <LinearProgress />
+                    </Fade>
                 </form>
             </Container>
                 
