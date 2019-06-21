@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import { List, ListItem, ListItemText, Typography, Divider, Table, TableHead, TableBody, TableRow, TableCell, Paper } from "@material-ui/core";
+import { useSelector } from "react-redux";
+import store from '../../store';
+import { setAppointments } from "../../actions";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -13,28 +16,27 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function ViewAppointmentList() {
+export default function ViewAppointmentList({newAppointment}) {
     
     const classes = useStyles();
 
-    const [appointments, setAppointments] = useState({
-        walkInAppointmentList: []
-    });
+    const appointments = useSelector(state => state.appointments);
 
     const fetchAppointments = () => {
         fetch('http://localhost:8080/walk-in-appointment/all')
         .then( (respJson) => respJson.json() )
         .then( (json) => {
-            setAppointments(json);
+            store.dispatch(setAppointments(json));
         })
         .catch( () => {console.log("error fetching the appointments")});
     }
 
     useEffect(() => {
+        console.log(appointments);
         fetchAppointments();
     }, []);
 
-    const tableRows = appointments.walkInAppointmentList.map( (appointment) => (
+    const tableRows = appointments.map( (appointment) => (
         <TableRow key={appointment.walkInAppointmentId}>
             <TableCell align="center">{ appointment.walkInAppointmentId }</TableCell>
             <TableCell align="center">{ appointment.patientFirstName }</TableCell>
@@ -44,18 +46,7 @@ export default function ViewAppointmentList() {
         </TableRow>
     ));
 
-    const tableHeader = () => (
-        <TableHead>
-            <TableRow>
-                <TableCell><Typography variant="body2">Appointment ID</Typography></TableCell>
-                <TableCell>Patient First Name</TableCell>
-                <TableCell>Patient Last Name</TableCell>
-                <TableCell>Appointed Doctor Id</TableCell>
-                <TableCell>Appointment Date/Time</TableCell>
-            </TableRow>
-        </TableHead>
-    );
-
+    
     return (
         <Paper className={classes.root}>
             <Table className={classes.table}>

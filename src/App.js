@@ -6,6 +6,9 @@ import Grid from '@material-ui/core/Grid';
 import NavigationDrawer from './components/NavigationDrawer';
 import { Route, BrowserRouter } from 'react-router-dom';
 import ViewAppointmentList from './components/ViewAppointmentList';
+import ReceptionDashboard from './containers/ReceptionDashboard/ReceptionDashboard';
+import store from './store';
+import { Provider } from 'react-redux';
 
 function App() {
 
@@ -16,9 +19,10 @@ function App() {
 
       <div style={{ marginTop: 20, padding: 30}}>
         <Grid container>
-          <Grid container item xs={6}>
+          <Grid container item xs={12}>
             
               <div>
+                  <Route exact path="/reception-dashboard" component={ReceptionDashboard}></Route>
                   <Route exact path="/create-appointment" component={CreateAppointment}></Route>
                   <Route exact path="/view-all-appointments" component={ViewAppointmentList}></Route>
               </div>
@@ -32,7 +36,11 @@ function App() {
     
   );
 
-  return routing;
+  return (
+    <Provider store={store}>
+      {routing}
+    </Provider>
+  );
 }
 
 export default App;

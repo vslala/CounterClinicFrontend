@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { TextField, Select, InputLabel, Button, Container, FormControl, MenuItem, Fade, LinearProgress } from '@material-ui/core';
+import { TextField, Select, InputLabel, Button, Container, FormControl, MenuItem, Fade, LinearProgress, Paper, Typography } from '@material-ui/core';
+import store from '../../store';
+import { createNewAppointment } from '../../actions';
 
-export default function CreateAppointment() {
+export default function CreateAppointment({createAppointmentCallBack}) {
     
     const [walkInAppointment, setWalkInAppointment] = useState({
         patientFirstName: '',
@@ -33,6 +35,7 @@ export default function CreateAppointment() {
         .then( (respJson) => {
             setLoading(false);
             console.log(respJson);
+            store.dispatch(createNewAppointment(respJson));
         })
         .catch( () => setLoading(false) );
         
@@ -47,56 +50,57 @@ export default function CreateAppointment() {
 
     return (
         <div>
-            
-            <Container fixed>
-                <form autoComplete = "off" onSubmit={handleFormSubmit}>
-                    <FormControl fullWidth margin="normal">
-                        <TextField id="patient-first-name" 
-                            id="first-name"
-                            name="patientFirstName" 
-                            label="First Name"
-                            value={walkInAppointment.patientFirstName}
-                            onChange={handleChange('patientFirstName')}
-                            fullWidth
-                            />
-                    </FormControl>
-                    <FormControl fullWidth margin="normal">
-                        <TextField
-                            inputProps={{
-                                name: 'patientLastName',
-                                id: 'patient-last-name'
-                            }} 
-                            label="Last Name"
-                            value={walkInAppointment.patientLastName}
-                            onChange={handleChange('patientLastName')}
-                            fullWidth
-                            />
-                    </FormControl>
-                    <FormControl fullWidth margin="normal">
-                    <InputLabel htmlFor="selected-doctor">Select...</InputLabel>
-                        <Select
-                            id="selected-doctor"
-                            name="doctorId"
-                            value={walkInAppointment.doctorId}
-                            onChange={handleChange('doctorId')}
-                            
-                        >
-                            <MenuItem>None</MenuItem>
-                            <MenuItem value={1}>Priyanka Yadav</MenuItem>
-                            <MenuItem value={2}>Abhishek Ralhan</MenuItem>
-                        </Select>
-                    </FormControl>
-                    <FormControl fullWidth margin="normal">
-                        <Button color="primary" variant="contained" onClick={handleFormSubmit}>
-                            Create Appointment
-                        </Button>
-                    </FormControl>
-                    <Fade in={loading} unmountOnExit>
-                        <LinearProgress />
-                    </Fade>
-                </form>
-            </Container>
-                
+            <Paper style={{marginTop: 50}}>
+                <Typography variant="h5">Create Appointment By Doctor</Typography>
+                <Container fixed>
+                    <form autoComplete = "off" onSubmit={handleFormSubmit}>
+                        <FormControl fullWidth margin="normal">
+                            <TextField id="patient-first-name" 
+                                id="first-name"
+                                name="patientFirstName" 
+                                label="First Name"
+                                value={walkInAppointment.patientFirstName}
+                                onChange={handleChange('patientFirstName')}
+                                fullWidth
+                                />
+                        </FormControl>
+                        <FormControl fullWidth margin="normal">
+                            <TextField
+                                inputProps={{
+                                    name: 'patientLastName',
+                                    id: 'patient-last-name'
+                                }} 
+                                label="Last Name"
+                                value={walkInAppointment.patientLastName}
+                                onChange={handleChange('patientLastName')}
+                                fullWidth
+                                />
+                        </FormControl>
+                        <FormControl fullWidth margin="normal">
+                        <InputLabel htmlFor="selected-doctor">Select...</InputLabel>
+                            <Select
+                                id="selected-doctor"
+                                name="doctorId"
+                                value={walkInAppointment.doctorId}
+                                onChange={handleChange('doctorId')}
+                                
+                            >
+                                <MenuItem>None</MenuItem>
+                                <MenuItem value={1}>Priyanka Yadav</MenuItem>
+                                <MenuItem value={2}>Abhishek Ralhan</MenuItem>
+                            </Select>
+                        </FormControl>
+                        <FormControl fullWidth margin="normal">
+                            <Button color="primary" variant="contained" onClick={handleFormSubmit}>
+                                Create Appointment
+                            </Button>
+                        </FormControl>
+                        <Fade in={loading} unmountOnExit>
+                            <LinearProgress />
+                        </Fade>
+                    </form>
+                </Container>
+            </Paper>
         </div>
     );
     
