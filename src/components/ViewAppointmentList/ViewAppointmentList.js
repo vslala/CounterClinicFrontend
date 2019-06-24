@@ -100,7 +100,8 @@ export default function ViewAppointmentList() {
             <AlertDialog open={open} 
                 handleOpen={handleOpen} 
                 handleClose={handleClose} 
-                qrCode={qrCode}
+                title={<Typography variant="h6">QRCode: {qrCode.qrCodeName}</Typography>}
+                content={<img src={globalconstants.BASE_URL + '/' + qrCode.qrCodeUrlPath} />}
                 />
             <Table className={classes.table}>
                 <TableHead>

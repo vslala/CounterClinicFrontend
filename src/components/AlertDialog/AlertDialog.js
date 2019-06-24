@@ -18,9 +18,9 @@ export default function AlertDialog(props) {
         onClose={props.handleClose}
         aria-labelledby="alert-dialog-title"
       >
-        <DialogTitle id="alert-dialog-title">{"QRCode: " + props.qrCode.qrCodeName}</DialogTitle>
-        <DialogContent height={props.qrCode.height} >
-          <img src={globalconstants.BASE_URL + '/' + props.qrCode.qrCodeUrlPath} />
+        <DialogTitle id="alert-dialog-title">{props.title}</DialogTitle>
+        <DialogContent>
+          {props.content}
         </DialogContent>
         <DialogActions>
           <Button onClick={props.handleClose} color="primary">
