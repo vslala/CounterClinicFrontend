@@ -3,6 +3,8 @@ import { TextField, Select, InputLabel, Button, Container, FormControl, MenuItem
 import store from '../../store';
 import { createNewAppointment, createNewQRCode } from '../../actions';
 import * as globalconstants from '../../global-constants';
+import AlertDialog from '../AlertDialog/AlertDialog';
+import AppointmentDetail from '../ApointmentDetail';
 
 export default function CreateAppointment() {
     
@@ -33,6 +35,24 @@ export default function CreateAppointment() {
         });
     }
 
+    const [appointmentId, setAppointmentId] = useState(0);
+    const [appointmentInfo, setAppointmentInfo] = useState({});
+    const [open, setOpen] = useState(false);
+    const handleOpen = (appointmentId) => {
+        // fetch(globalconstants.BASE_URL + '/walk-in-appointment/wrapper/id/' + appointmentId)
+        // .then( (response) => response.json())
+        // .then( (data) => {
+        //     console.log("Showing appointment info")
+        //     console.log(data);
+        //     setAppointmentInfo(data);
+        // })
+        setAppointmentId(appointmentId);
+        setOpen(true);
+    }
+    const handleClose = () => {
+        setOpen(false);
+    }
+
     const handleFormSubmit = function(e) {
         setLoading(true);
         let data = JSON.stringify(walkInAppointment);
@@ -61,6 +81,7 @@ export default function CreateAppointment() {
             });
             store.dispatch(createNewAppointment(respJson));
             fetchQRCode(respJson.walkInAppointmentId);
+            handleOpen(respJson.walkInAppointmentId);
         })
         .catch( () => setLoading(false) );
         
@@ -75,6 +96,12 @@ export default function CreateAppointment() {
     return (
         <div>
             <Paper>
+                <AlertDialog 
+                    open={open}
+                    handleClose={handleClose}
+                    title={"Appointment Info"}
+                    content={<AppointmentDetail appointmentId={appointmentId} />}
+                />
                 <Typography variant="h5">Create Appointment By Doctor</Typography>
                 <Container fixed>
                     <form autoComplete = "off" onSubmit={handleFormSubmit}>

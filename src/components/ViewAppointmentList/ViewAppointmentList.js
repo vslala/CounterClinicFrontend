@@ -4,9 +4,11 @@ import { List, ListItem, ListItemText, Typography, Divider, Table, TableHead, Ta
 import { useSelector } from "react-redux";
 import store from '../../store';
 import { setAppointments } from "../../actions";
-import DeleteForeverIcon, {Receipt} from '@material-ui/icons/DeleteForever';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import Info from '@material-ui/icons/Info';
 import AlertDialog from "../AlertDialog/AlertDialog";
 import * as globalconstants from '../../global-constants';
+import AppointmentDetail from "../ApointmentDetail";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -74,6 +76,16 @@ export default function ViewAppointmentList() {
         setOpen(false);
     }
 
+    const [appointmentId, setAppointmentId] = useState(0);
+    const [infoOpen, setInfoOpen] = useState(false);
+    const handleInfoOpen = (appointmentId) => {
+        setAppointmentId(appointmentId);
+        setInfoOpen(true);
+    }
+    const handleInfoClose = () => {
+        setInfoOpen(false);
+    }
+
     const tableRows = appointments.map( (appointment) => (
         <TableRow key={appointment.walkInAppointmentId}>
             <TableCell align="center">{ appointment.walkInAppointmentId }</TableCell>
@@ -87,6 +99,11 @@ export default function ViewAppointmentList() {
                 </Button>
             </TableCell>
             <TableCell align="center">
+                <Button onClick={() => handleInfoOpen(appointment.walkInAppointmentId)} >
+                    <Info />
+                </Button>
+            </TableCell>
+            <TableCell align="center">
                 <Button onClick={() => deleteAppointment(appointment.walkInAppointmentId)}>
                     <DeleteForeverIcon></DeleteForeverIcon>
                 </Button>
@@ -97,6 +114,13 @@ export default function ViewAppointmentList() {
     
     return (
         <Paper className={classes.root}>
+            <AlertDialog 
+                open={infoOpen}
+                title={"Appointment Info"}
+                content={<AppointmentDetail appointmentId={appointmentId} />}
+                handleClose={handleInfoClose}
+
+            />
             <AlertDialog open={open} 
                 handleOpen={handleOpen} 
                 handleClose={handleClose} 
