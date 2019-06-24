@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
-import { List, ListItem, ListItemText, Typography, Divider, Table, TableHead, TableBody, TableRow, TableCell, Paper } from "@material-ui/core";
+import { List, ListItem, ListItemText, Typography, Divider, Table, TableHead, TableBody, TableRow, TableCell, Paper, Button } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import store from '../../store';
 import { setAppointments } from "../../actions";
+import DeleteForeverIcon, {Receipt} from '@material-ui/icons/DeleteForever';
+import AlertDialog from "../AlertDialog/AlertDialog";
+import * as globalconstants from '../../global-constants';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -16,7 +19,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function ViewAppointmentList({newAppointment}) {
+export default function ViewAppointmentList() {
     
     const classes = useStyles();
 
@@ -36,6 +39,41 @@ export default function ViewAppointmentList({newAppointment}) {
         fetchAppointments();
     }, []);
 
+    // delete individual appointment by id
+    const deleteAppointment = (walkInAppointmentId) => {
+        fetch('http://localhost:8080/walk-in-appointment/id/' + walkInAppointmentId, {
+            method: "DELETE",
+        })
+        .then( (response) => response.json())
+        .then( (data) => {
+            if (data === true)
+                fetchAppointments();
+        });
+    }
+
+    const [open, setOpen] = useState(false);
+    const [qrCode, setQrCode] = useState({});
+
+    const fetchQrCode = (appointmentId) => {
+        fetch(globalconstants.BASE_URL + '/' + 'walk-in-appointment/' + appointmentId + '/qrcode')
+        .then( (response) => response.json())
+        .then( (data) => {
+            console.log("Fetched QRCode data");
+            console.log(data);
+            setQrCode(data);
+        })
+    }
+
+    const handleOpen = (appointmentId) => {
+        console.log("Handle Open is Clicked! Appointment ID: " + appointmentId);
+        fetchQrCode(appointmentId);
+        setOpen(true);
+        console.log(open);
+    }
+    const handleClose = (e) => {
+        setOpen(false);
+    }
+
     const tableRows = appointments.map( (appointment) => (
         <TableRow key={appointment.walkInAppointmentId}>
             <TableCell align="center">{ appointment.walkInAppointmentId }</TableCell>
@@ -43,12 +81,27 @@ export default function ViewAppointmentList({newAppointment}) {
             <TableCell align="center">{ appointment.patientLastName }</TableCell>
             <TableCell align="center">{ appointment.appointedDoctorId }</TableCell>
             <TableCell align="center">{ appointment.createdAt }</TableCell>
+            <TableCell align="center">
+                <Button onClick={() => handleOpen(appointment.walkInAppointmentId)} >
+                    QRCode
+                </Button>
+            </TableCell>
+            <TableCell align="center">
+                <Button onClick={() => deleteAppointment(appointment.walkInAppointmentId)}>
+                    <DeleteForeverIcon></DeleteForeverIcon>
+                </Button>
+            </TableCell>
         </TableRow>
     ));
 
     
     return (
         <Paper className={classes.root}>
+            <AlertDialog open={open} 
+                handleOpen={handleOpen} 
+                handleClose={handleClose} 
+                qrCode={qrCode}
+                />
             <Table className={classes.table}>
                 <TableHead>
                     <TableRow>

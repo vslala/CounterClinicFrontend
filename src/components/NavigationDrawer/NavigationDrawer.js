@@ -3,10 +3,18 @@ import { Drawer, List, ListItem, ListItemText, Typography, IconButton } from '@m
 import * as constants from './NavigationDrawerStyle';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import { Link as Href } from 'react-router-dom';
+import { Link as Href, Route } from 'react-router-dom';
 
-export default function NavigationDrawer({isOpen = false, handleDrawerClose}) {
+export default function NavigationDrawer({isOpen = false, handleDrawerClose, props}) {
     const classes = constants.useStyles();
+
+    const navigateTo = (e) => {
+        let href = e.currentTarget.dataset.href;
+        console.log(href);
+
+        window.location = href;
+    }
+
     return (
         <Drawer open={isOpen} className={classes.drawer}
             variant="persistent"
@@ -28,11 +36,13 @@ export default function NavigationDrawer({isOpen = false, handleDrawerClose}) {
                             {key: 1, text: "Create New Appointment", link: "/create-appointment"},
                             {key: 2, text: "View All Appointments", link: "/view-all-appointments"}
                         ].map( (navLink) => (
-                            <ListItem key={navLink.key}>
-                                <Href to={navLink.link} onClick={handleDrawerClose}>
-                                    <ListItemText primary={navLink.text}></ListItemText>
-                                </Href>
+                            
+                            <ListItem button data-href={navLink.link} key={navLink.key} 
+                            onClick={navigateTo}>
+                                <ListItemText primary={navLink.text}></ListItemText>
                             </ListItem>
+                            
+                            
                         ) )
                     }
                     

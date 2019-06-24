@@ -18,5 +18,13 @@ export default (state, action) => {
         };
     }
 
+    if (action.type === Type.CREATE_NEW_QR_CODE) {
+        return {
+            ...state,
+            qrCode: action.payload
+        }
+    }
+
+
     return state;
 }

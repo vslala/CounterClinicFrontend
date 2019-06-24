@@ -9,7 +9,8 @@ const initialState = {
         patientFirstName: '',
         patientLastName: '',
         doctorId: 0
-    }
+    },
+    qrCode: {}
 };
 const store = createStore(reducer, initialState, applyMiddleware(logger));
 

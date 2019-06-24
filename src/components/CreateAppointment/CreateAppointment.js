@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TextField, Select, InputLabel, Button, Container, FormControl, MenuItem, Fade, LinearProgress, Paper, Typography } from '@material-ui/core';
 import store from '../../store';
-import { createNewAppointment } from '../../actions';
+import { createNewAppointment, createNewQRCode } from '../../actions';
+import * as globalconstants from '../../global-constants';
 
-export default function CreateAppointment({createAppointmentCallBack}) {
+export default function CreateAppointment() {
     
     const [walkInAppointment, setWalkInAppointment] = useState({
         patientFirstName: '',
@@ -11,8 +12,25 @@ export default function CreateAppointment({createAppointmentCallBack}) {
         doctorId: 0
     });
 
+    const [doctors, setDoctors] = useState([]);
+
     const handleChange = (name) => (e) => {
         setWalkInAppointment({...walkInAppointment, [name]: e.target.value});
+    }
+
+    const fetchDoctors = () => {
+        fetch('http://localhost:8080/user/all/doctor')
+        .then( (resp) => resp.json())
+        .then( (doctors) => setDoctors(doctors));
+    }
+
+    const fetchQRCode = (appointmentId) => {
+        fetch(globalconstants.BASE_URL + '/walk-in-appointment/' + appointmentId + '/qrcode')
+        .then( (response) => response.json())
+        .then( (data) => {
+            console.log(data);
+            store.dispatch(createNewQRCode(data));
+        });
     }
 
     const handleFormSubmit = function(e) {
@@ -35,22 +53,28 @@ export default function CreateAppointment({createAppointmentCallBack}) {
         .then( (respJson) => {
             setLoading(false);
             console.log(respJson);
+            setWalkInAppointment({
+                ...walkInAppointment,
+                patientFirstName: '',
+                patientLastName: '',
+                doctorId: 0 
+            });
             store.dispatch(createNewAppointment(respJson));
+            fetchQRCode(respJson.walkInAppointmentId);
         })
         .catch( () => setLoading(false) );
         
-        // axios.defaults.headers.common['authorization'] = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJpc3MiOiJjb3VudGVyY2xpbmljIn0.W00g99FmJCpnaWCRB2xlBlX1AVKPHja8TbYTsiMJiIo';
-        // axios.post("http://localhost:8080/user/create-appointment", walkInAppointment)
-        // .then( function (response) {
-        //     console.log(response);
-        // });
     }
+
+    useEffect(() => {
+        fetchDoctors();
+    }, [])
 
     const [loading, setLoading] = useState(false);
 
     return (
         <div>
-            <Paper style={{marginTop: 50}}>
+            <Paper>
                 <Typography variant="h5">Create Appointment By Doctor</Typography>
                 <Container fixed>
                     <form autoComplete = "off" onSubmit={handleFormSubmit}>
@@ -86,8 +110,11 @@ export default function CreateAppointment({createAppointmentCallBack}) {
                                 
                             >
                                 <MenuItem>None</MenuItem>
-                                <MenuItem value={1}>Priyanka Yadav</MenuItem>
-                                <MenuItem value={2}>Abhishek Ralhan</MenuItem>
+                                {
+                                    doctors.map( (doc, index) => (
+                                        <MenuItem key={index} value={doc.userId}>{doc.firstName} {doc.lastName}</MenuItem>
+                                    ))
+                                }
                             </Select>
                         </FormControl>
                         <FormControl fullWidth margin="normal">

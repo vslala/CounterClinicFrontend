@@ -13,3 +13,10 @@ export function createNewAppointment(appointment) {
         payload: appointment
     }
 }
+
+export function createNewQRCode(qrCode) {
+    return {
+        type: Type.CREATE_NEW_QR_CODE,
+        payload: qrCode
+    }
+}
