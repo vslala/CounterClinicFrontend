@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { makeStyles } from '@material-ui/core/styles';
 import { List, ListItem, ListItemText, Typography, Divider, Table, TableHead, TableBody, TableRow, TableCell, Paper, Button } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import store from '../../store';
@@ -10,20 +9,9 @@ import AlertDialog from "../AlertDialog/AlertDialog";
 import * as globalconstants from '../../global-constants';
 import AppointmentDetail from "../ApointmentDetail";
 
-const useStyles = makeStyles(theme => ({
-    root: {
-      width: '100%',
-      marginTop: theme.spacing(3),
-      overflowX: 'auto',
-    },
-    table: {
-      minWidth: 650,
-    },
-}));
-
 export default function ViewAppointmentList() {
     
-    const classes = useStyles();
+    const classes = globalconstants.useStyles();
 
     const appointments = useSelector(state => state.appointments);
 

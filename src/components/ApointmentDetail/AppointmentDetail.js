@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Typography, Paper, List, ListItem, Grid, CircularProgress } from "@material-ui/core";
 import * as globalconstants from '../../global-constants';
+import uuidv4  from 'uuid/v4';
 
 export default function AppointmentDetail(props) {
 
@@ -29,10 +30,10 @@ export default function AppointmentDetail(props) {
     return (
         <Paper style={{textAlign: "center"}}>
             <List style={{width: 400}}>
-                <ListItem key={1}>
+                <ListItem key={uuidv4()}>
                     <img src={globalconstants.BASE_URL + '/' + appointmentWrapper.qrCode.qrCodeUrlPath} />
                 </ListItem>
-                <ListItem key={2}>
+                <ListItem key={uuidv4()}>
                     <Grid item xs={4}>
                         <Typography align="right" variant="body1">Full Name</Typography>
                     </Grid>
@@ -40,7 +41,7 @@ export default function AppointmentDetail(props) {
                         <Typography align="right" variant="body1">{appointmentWrapper.walkInAppointment.patientFullName}</Typography>
                     </Grid>
                 </ListItem>
-                <ListItem key={3}>
+                <ListItem key={uuidv4()}>
                     <Grid item xs={5}>
                         <Typography align="right" variant="body1">Appointed Doctor</Typography>
                     </Grid>
@@ -48,7 +49,7 @@ export default function AppointmentDetail(props) {
                         <Typography align="right" variant="body1">{appointmentWrapper.appointedDoctor.fullName}</Typography>
                     </Grid>
                 </ListItem>
-                <ListItem key={4}>
+                <ListItem key={uuidv4()}>
                     <Grid item xs={4}>
                         <Typography align="right" variant="body1">Created At</Typography>
                     </Grid>
@@ -56,12 +57,20 @@ export default function AppointmentDetail(props) {
                         <Typography align="right" variant="body1">{appointmentWrapper.walkInAppointment.createdAt}</Typography>
                     </Grid>
                 </ListItem>
-                <ListItem key={5}>
+                <ListItem key={uuidv4()}>
                     <Grid item xs={4}>
                         <Typography align="right" variant="body1">Clinic Room Id</Typography>
                     </Grid>
                     <Grid item xs={8}>
                         <Typography align="right" variant="body1">{appointmentWrapper.appointedDoctor.clinicRoomId}</Typography>
+                    </Grid>
+                </ListItem>
+                <ListItem key={uuidv4()}>
+                    <Grid item xs={6}>
+                        <Typography align="right" variant="body1">Total Patients In Queue</Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Typography align="right" variant="body1">{appointmentWrapper.appointmentStatus.patientsInVisitedQueue}</Typography>
                     </Grid>
                 </ListItem>
             </List>

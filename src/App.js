@@ -9,20 +9,21 @@ import ViewAppointmentList from './components/ViewAppointmentList';
 import ReceptionDashboard from './containers/ReceptionDashboard/ReceptionDashboard';
 import store from './store';
 import { Provider } from 'react-redux';
+import LayoutAuthenticated from './containers/LayoutAuthenticated';
+import PrintAppointmentInfo from './containers/PrintAppointmentInfo';
 
 function App() {
 
   const routing = (
     <BrowserRouter>
     <div className="App">
-      <CounterClinicAppBar title="Create Appointment" />
-
       <div style={{ marginTop: 20, padding: 30}}>
         <Grid container>
-          <Grid container item xs={12}>
+          <Grid item xs={12}>
             
               <div>
-                  <Route exact path="/reception-dashboard" component={ReceptionDashboard}></Route>
+                  <Route exact path="/print/appointment-details/:appointmentId" component={PrintAppointmentInfo}></Route>
+                  <Route exact path="/dashboard" component={LayoutAuthenticated}></Route>
                   <Route exact path="/create-appointment" component={CreateAppointment}></Route>
                   <Route exact path="/view-all-appointments" component={ViewAppointmentList}></Route>
               </div>

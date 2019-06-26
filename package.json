@@ -10,7 +10,8 @@
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
-    "redux-logger": "^3.0.6"
+    "redux-logger": "^3.0.6",
+    "uuid": "^3.3.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -34,8 +35,11 @@
     ]
   },
   "devDependencies": {
+    "react-easy-print": "^0.6.0",
     "react-redux": "^7.1.0",
     "redux": "^4.0.1",
-    "redux-devtools": "^3.5.0"
+    "redux-devtools": "^3.5.0",
+    "sockjs-client": "^1.3.0",
+    "stompjs": "^2.3.3"
   }
 }

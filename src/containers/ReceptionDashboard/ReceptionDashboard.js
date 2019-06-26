@@ -10,11 +10,8 @@ export default function ReceptionDashboard() {
     return (
         <div style={{marginTop: globalconstants.TOP_MARGIN}}>
             <Grid container >
-                <Grid item xs={6}>
+                <Grid item xs={12}>
                     <CreateAppointment  />
-                </Grid>
-                <Grid item xs={6}>
-                    <QRCode />
                 </Grid>
                 <Grid item xs={12}>
                     <ViewAppointmentList />

@@ -10,7 +10,20 @@ const initialState = {
         patientLastName: '',
         doctorId: 0
     },
-    qrCode: {}
+    qrCode: {},
+    loggedInUser: {
+        "userId": 2,
+        "firstName": "Reception",
+        "lastName": "Worker",
+        "email": "pvrano@gmail.com",
+        "mobile": "7773456789",
+        "username": "reception",
+        "preferredLanguage": "ENGLISH",
+        "roles": [
+            "DOCTOR"
+        ],
+        "fullName": "Priyanka Yadav"
+    }
 };
 const store = createStore(reducer, initialState, applyMiddleware(logger));
 
