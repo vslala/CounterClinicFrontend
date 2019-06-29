@@ -14,7 +14,7 @@ export default function LayoutAuthenticated() {
         return (
             
             <Box>
-                <CounterClinicAppBar title={"Doctor Dashboard: Welcome, " + loggedInUser.fullName} />
+                <CounterClinicAppBar navLinks={[{link: "/dashboard", text: "Dashboard"}]} title={"Doctor Dashboard: Welcome, " + loggedInUser.fullName} />
                 <DoctorDashboard />
             </Box>
             
@@ -24,7 +24,9 @@ export default function LayoutAuthenticated() {
     if (loggedInUser.roles.includes(globalconstants.RECEPTIONIST)) {
         return (
             <Box>
-                <CounterClinicAppBar title={"Reception Dashboard: Welcome, " + loggedInUser.fullName} />
+                <CounterClinicAppBar 
+                    title={"Reception Dashboard: Welcome, " + loggedInUser.fullName}
+                    navLinks={[{link: "/dashboard", text: "Dashboard"}]} />
                 <ReceptionDashboard />
             </Box>
         );

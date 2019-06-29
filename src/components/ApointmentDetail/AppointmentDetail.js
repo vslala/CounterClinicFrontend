@@ -31,7 +31,8 @@ export default function AppointmentDetail(props) {
         <Paper style={{textAlign: "center"}}>
             <List style={{width: 400}}>
                 <ListItem key={uuidv4()}>
-                    <img src={globalconstants.BASE_URL + '/' + appointmentWrapper.qrCode.qrCodeUrlPath} />
+                    <img alt={appointmentWrapper.qrCode.qrCodeName}
+                        src={globalconstants.BASE_URL + '/' + appointmentWrapper.qrCode.qrCodeUrlPath} />
                 </ListItem>
                 <ListItem key={uuidv4()}>
                     <Grid item xs={4}>

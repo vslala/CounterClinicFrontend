@@ -1,6 +1,6 @@
 import React from 'react';
-import { Grid, Paper, Box, Button, Typography } from '@material-ui/core';
-import * as globalconstants from '../../global-constants';
+import { Box, Button, Typography } from '@material-ui/core';
+import * as globalconstants from '../../global-constants'; 
 
 export default function CallNextPatient() {
 
@@ -8,23 +8,30 @@ export default function CallNextPatient() {
 
     const callNextPatient = (e) => {
         fetch(globalconstants.BASE_URL + '/walk-in-appointment/call-next-patient')
-        .then( (response) => response.json()) 
+        .then( (response) => {
+            if (!response.ok) {
+                throw Error(response.statusText);
+            }
+            return response.json();
+        }) 
         .then( (appointmentStatus) => {
             console.log(appointmentStatus);
-
         })
         .catch( (error) => {
             console.log("Error calling next patient.");
+            if (error.errorCode === '0001') {
+                console.log(error.message);
+            }
         })
     }
 
     return (
-        <Paper className={classes.root}>
-            <Box>
-                <Button onClick={callNextPatient}>
+        // <Paper >
+            <Box className={classes.root}>
+                <Button onClick={callNextPatient} variant="outlined">
                     <Typography variant="body1">Call Next Patient</Typography>
                 </Button>
             </Box>
-        </Paper>
+        // </Paper>
     );
 }

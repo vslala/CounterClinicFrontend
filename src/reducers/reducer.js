@@ -25,6 +25,13 @@ export default (state, action) => {
         }
     }
 
+    if (action.type === Type.LATEST_APPOINTMENT_STATUS) {
+        return {
+            ...state,
+            latestAppointmentStatus: action.payload
+        }
+    }
+
 
     return state;
 }

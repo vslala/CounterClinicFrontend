@@ -1,11 +1,9 @@
-import React, { Component, useState, theme } from 'react'
-import { Drawer, List, ListItem, ListItemText, Typography, IconButton } from '@material-ui/core';
+import React from 'react'
+import { Drawer, List, ListItem, ListItemText, IconButton, Link } from '@material-ui/core';
 import * as constants from './NavigationDrawerStyle';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import { Link as Href, Route } from 'react-router-dom';
 
-export default function NavigationDrawer({isOpen = false, handleDrawerClose, props}) {
+export default function NavigationDrawer(props) {
     const classes = constants.useStyles();
 
     const navigateTo = (e) => {
@@ -16,14 +14,14 @@ export default function NavigationDrawer({isOpen = false, handleDrawerClose, pro
     }
 
     return (
-        <Drawer open={isOpen} className={classes.drawer}
+        <Drawer open={props.isOpen} className={classes.drawer}
             variant="persistent"
             anchor="left"
             classes={{
                 paper: classes.drawerPaper
             }}>
             <div className={classes.drawerHeader}>
-                <IconButton onClick={handleDrawerClose} 
+                <IconButton onClick={props.handleDrawerClose} 
                     edge="start"
                     color="inherit">
                     <ChevronLeftIcon />
@@ -32,14 +30,14 @@ export default function NavigationDrawer({isOpen = false, handleDrawerClose, pro
             <List>
                 
                     {
-                        [
-                            {key: 1, text: "Create New Appointment", link: "/create-appointment"},
-                            {key: 2, text: "View All Appointments", link: "/view-all-appointments"}
-                        ].map( (navLink) => (
+                        props.navLinks.map( (navLink, index) => (
                             
-                            <ListItem button data-href={navLink.link} key={navLink.key} 
+                            <ListItem button data-href={navLink.link} key={index} 
                             onClick={navigateTo}>
+                                <Link to={navLink.link} variant="body1">
                                 <ListItemText primary={navLink.text}></ListItemText>
+                                </Link>
+                                
                             </ListItem>
                             
                             

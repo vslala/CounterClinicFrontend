@@ -20,3 +20,10 @@ export function createNewQRCode(qrCode) {
         payload: qrCode
     }
 }
+
+export function setLatestAppointmentStatus(appointmentStatus) {
+    return {
+        type: Type.LATEST_APPOINTMENT_STATUS,
+        payload: appointmentStatus
+    }
+}

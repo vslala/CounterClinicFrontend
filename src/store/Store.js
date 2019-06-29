@@ -1,6 +1,8 @@
 import { createLogger } from 'redux-logger';
 import { createStore, applyMiddleware } from 'redux';
 import reducer from '../reducers';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import ReduxPromise from 'redux-promise';
 
 const logger = createLogger();
 const initialState = {
@@ -10,6 +12,7 @@ const initialState = {
         patientLastName: '',
         doctorId: 0
     },
+    latestAppointmentStatus: {},
     qrCode: {},
     loggedInUser: {
         "userId": 2,
@@ -25,6 +28,8 @@ const initialState = {
         "fullName": "Priyanka Yadav"
     }
 };
-const store = createStore(reducer, initialState, applyMiddleware(logger));
+const store = createStore(reducer, initialState, composeWithDevTools(
+    applyMiddleware(ReduxPromise, logger),
+));
 
 export default store;

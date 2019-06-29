@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Paper, Button, Box, Grid, Table, TableRow, TableCell, TableHead, TableBody, Typography } from '@material-ui/core';
+import { Paper, Button, Table, TableRow, TableCell, TableHead, TableBody, Typography } from '@material-ui/core';
 import * as globalconstants from '../../global-constants';
 import SockJs from 'sockjs-client';
 import Stomp from 'stompjs';
+import Clock from 'react-live-clock';
+import store from '../../store';
+import { setLatestAppointmentStatus } from '../../actions';
 
 export default function AppointmentStatus() {
 
@@ -15,7 +18,9 @@ export default function AppointmentStatus() {
         .then( (response) => response.json())
         .then( (appointmentStatus) => {
             console.log("Appointment Status")
+            console.log(appointmentStatus);
             setAppointmentStatus(appointmentStatus);
+            store.dispatch(setLatestAppointmentStatus(appointmentStatus));
         })
     }
 
@@ -25,11 +30,16 @@ export default function AppointmentStatus() {
         stompClient.connect({}, (frame) => {
             setConnected(true);
             console.log("Connected: "  + frame);
-            stompClient.subscribe('/topic/appointment-status', (appointmentStatus) => {
+            stompClient.subscribe('/topic/appointment-status', (response) => {
                 console.log("Received from websocket");
+                let appointmentStatus = JSON.parse(response.body);
                 console.log(appointmentStatus);
                 setAppointmentStatus(appointmentStatus);
             });
+        }, (message) => {
+            // on disconnect
+            console.log(message);
+            setConnected(false);
         });
     }
 
@@ -42,12 +52,22 @@ export default function AppointmentStatus() {
         return (
             <div style={{marginLeft: 50}}>
                 <Paper className={classes.root}>
-                    <Button variant="outlined" onClick={() => setConnected(true)}>
+                    <Button variant="outlined" onClick={() => connect()}>
                         Connect!
                     </Button>
                 </Paper>
             </div>
         );
+    }
+
+    function convertToLocalDate(datetime) {
+        if (!datetime)
+            return '';
+        let formattedDate = datetime.replace(' ', 'T') + '.000Z';
+        console.log("Formatted Date: " + formattedDate);
+        let date = new Date(formattedDate);
+        let time = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+        return time;
     }
 
 
@@ -76,7 +96,7 @@ export default function AppointmentStatus() {
                     </TableRow>
                     <TableRow>
                         <TableCell align="left">Current Appointment Start Time</TableCell>
-                        <TableCell align="center">{appointmentStatus.appointmentStartTimeFormatted}</TableCell>
+                        <TableCell align="center">{convertToLocalDate(appointmentStatus.appointmentStartTimeFormatted)}</TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell align="left">Doctor Break Duration</TableCell>
@@ -85,6 +105,12 @@ export default function AppointmentStatus() {
                     <TableRow>
                         <TableCell align="left">Appointments Completed Today</TableCell>
                         <TableCell align="center">{appointmentStatus.patientsInVisitedQueue}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell align="left">Appointment Time</TableCell>
+                        <TableCell align="center">
+                            <Clock format={'HH:mm:ss'} ticking={true} />
+                        </TableCell>
                     </TableRow>
                 </TableBody>
             </Table>

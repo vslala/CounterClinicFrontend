@@ -3,13 +3,23 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { Paper } from '@material-ui/core';
-import * as globalconstants from '../../global-constants';
+import  uuidv4  from 'uuid/v4';
 
 export default function AlertDialog(props) {
-  const [open, setOpen] = React.useState(false);
+
+  const userActions = (userActions) => {
+    if (userActions) {
+      return userActions.map( (action) => (
+        <Button key={uuidv4()} 
+          onClick={action.perform} 
+          color={action.color}>
+            {action.text}
+        </Button>
+      ));
+    }
+    
+  }
 
   return (
     <div>
@@ -27,6 +37,7 @@ export default function AlertDialog(props) {
           <Button onClick={props.handleClose} color="primary">
             Close
           </Button>
+          { userActions(props.userActions) }
         </DialogActions>
       </Dialog>
     </div>

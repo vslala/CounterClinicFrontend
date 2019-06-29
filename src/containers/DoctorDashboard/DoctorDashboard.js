@@ -1,10 +1,9 @@
 import React from 'react';
-import { Grid, Paper, Box, Button } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import CallNextPatient from '../../components/CallNextPatient';
 import AppointmentStatus from '../../components/AppointmentStatus/AppointmentStatus';
-import CreateAppointment from '../../components/CreateAppointment';
-import ViewAppointmentList from '../../components/ViewAppointmentList';
 import * as globalconstants from '../../global-constants';
+import TakeBreak from '../../components/TakeBreak';
 
 export default function DoctorDashboard() {
 
@@ -13,6 +12,7 @@ export default function DoctorDashboard() {
             <Grid container >
                 <Grid item xs={6}>
                     <CallNextPatient />
+                    <TakeBreak />
                 </Grid>
                 <Grid item xs={6}>
                     <AppointmentStatus />

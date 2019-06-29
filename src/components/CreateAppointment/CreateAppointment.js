@@ -36,7 +36,6 @@ export default function CreateAppointment() {
     }
 
     const [appointmentId, setAppointmentId] = useState(0);
-    const [appointmentInfo, setAppointmentInfo] = useState({});
     const [open, setOpen] = useState(false);
     const handleOpen = (appointmentId) => {
         // fetch(globalconstants.BASE_URL + '/walk-in-appointment/wrapper/id/' + appointmentId)

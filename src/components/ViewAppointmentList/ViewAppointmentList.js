@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { List, ListItem, ListItemText, Typography, Divider, Table, TableHead, TableBody, TableRow, TableCell, Paper, Button } from "@material-ui/core";
+import { Typography, Table, TableHead, TableBody, TableRow, TableCell, Paper, Button } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import store from '../../store';
 import { setAppointments } from "../../actions";
@@ -25,7 +25,6 @@ export default function ViewAppointmentList() {
     }
 
     useEffect(() => {
-        console.log(appointments);
         fetchAppointments();
     }, []);
 
@@ -113,7 +112,10 @@ export default function ViewAppointmentList() {
                 handleOpen={handleOpen} 
                 handleClose={handleClose} 
                 title={<Typography variant="h6">QRCode: {qrCode.qrCodeName}</Typography>}
-                content={<img src={globalconstants.BASE_URL + '/' + qrCode.qrCodeUrlPath} />}
+                content={<img 
+                    src={globalconstants.BASE_URL + '/' + qrCode.qrCodeUrlPath} 
+                    alt={qrCode.qrCodeName}
+                />}
                 />
             <Table className={classes.table}>
                 <TableHead>
