@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FormControl, TextField, FormLabel, Button, Paper } from '@material-ui/core';
+import { FormControl, TextField, FormLabel, Button, Paper, Typography } from '@material-ui/core';
 import * as globalconstants from '../../global-constants';
 import AlertDialog from '../AlertDialog';
 import AppointmentStatus from '../AppointmentStatus/AppointmentStatus';
@@ -60,37 +60,44 @@ export default function TakeBreak() {
     }
 
     return (
-        <div className={classes.root}>
-            <AlertDialog 
-                open={modalState.open}
-                title={modalState.title}
-                content={<AppointmentStatus />}
-                handleClose={closeModal}
-                userActions={[{color: "primary", perform: endBreak, text: "End Break"}]}
-            />
-            <Paper>
-            <form onSubmit={handleFormSubmit} id="break-duration-form">
-                <FormControl fullWidth margin="normal">
-                    <FormLabel htmlFor="break-duration">
-                        Break Duration
-                    </FormLabel>
-                    <TextField 
-                        id="break-duration" 
-                        variant="outlined" 
-                        type="number"
-                        name="breakDuration"
-                        onChange={handleChange('breakDuration')}
-                        value={breakDuration}
-                        >
-                    </TextField>
-                </FormControl>
-                <FormControl fullWidth margin="normal">
-                    <Button variant="contained" type="submit" disabled={breakDuration === 0}>
-                        Take Break
-                    </Button>
-                </FormControl>
-            </form>
+        // <div className={classes.root}>
+            
+            <Paper className={classes.root} style={{padding: 10}}>
+                <AlertDialog 
+                    open={modalState.open}
+                    title={modalState.title}
+                    content={<AppointmentStatus />}
+                    handleClose={closeModal}
+                    userActions={[{color: "primary", perform: endBreak, text: "End Break"}]}
+                />
+                <Typography variant="h6">
+                    Take a Break
+                </Typography>
+                <Typography variant="body1">
+                    Fill in the approximate value in minutes and click on the "Take Break" button.
+                    The time will be reflected in the average waiting time of the queue.
+                </Typography>
+                <form onSubmit={handleFormSubmit} id="break-duration-form">
+                    <FormControl fullWidth margin="normal">
+                        
+                        <TextField 
+                            id="break-duration" 
+                            variant="outlined" 
+                            type="number"
+                            name="breakDuration"
+                            onChange={handleChange('breakDuration')}
+                            value={breakDuration}
+                            label="Break Duration"
+                            >
+                        </TextField>
+                    </FormControl>
+                    <FormControl fullWidth margin="normal">
+                        <Button variant="contained" color="primary" type="submit" disabled={breakDuration == 0}>
+                            Take Break
+                        </Button>
+                    </FormControl>
+                </form>
             </Paper>
-        </div>
+        // </div>
     );
 }

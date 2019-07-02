@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, Typography } from '@material-ui/core';
+import { Box, Paper, Button, Typography } from '@material-ui/core';
 import * as globalconstants from '../../global-constants'; 
 
 export default function CallNextPatient() {
@@ -26,12 +26,17 @@ export default function CallNextPatient() {
     }
 
     return (
-        // <Paper >
-            <Box className={classes.root}>
-                <Button onClick={callNextPatient} variant="outlined">
+        <Paper className={classes.root} style={{padding: 10}}>
+            <Box >
+                <Typography variant="h5">Call Next Patient</Typography>
+                <Typography variant="body1">
+                    Click the button when you are done with the current patient 
+                    and wants to see the next patient in the queue.
+                </Typography>
+                <Button onClick={callNextPatient} variant="contained" color="primary">
                     <Typography variant="body1">Call Next Patient</Typography>
                 </Button>
             </Box>
-        // </Paper>
+        </Paper>
     );
 }

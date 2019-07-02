@@ -5,8 +5,9 @@ import ReceptionDashboard from '../ReceptionDashboard/ReceptionDashboard';
 import CounterClinicAppBar from '../../components/AppBar';
 import { Paper, Box } from '@material-ui/core';
 import DoctorDashboard from '../DoctorDashboard';
+import AdminDashboard from '../AdminDashboard/AdminDashboard';
 
-export default function LayoutAuthenticated() {
+export default function LayoutAuthenticated(props) {
 
     const loggedInUser = useSelector(state => state.loggedInUser);
 
@@ -28,6 +29,19 @@ export default function LayoutAuthenticated() {
                     title={"Reception Dashboard: Welcome, " + loggedInUser.fullName}
                     navLinks={[{link: "/dashboard", text: "Dashboard"}]} />
                 <ReceptionDashboard />
+            </Box>
+        );
+    }
+
+    if (loggedInUser.roles.includes(globalconstants.ADMIN)) {
+        console.log(props.match);
+        return (
+            <Box>
+                <CounterClinicAppBar 
+                    title={"Admin Dashboard: Wlecome, " + loggedInUser.fullName}
+                    navLinks={[{link: "/dashboard", text:"Dashboard"}, {link: "/dashboard/register-new-user", text: "Register New User"}]}
+                    />
+                <AdminDashboard path={props.match} />
             </Box>
         );
     }

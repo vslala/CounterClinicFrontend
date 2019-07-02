@@ -23,7 +23,7 @@ const initialState = {
         "username": "reception",
         "preferredLanguage": "ENGLISH",
         "roles": [
-            "DOCTOR"
+            "ADMIN"
         ],
         "fullName": "Priyanka Yadav"
     }

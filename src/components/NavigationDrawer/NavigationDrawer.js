@@ -1,5 +1,5 @@
 import React from 'react'
-import { Drawer, List, ListItem, ListItemText, IconButton, Link } from '@material-ui/core';
+import { Drawer, List, ListItem, ListItemText, IconButton, Link, ClickAwayListener } from '@material-ui/core';
 import * as constants from './NavigationDrawerStyle';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
@@ -14,39 +14,41 @@ export default function NavigationDrawer(props) {
     }
 
     return (
-        <Drawer open={props.isOpen} className={classes.drawer}
-            variant="persistent"
-            anchor="left"
-            classes={{
-                paper: classes.drawerPaper
-            }}>
-            <div className={classes.drawerHeader}>
-                <IconButton onClick={props.handleDrawerClose} 
-                    edge="start"
-                    color="inherit">
-                    <ChevronLeftIcon />
-                </IconButton>
-            </div>
-            <List>
-                
-                    {
-                        props.navLinks.map( (navLink, index) => (
-                            
-                            <ListItem button data-href={navLink.link} key={index} 
-                            onClick={navigateTo}>
-                                <Link to={navLink.link} variant="body1">
-                                <ListItemText primary={navLink.text}></ListItemText>
-                                </Link>
-                                
-                            </ListItem>
-                            
-                            
-                        ) )
-                    }
+        <ClickAwayListener onClickAway={props.handleDrawerClose}>
+            <Drawer open={props.isOpen} className={classes.drawer}
+                variant="persistent"
+                anchor="left"
+                classes={{
+                    paper: classes.drawerPaper
+                }}>
+                <div className={classes.drawerHeader}>
+                    <IconButton onClick={props.handleDrawerClose} 
+                        edge="start"
+                        color="inherit">
+                        <ChevronLeftIcon />
+                    </IconButton>
+                </div>
+                <List>
                     
-                
-            </List>
-        </Drawer>
+                        {
+                            props.navLinks.map( (navLink, index) => (
+                                
+                                <ListItem button data-href={navLink.link} key={index} 
+                                onClick={navigateTo}>
+                                    <Link to={navLink.link} variant="body1">
+                                    <ListItemText primary={navLink.text}></ListItemText>
+                                    </Link>
+                                    
+                                </ListItem>
+                                
+                                
+                            ) )
+                        }
+                        
+                    
+                </List>
+            </Drawer>
+        </ClickAwayListener>
     );
     
 }

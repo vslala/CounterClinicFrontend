@@ -23,6 +23,7 @@ function App() {
             
               <div>
                   <Route exact path="/print/appointment-details/:appointmentId" component={PrintAppointmentInfo}></Route>
+                  <Route path="/dashboard/:path" component={LayoutAuthenticated}></Route>
                   <Route exact path="/dashboard" component={LayoutAuthenticated}></Route>
                   <Route exact path="/create-appointment" component={CreateAppointment}></Route>
                   <Route exact path="/view-all-appointments" component={ViewAppointmentList}></Route>

@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export default function CounterClinicAppBar(props) {
+    console.log("Inside Navigation Bar");
     const classes = useStyles();
     const [drawerState, setDrawerState] = useState({isOpen: false});
 

@@ -7,6 +7,9 @@ export const LEFT_PADDING = 25;
 
 export const RECEPTIONIST = "RECEPTIONIST";
 export const DOCTOR = "DOCTOR";
+export const ADMIN = "ADMIN";
+export const SUPER_ADMIN = "SUPER_ADMIN";
+export const PATIENT = "PATIENT";
 
 export const useStyles = makeStyles(theme => ({
     root: {
@@ -18,3 +21,10 @@ export const useStyles = makeStyles(theme => ({
       minWidth: 650,
     },
 }));
+
+export const handleErrors = (response) => {
+  if (! response.ok) {
+    throw response;
+  }
+  return response;
+}

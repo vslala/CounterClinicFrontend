@@ -7,6 +7,8 @@ import AlertDialog from '../AlertDialog/AlertDialog';
 import AppointmentDetail from '../ApointmentDetail';
 
 export default function CreateAppointment() {
+
+    const classes = globalconstants.useStyles();
     
     const [walkInAppointment, setWalkInAppointment] = useState({
         patientFirstName: '',
@@ -93,8 +95,8 @@ export default function CreateAppointment() {
     const [loading, setLoading] = useState(false);
 
     return (
-        <div>
-            <Paper>
+        // <div>
+            <Paper className={classes.root} style={{padding: 10}}>
                 <AlertDialog 
                     open={open}
                     handleClose={handleClose}
@@ -133,7 +135,7 @@ export default function CreateAppointment() {
                                 name="doctorId"
                                 value={walkInAppointment.doctorId}
                                 onChange={handleChange('doctorId')}
-                                
+                                fullWidth
                             >
                                 <MenuItem>None</MenuItem>
                                 {
@@ -144,7 +146,11 @@ export default function CreateAppointment() {
                             </Select>
                         </FormControl>
                         <FormControl fullWidth margin="normal">
-                            <Button color="primary" variant="contained" onClick={handleFormSubmit}>
+                            <Button 
+                            color="primary" variant="contained" 
+                            onClick={handleFormSubmit}
+                            fullWidth
+                            >
                                 Create Appointment
                             </Button>
                         </FormControl>
@@ -154,7 +160,7 @@ export default function CreateAppointment() {
                     </form>
                 </Container>
             </Paper>
-        </div>
+        // </div>
     );
     
 }
