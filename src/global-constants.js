@@ -2,6 +2,10 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export const BASE_URL = "http://localhost:8080";
 
+export const LOCAL_DATE_FORMAT = "yyyy-MM-dd";
+export const LOCAL_TIME_FORMAT = "hh:mm:ss";
+export const LOCAL_DATE_TIME_FORMAT = LOCAL_DATE_FORMAT + ' ' + LOCAL_TIME_FORMAT;
+
 export const TOP_MARGIN = 50;
 export const LEFT_PADDING = 25;
 

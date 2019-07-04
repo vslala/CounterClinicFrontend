@@ -40,6 +40,9 @@ function ViewUserList() {
     const updateUser = (e) => {
         e.preventDefault();
         console.log("updating user value");
+        if (typeof user.roles === 'string') {
+            user.roles = user.roles.split(',');
+        }
         console.log(user);
         fetch(globalconstants.BASE_URL + '/user/update-user', {
             method: 'PATCH',
@@ -96,8 +99,21 @@ function ViewUserList() {
         setModal({...modal, ["open"]: true, ['fieldName']: fieldName}); // opens dialog
     }
 
+    const deleteUser = (userId) => (e) => {
+        fetch(globalconstants.BASE_URL + '/user/' + userId, {
+            method: 'DELETE'
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("User deleted successfully!");
+            let updatedUsers = users.filter(u => u.userId !== userId);
+            console.log("Users after deleting", updatedUsers);
+            setUsers(updatedUsers);
+        });
+    }
+
     return (
-        <Grid container>
+        <div>
             <AlertDialog 
                 open={modal.open}
                 handleClose={handleModalClose}
@@ -140,47 +156,47 @@ function ViewUserList() {
                 ]}
 
             />
-            <Grid item xs={1}></Grid>
-            <Grid item xs={11}>
-                <Paper className={classes.root} style={{padding: 10}}>
-                    <Typography variant="h5">List of all Users</Typography>
-                    
-                    <Table className={classes.table}>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>#</TableCell>
-                                <TableCell>First Name</TableCell>
-                                <TableCell>Last Name</TableCell>
-                                <TableCell>Role</TableCell>
-                                <TableCell>Username</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {
-                                users.map( (user, index) => {
-                                    if (! user.roles.includes(globalconstants.SUPER_ADMIN)) {
-                                        
-                                        return (
-                                            <TableRow key={index}>
-                                                <TableCell>{ user.userId }</TableCell>
-                                                <TableCell onClick={userEditForm(user, 'firstName')} title="Click to update">{ user.firstName }</TableCell>
-                                                <TableCell onClick={userEditForm(user, 'lastName')}>{ user.lastName }</TableCell>
-                                                <TableCell onClick={userEditForm(user, 'roles')}>{ user.roles.toString() }</TableCell>
-                                                <TableCell onClick={userEditForm(user, 'username')}>{ user.username }</TableCell>
-                                                <TableCell>
-                                                    <Button><DeleteForever color="secondary" /></Button>
-                                                </TableCell>
-                                            </TableRow>
-                                        );
+            
+            <Paper className={classes.root} style={{padding: 10}}>
+                <Typography variant="h5">List of all Users</Typography>
+                
+                <Table className={classes.table}>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>#</TableCell>
+                            <TableCell>First Name</TableCell>
+                            <TableCell>Last Name</TableCell>
+                            <TableCell>Role</TableCell>
+                            <TableCell>Username</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {
+                            users.map( (user, index) => {
+                                if (! user.roles.includes(globalconstants.SUPER_ADMIN)) {
+                                    
+                                    return (
+                                        <TableRow key={index}>
+                                            <TableCell>{ user.userId }</TableCell>
+                                            <TableCell onClick={userEditForm(user, 'firstName')} title="Click to update">{ user.firstName }</TableCell>
+                                            <TableCell onClick={userEditForm(user, 'lastName')}>{ user.lastName }</TableCell>
+                                            <TableCell onClick={userEditForm(user, 'roles')}>{ user.roles.toString() }</TableCell>
+                                            <TableCell onClick={userEditForm(user, 'username')}>{ user.username }</TableCell>
+                                            <TableCell>
+                                                <Button
+                                                    onClick={deleteUser(user.userId)}                                                
+                                                ><DeleteForever color="secondary" /></Button>
+                                            </TableCell>
+                                        </TableRow>
+                                    );
 
-                                    }
-                                })
-                            }
-                        </TableBody>
-                    </Table>
-                </Paper>
-            </Grid>
-        </Grid>
+                                }
+                            })
+                        }
+                    </TableBody>
+                </Table>
+            </Paper>
+        </div>
     );
 }
 

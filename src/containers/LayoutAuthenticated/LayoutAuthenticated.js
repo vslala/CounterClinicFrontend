@@ -16,7 +16,7 @@ export default function LayoutAuthenticated(props) {
             
             <Box>
                 <CounterClinicAppBar navLinks={[{link: "/dashboard", text: "Dashboard"}]} title={"Doctor Dashboard: Welcome, " + loggedInUser.fullName} />
-                <DoctorDashboard />
+                <DoctorDashboard path={props.match} />
             </Box>
             
         );
@@ -28,7 +28,7 @@ export default function LayoutAuthenticated(props) {
                 <CounterClinicAppBar 
                     title={"Reception Dashboard: Welcome, " + loggedInUser.fullName}
                     navLinks={[{link: "/dashboard", text: "Dashboard"}]} />
-                <ReceptionDashboard />
+                <ReceptionDashboard path={props.match}/>
             </Box>
         );
     }

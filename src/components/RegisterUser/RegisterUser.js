@@ -13,7 +13,8 @@ export default function RegisterUser() {
         mobile: '',
         username: '',
         password: '',
-        roles: ['NONE']
+        roles: [],
+        preferredLanguage: 'ENGLISH'
     });
 
     const handleChange = (name) => (e) => {
@@ -24,8 +25,9 @@ export default function RegisterUser() {
     }
 
     const handleChangeMultiple = (name) => (e) => {
-        console.log(user.userRole);
-        setUser({...user, [name]: e.target.value});
+        let userRoles = e.target.value;
+        console.log("selected roles: ", userRoles);
+        setUser({...user, [name]: userRoles});
     }
 
     const handleSubmit = (e) => {
@@ -52,6 +54,7 @@ export default function RegisterUser() {
                 <Paper className={classes.root} style={{padding: 10}}>
                     <Typography variant="h4">Register New User</Typography>
                     <form onSubmit={handleSubmit}>
+                        
                         <FormControl fullWidth margin="normal">
                             <TextField 
                                 id="first-name"
@@ -133,6 +136,9 @@ export default function RegisterUser() {
                                 variant="outlined"
                                 required
                             >
+                                <MenuItem disabled value="">
+                                    <em>None</em>
+                                </MenuItem>
                                 {
                                     ["DOCTOR", "RECEPTIONIST", "ADMIN", "SUPER_ADMIN"].map( (userRole, index) => (
                                         <MenuItem key={index} value={userRole}>{userRole}</MenuItem>
