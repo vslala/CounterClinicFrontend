@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export const BASE_URL = "http://localhost:8080";
 
-export const LOCAL_DATE_FORMAT = "yyyy-MM-dd";
+export const LOCAL_DATE_FORMAT = "YYYY-MM-DD";
 export const LOCAL_TIME_FORMAT = "hh:mm:ss";
 export const LOCAL_DATE_TIME_FORMAT = LOCAL_DATE_FORMAT + ' ' + LOCAL_TIME_FORMAT;
 

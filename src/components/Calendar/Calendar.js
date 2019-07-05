@@ -10,6 +10,7 @@ import AlertDialog from '../AlertDialog';
 import { FormControl, TextField, Button, Select, MenuItem, InputLabel } from '@material-ui/core';
 import moment from 'moment';
 import * as globalconstants from '../../global-constants';
+import uuidv4  from 'uuid/v4';
 
 /* 
     Mocked Data
@@ -39,12 +40,13 @@ const slots = [
 
 function CreateEvent(props) {
     const [formData, setFormData] = useState({
-        title: '',
-        slot: {},
+        id: props.id ? props.id : uuidv4(),
+        title: props.title,
+        slot: props.slot ? props.slot : {},
         startDate: props.startDate,
-        endDate: props.endDate,
-        startTime: props.startTime,
-        endTime: props.endTime
+        // endDate: props.endDate,
+        // startTime: props.startTime,
+        // endTime: props.endTime
     });
 
     const handleChange = (name) => (e) => {
@@ -59,7 +61,7 @@ function CreateEvent(props) {
     }
 
     return (
-        <form onSubmit={handleFormSubmit}>
+        <form onSubmit={handleFormSubmit} autoComplete="off">
             <FormControl fullWidth margin="normal">
                 <TextField fullWidth variant="outlined"
                     id="title"
@@ -72,12 +74,12 @@ function CreateEvent(props) {
             </FormControl>
             <FormControl fullWidth margin="normal">
                 <TextField fullWidth variant="outlined" 
-                    id="appointment-date"
-                    name="appointmentDate"
+                    id="start-date"
+                    name="startDate"
                     type="date"
                     value={formData.startDate}
                     label="Appointment Date"
-                    onChange={handleChange('appointmentDate')}
+                    onChange={handleChange('startDate')}
                 />
             </FormControl>
             <FormControl fullWidth margin="normal">
@@ -165,7 +167,7 @@ function CreateEvent(props) {
                     type="submit"
                     color="primary"
                     >
-                        Create Event
+                        { props.buttonText ? props.buttonText : 'Create Event' }
                 </Button>
             </FormControl>
         </form>
@@ -178,10 +180,9 @@ function Calendar() {
         open: false,
         handleClose: () => setModal({...modal, ['open']:false}),
         title: '',
-        content: <CreateEvent startDate={'2019-07-04'} />
+        content: <CreateEvent startDate={moment().format(globalconstants.LOCAL_DATE_FORMAT)} />
     });
 
-    const [selectedEvent, setSelectedEvent] = useState({});
     const [events, setEvents] = useState([
         { // this object will be "parsed" into an Event Object
           id: 123,
@@ -190,6 +191,29 @@ function Calendar() {
           end: '2019-07-13' // a property! ** see important note below about 'end' **
         }
     ]);
+
+    const updateEvent = (formData) => {
+        console.log("Update Event Fired!");
+        console.log("Updating event: ", formData);
+        const updatedEvent = {
+            id: formData.id,
+            title: formData.title,
+            slot: formData.slot,
+            start: moment(formData.startDate + ' ' + formData.slot.startTime).format(),
+            end: moment(formData.startDate + ' ' + formData.slot.endTime).format()
+        };
+        console.log("updated event value: ", updatedEvent);
+        setEvents( events.reduce( (accumulator, event) => {
+            console.log("Reducing Array", event);
+            if (event.id == formData.id) {
+                accumulator.push(updatedEvent);
+                return accumulator;
+            } 
+            accumulator.push(event);
+            return accumulator;
+        }, []));
+        // setEvents(updatedEvents);
+    }
 
     const handleEventClick = (eventModel) => {
         console.log("Event Clicked: ", eventModel);
@@ -200,22 +224,26 @@ function Calendar() {
             open: true,
             title: "Update Appointment",
             content: <CreateEvent 
+                id={event.id}
                 title={event.title}
+                slot={event.extendedProps.slot}
                 startDate={moment(event.start).format(globalconstants.LOCAL_DATE_FORMAT)}
-                startTime={moment(event.start).format(globalconstants.LOCAL_TIME_FORMAT)}
-                endDate={moment(event.end).format(globalconstants.LOCAL_DATE_FORMAT)}
-                endTime={moment(event.end).format(globalconstants.LOCAL_TIME_FORMAT)}
+                buttonText="Update Event"
+                createEvent={updateEvent}
             />
         });
     }
 
     const createEvent = (formData) => {
         console.log("Create Event Form Data: ", formData);
-        // call server to create new event
+        // call server to create new event 
+        // update the events state
 
         // add event to the list of events
         setEvents([...events, {
+            id: formData.id,
             title: formData.title, 
+            slot: formData.slot,
             start: moment(formData.startDate + ' ' + formData.slot.startTime).format(), 
             end: moment(formData.startDate + ' ' + formData.slot.endTime).format()
         }]);
@@ -227,20 +255,20 @@ function Calendar() {
         setModal({
             ...modal, 
             open:true, 
-            title: 'Create Event', 
+            title: 'Create Appointment', 
             content: <CreateEvent 
                 startDate={date.startStr} 
-                startTime={moment().format('hh:mm')}
-                endDate={date.endStr}
-                endTime={moment().add(1, 'hour').format('hh:mm')}
                 createEvent={createEvent}
             />
         });
     }
 
-    const handleEventDrop = (event) => {
-        console.log(event);
+    const handleEventDrop = (dropEvent) => {
+        console.log(dropEvent);
+        let updatedEvent = dropEvent.event;
         // call server to update the selected event
+
+        // update the events state
     }
 
     return (
