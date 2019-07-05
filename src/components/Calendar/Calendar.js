@@ -41,7 +41,7 @@ const slots = [
 function CreateEvent(props) {
     const [formData, setFormData] = useState({
         id: props.id ? props.id : uuidv4(),
-        title: props.title,
+        title: props.title ? props.title : '',
         slot: props.slot ? props.slot : {},
         startDate: props.startDate,
         // endDate: props.endDate,
@@ -50,9 +50,7 @@ function CreateEvent(props) {
     });
 
     const handleChange = (name) => (e) => {
-        let value = e.target.value;
-        // console.log("Selected value: ", value);
-        setFormData({...formData, [name]:value});
+        setFormData({...formData, [name]:e.target.value});
     }
 
     const handleFormSubmit = (e) => {
@@ -169,6 +167,18 @@ function CreateEvent(props) {
                     >
                         { props.buttonText ? props.buttonText : 'Create Event' }
                 </Button>
+                {
+                    props.handleDelete ? (
+                        <Button variant="contained" fullWidth
+                            onClick={props.handleDelete}
+                            color="secondary"
+                            style={{marginTop: 5}}
+                            >
+                                { props.deleteBtnText ? props.deleteBtnText : 'Delete Event'}
+                        </Button>
+                    ) : null
+                }
+                
             </FormControl>
         </form>
     );
@@ -212,7 +222,18 @@ function Calendar() {
             accumulator.push(event);
             return accumulator;
         }, []));
-        // setEvents(updatedEvents);
+        setModal({...modal, open: false});
+    }
+
+    const handleEventDelete = (event) => {
+        console.log(event);
+        // call server to delete the event
+
+        // then update the events
+        setEvents(events.filter(e => e.id != event.id));
+
+        // then close the modal
+        setModal({...modal, open: false});
     }
 
     const handleEventClick = (eventModel) => {
@@ -230,6 +251,7 @@ function Calendar() {
                 startDate={moment(event.start).format(globalconstants.LOCAL_DATE_FORMAT)}
                 buttonText="Update Event"
                 createEvent={updateEvent}
+                handleDelete={() => handleEventDelete(event)}
             />
         });
     }
@@ -265,10 +287,17 @@ function Calendar() {
 
     const handleEventDrop = (dropEvent) => {
         console.log(dropEvent);
-        let updatedEvent = dropEvent.event;
+        console.log("Dropped Event:", dropEvent.event);
+        let formData = {
+            id: dropEvent.event.id,
+            title: dropEvent.event.title,
+            slot: dropEvent.event.extendedProps.slot,
+            startDate: moment(dropEvent.event.start).format(globalconstants.LOCAL_DATE_FORMAT)
+        };
         // call server to update the selected event
 
         // update the events state
+        updateEvent(formData);
     }
 
     return (
