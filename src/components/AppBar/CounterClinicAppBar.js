@@ -47,6 +47,7 @@ export default function CounterClinicAppBar(props) {
     return (
         <div className={classes.root}>
             <NavigationDrawer 
+              history={props.history}
               isOpen={drawerState.isOpen} 
               handleDrawerClose={handleDrawerClose} 
               navLinks={props.navLinks}

@@ -2,6 +2,7 @@ import React from 'react'
 import { Drawer, List, ListItem, ListItemText, IconButton, Link, ClickAwayListener } from '@material-ui/core';
 import * as constants from './NavigationDrawerStyle';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import { withRouter } from 'react-router-dom';
 
 export default function NavigationDrawer(props) {
     const classes = constants.useStyles();
@@ -10,7 +11,8 @@ export default function NavigationDrawer(props) {
         let href = e.currentTarget.dataset.href;
         console.log(href);
 
-        window.location = href;
+        // window.location = href;
+        props.history.push(href);
     }
 
     return (

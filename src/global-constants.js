@@ -1,6 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 export const BASE_URL = "http://localhost:8080";
+export const MOCKED_BASE_URL = "http://demo3881522.mockable.io";
 
 export const LOCAL_DATE_FORMAT = "YYYY-MM-DD";
 export const LOCAL_TIME_FORMAT = "hh:mm:ss";

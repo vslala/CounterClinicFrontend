@@ -11,6 +11,8 @@ import store from './store';
 import { Provider } from 'react-redux';
 import LayoutAuthenticated from './containers/LayoutAuthenticated';
 import PrintAppointmentInfo from './containers/PrintAppointmentInfo';
+import Register from './containers/Register/Register';
+import Login from './containers/Login/Login';
 
 function App() {
 
@@ -20,15 +22,13 @@ function App() {
       <div style={{ marginTop: 20, padding: 30}}>
         <Grid container>
           <Grid item xs={12}>
-            
               <div>
                   <Route exact path="/print/appointment-details/:appointmentId" component={PrintAppointmentInfo}></Route>
                   <Route path="/dashboard/:path" component={LayoutAuthenticated}></Route>
                   <Route exact path="/dashboard" component={LayoutAuthenticated}></Route>
-                  <Route exact path="/create-appointment" component={CreateAppointment}></Route>
-                  <Route exact path="/view-all-appointments" component={ViewAppointmentList}></Route>
+                  <Route exact path="/register" component={Register}></Route>
+                  <Route exact path="/login" component={Login}></Route>
               </div>
-            
           </Grid>
         </Grid>
       </div>

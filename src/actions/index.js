@@ -1,5 +1,12 @@
 import * as Type from "./constants";
 
+export function setLoggedInUser(loggedInUser) {
+    return {
+        type: Type.SET_LOGGED_IN_USER,
+        payload: loggedInUser
+    }
+}
+
 export function setAppointments(appointments) {
     return {
         type: Type.SET_APPOINTMENTS,

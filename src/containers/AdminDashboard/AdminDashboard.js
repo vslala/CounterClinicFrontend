@@ -4,6 +4,7 @@ import { Route } from 'react-router-dom';
 import * as globalconstants from '../../global-constants';
 import RegisterUser from '../../components/RegisterUser';
 import ViewUserList from '../../components/ViewUserList';
+import CreateSlots from '../../components/CreateSlots/CreateSlots';
 
 export default function AdminDashboard(props) {
 
@@ -18,6 +19,10 @@ export default function AdminDashboard(props) {
 
         if (path === 'view-users') {
             return <ViewUserList />
+        }
+
+        if (path === 'create-slots') {
+            return <CreateSlots />
         }
     }
 

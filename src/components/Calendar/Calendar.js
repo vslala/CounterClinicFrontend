@@ -259,8 +259,8 @@ function Calendar() {
     const createEvent = (formData) => {
         console.log("Create Event Form Data: ", formData);
         // call server to create new event 
-        // update the events state
 
+        // update the events state
         // add event to the list of events
         setEvents([...events, {
             id: formData.id,
@@ -269,6 +269,8 @@ function Calendar() {
             start: moment(formData.startDate + ' ' + formData.slot.startTime).format(), 
             end: moment(formData.startDate + ' ' + formData.slot.endTime).format()
         }]);
+
+        // then close the modal
         setModal({...modal, open: false});
     }
 
@@ -288,6 +290,7 @@ function Calendar() {
     const handleEventDrop = (dropEvent) => {
         console.log(dropEvent);
         console.log("Dropped Event:", dropEvent.event);
+        // crete form data object
         let formData = {
             id: dropEvent.event.id,
             title: dropEvent.event.title,
@@ -296,7 +299,7 @@ function Calendar() {
         };
         // call server to update the selected event
 
-        // update the events state
+        // then update the events state
         updateEvent(formData);
     }
 

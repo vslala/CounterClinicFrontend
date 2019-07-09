@@ -6,16 +6,25 @@ import CounterClinicAppBar from '../../components/AppBar';
 import { Paper, Box } from '@material-ui/core';
 import DoctorDashboard from '../DoctorDashboard';
 import AdminDashboard from '../AdminDashboard/AdminDashboard';
+import LayoutUnauthenticated from '../LayoutUnauthenticated/LayoutUnauthenticated';
+import { withRouter, Redirect } from 'react-router-dom'; 
 
-export default function LayoutAuthenticated(props) {
+function LayoutAuthenticated(props) {
 
     const loggedInUser = useSelector(state => state.loggedInUser);
+
+    if (!loggedInUser || !loggedInUser.roles) {
+        return <Redirect to={"/login"} />
+        // return <LayoutUnauthenticated />
+    }
 
     if (loggedInUser.roles.includes(globalconstants.DOCTOR)) {
         return (
             
             <Box>
-                <CounterClinicAppBar navLinks={[
+                <CounterClinicAppBar 
+                    history={props.history}
+                    navLinks={[
                         {link: "/dashboard", text: "Dashboard"},
                         {link: "/dashboard/calendar", text: "Appointment Calendar"}
                     ]} 
@@ -30,8 +39,12 @@ export default function LayoutAuthenticated(props) {
         return (
             <Box>
                 <CounterClinicAppBar 
+                    history={props.history}
                     title={"Reception Dashboard: Welcome, " + loggedInUser.fullName}
-                    navLinks={[{link: "/dashboard", text: "Dashboard"}]} />
+                    navLinks={[
+                        {link: "/dashboard", text: "Dashboard"},
+                        {link: "/dashboard/calendar", text: "Appointment Calendar"}
+                        ]} />
                 <ReceptionDashboard path={props.match}/>
             </Box>
         );
@@ -42,6 +55,7 @@ export default function LayoutAuthenticated(props) {
         return (
             <Box>
                 <CounterClinicAppBar 
+                    history={props.history}
                     title={"Admin Dashboard: Wlecome, " + loggedInUser.fullName}
                     navLinks={[{link: "/dashboard", text:"Dashboard"}, {link: "/dashboard/register-new-user", text: "Register New User"}]}
                     />
@@ -54,3 +68,5 @@ export default function LayoutAuthenticated(props) {
         <Paper>You are not authorized to make this request.</Paper>
     );
 }
+
+export default withRouter(LayoutAuthenticated);

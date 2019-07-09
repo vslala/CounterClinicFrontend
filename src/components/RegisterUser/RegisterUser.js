@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
-import { Input, Paper, Grid, FormControl, TextField, Select, MenuItem, Button, FormLabel, Typography, InputLabel } from '@material-ui/core';
+import { Input, Paper, Grid, FormControl, TextField, Select, MenuItem, Button, FormLabel, Typography, InputLabel, Link } from '@material-ui/core';
 import * as globalconstants from '../../global-constants';
 
-export default function RegisterUser() {
+export default function RegisterUser(props) {
 
     const classes = globalconstants.useStyles();
 
@@ -33,7 +33,7 @@ export default function RegisterUser() {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(user);
-        fetch(globalconstants.BASE_URL + '/user/register-user', {
+        fetch(props.submitUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -43,7 +43,7 @@ export default function RegisterUser() {
         .then( (response) => response.json())
         .then( (userLogin) => {
             console.log(userLogin);
-            
+            props.afterRegister(userLogin);
         });
     }
 
@@ -140,7 +140,7 @@ export default function RegisterUser() {
                                     <em>None</em>
                                 </MenuItem>
                                 {
-                                    ["DOCTOR", "RECEPTIONIST", "ADMIN", "SUPER_ADMIN"].map( (userRole, index) => (
+                                    props.roles.map( (userRole, index) => (
                                         <MenuItem key={index} value={userRole}>{userRole}</MenuItem>
                                     ))
                                 }
@@ -155,6 +155,10 @@ export default function RegisterUser() {
                             </Button>
                         </FormControl>
                     </form>
+                    <Button onClick={() => window.location = props.loginUrl}>
+                        <Link to={props.loginUrl} variant="body1" >Login Here!</Link>
+                    </Button>
+                    
                 </Paper>
             </Grid>
         </Grid>

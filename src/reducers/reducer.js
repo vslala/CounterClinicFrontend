@@ -3,6 +3,13 @@ import * as Type from '../actions/constants';
 export default (state, action) => {
     console.log(action);
 
+    if (action.type === Type.SET_LOGGED_IN_USER) {
+        return {
+            ...state,
+            loggedInUser: action.payload
+        };
+    }
+
     if (action.type === Type.SET_APPOINTMENTS) {
         return {
             ...state,
