@@ -14,20 +14,20 @@ const initialState = {
     },
     latestAppointmentStatus: {},
     qrCode: {},
-    loggedInUser: {},
-    // loggedInUser: {
-    //     "userId": 2,
-    //     "firstName": "Reception",
-    //     "lastName": "Worker",
-    //     "email": "pvrano@gmail.com",
-    //     "mobile": "7773456789",
-    //     "username": "reception",
-    //     "preferredLanguage": "ENGLISH",
-    //     "roles": [
-    //         "ADMIN"
-    //     ],
-    //     "fullName": "Priyanka Yadav"
-    // }
+    // loggedInUser: {},
+    loggedInUser: {
+        "userId": 2,
+        "firstName": "Reception",
+        "lastName": "Worker",
+        "email": "pvrano@gmail.com",
+        "mobile": "7773456789",
+        "username": "reception",
+        "preferredLanguage": "ENGLISH",
+        "roles": [
+            "ADMIN"
+        ],
+        "fullName": "Priyanka Yadav"
+    }
 };
 const store = createStore(reducer, initialState, composeWithDevTools(
     applyMiddleware(ReduxPromise, logger),

@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import { Input, Paper, Grid, FormControl, TextField, Select, MenuItem, Button, FormLabel, Typography, InputLabel, Link } from '@material-ui/core';
 import * as globalconstants from '../../global-constants';
+import { withRouter } from 'react-router-dom';
 
-export default function RegisterUser(props) {
+function RegisterUser(props) {
 
     const classes = globalconstants.useStyles();
 
@@ -16,6 +17,8 @@ export default function RegisterUser(props) {
         roles: [],
         preferredLanguage: 'ENGLISH'
     });
+
+    const [userRoles, setUserRoles] = useState(globalconstants.userRoles);
 
     const handleChange = (name) => (e) => {
         setUser({
@@ -32,7 +35,8 @@ export default function RegisterUser(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(user);
+        console.log("Registering user: ", user);
+        console.log("Registration API Url:", props.submitUrl);
         fetch(props.submitUrl, {
             method: 'POST',
             headers: {
@@ -140,7 +144,7 @@ export default function RegisterUser(props) {
                                     <em>None</em>
                                 </MenuItem>
                                 {
-                                    props.roles.map( (userRole, index) => (
+                                    props.roles?props.roles:userRoles.map( (userRole, index) => (
                                         <MenuItem key={index} value={userRole}>{userRole}</MenuItem>
                                     ))
                                 }
@@ -155,7 +159,7 @@ export default function RegisterUser(props) {
                             </Button>
                         </FormControl>
                     </form>
-                    <Button onClick={() => window.location = props.loginUrl}>
+                    <Button onClick={() => props.history.push(props.loginUrl)}>
                         <Link to={props.loginUrl} variant="body1" >Login Here!</Link>
                     </Button>
                     
@@ -164,3 +168,5 @@ export default function RegisterUser(props) {
         </Grid>
     );
 } 
+
+export default withRouter(RegisterUser);

@@ -54,12 +54,7 @@ function LayoutAuthenticated(props) {
         console.log(props.match);
         return (
             <Box>
-                <CounterClinicAppBar 
-                    history={props.history}
-                    title={"Admin Dashboard: Wlecome, " + loggedInUser.fullName}
-                    navLinks={[{link: "/dashboard", text:"Dashboard"}, {link: "/dashboard/register-new-user", text: "Register New User"}]}
-                    />
-                <AdminDashboard path={props.match} />
+                <AdminDashboard {...props} path={props.match} loggedInUser={loggedInUser} />
             </Box>
         );
     }

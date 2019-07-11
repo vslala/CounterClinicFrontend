@@ -4,10 +4,12 @@ import LoginForm from '../../components/LoginForm/LoginForm';
 
 function LayoutUnauthenticated() {
 
+    const loginApiEndpoint = "http://206.189.30.73:8084/api/v1/user/login";
+
     return (
         <div>
             <Box>
-                <LoginForm />
+                <LoginForm loginApiEndpoint={loginApiEndpoint} />
             </Box>
         </div>
     );
