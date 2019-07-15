@@ -17,7 +17,7 @@ function Register(props) {
         <Paper>
             <RegisterUser 
                 roles={["DOCTOR", "RECEPTIONIST", "ADMIN", "SUPER_ADMIN", "PATIENT"]} 
-                submitUrl="https://050a3194.ngrok.io/api/v1/user/register"
+                submitUrl={globalconstants.API.registerUrl}
                 afterRegister={handleAfterRegister}
                 loginUrl={"/login"}
                 />

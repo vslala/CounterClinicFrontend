@@ -3,6 +3,7 @@ import { Drawer, List, ListItem, ListItemText, IconButton, Link, ClickAwayListen
 import * as constants from './NavigationDrawerStyle';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { withRouter } from 'react-router-dom';
+import * as globalconstants from '../../global-constants';
 
 export default function NavigationDrawer(props) {
     const classes = constants.useStyles();
@@ -13,6 +14,11 @@ export default function NavigationDrawer(props) {
 
         // window.location = href;
         props.history.push(href);
+    }
+
+    const handleLogout = () => {
+        localStorage.setItem(globalconstants.ACCESS_TOKEN, null);
+        props.history.push("/login");
     }
 
     return (
@@ -38,7 +44,7 @@ export default function NavigationDrawer(props) {
                                 <ListItem button data-href={navLink.link} key={index} 
                                 onClick={navigateTo}>
                                     <Link to={navLink.link} variant="body1">
-                                    <ListItemText primary={navLink.text}></ListItemText>
+                                        <ListItemText primary={navLink.text}></ListItemText>
                                     </Link>
                                     
                                 </ListItem>
@@ -46,7 +52,12 @@ export default function NavigationDrawer(props) {
                                 
                             ) )
                         }
-                        
+                    <ListItem button key={props.navLinks.length + 1} 
+                        onClick={handleLogout}>
+                            <Link variant="body1">
+                                <ListItemText primary="Logout"></ListItemText>
+                            </Link>
+                    </ListItem>
                     
                 </List>
             </Drawer>

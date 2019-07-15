@@ -5,6 +5,7 @@ import ViewAppointmentList from "../../components/ViewAppointmentList";
 import QRCode from "../../components/QRCode/QRCode";
 import * as globalconstants from "../../global-constants";
 import Calendar from '../../components/Calendar';
+import AssignClinic from "../../components/AssignClinic/AssignClinic";
 
 export default function ReceptionDashboard(props) {
 
@@ -24,6 +25,9 @@ export default function ReceptionDashboard(props) {
                 <Grid container >
                     <Grid item xs={12}>
                         <CreateAppointment  />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <AssignClinic />
                     </Grid>
                     <Grid item xs={12}>
                         <ViewAppointmentList />

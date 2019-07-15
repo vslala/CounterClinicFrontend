@@ -36,7 +36,8 @@ function LoginForm(props) {
         fetch(loginApi, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'TimezoneOffset': new Date().getTimezoneOffset
             },
             body: data
         })
@@ -47,7 +48,7 @@ function LoginForm(props) {
             console.log("Data: ", data);
             console.log("Got logged in user", data.user);
             store.dispatch(setLoggedInUser(data.user));
-            localStorage.setItem('accessToken', data.accessToken);
+            localStorage.setItem(globalconstants.ACCESS_TOKEN, data.accessToken);
             // window.location = "/dashboard";
             props.history.push('/dashboard');
         })

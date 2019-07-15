@@ -37,7 +37,8 @@ function RegisterUser(props) {
         e.preventDefault();
         console.log("Registering user: ", user);
         console.log("Registration API Url:", props.submitUrl);
-        fetch(props.submitUrl, {
+        let registerUrl = props.submitUrl ? props.submitUrl : `http://206.189.30.73:8084/api/v1/user/register/`;
+        fetch(registerUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -47,7 +48,9 @@ function RegisterUser(props) {
         .then( (response) => response.json())
         .then( (userLogin) => {
             console.log(userLogin);
-            props.afterRegister(userLogin);
+            if (props.afterRegister)
+                props.afterRegister(userLogin);
+            props.history.push("/login");
         });
     }
 
@@ -57,7 +60,7 @@ function RegisterUser(props) {
             <Grid item xs={6}>
                 <Paper className={classes.root} style={{padding: 10}}>
                     <Typography variant="h4">Register New User</Typography>
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit} autoComplete="off">
                         
                         <FormControl fullWidth margin="normal">
                             <TextField 
@@ -144,7 +147,7 @@ function RegisterUser(props) {
                                     <em>None</em>
                                 </MenuItem>
                                 {
-                                    props.roles?props.roles:userRoles.map( (userRole, index) => (
+                                    (props.roles?props.roles:userRoles).map( (userRole, index) => (
                                         <MenuItem key={index} value={userRole}>{userRole}</MenuItem>
                                     ))
                                 }

@@ -13,6 +13,7 @@ import LayoutAuthenticated from './containers/LayoutAuthenticated';
 import PrintAppointmentInfo from './containers/PrintAppointmentInfo';
 import Register from './containers/Register/Register';
 import Login from './containers/Login/Login';
+import LayoutUnauthenticated from './containers/LayoutUnauthenticated/LayoutUnauthenticated';
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
                   <Route exact path="/dashboard" component={LayoutAuthenticated}></Route>
                   <Route exact path="/register" component={Register}></Route>
                   <Route exact path="/login" component={Login}></Route>
+                  <Route exact path="/" component={LayoutUnauthenticated}></Route>
               </div>
           </Grid>
         </Grid>

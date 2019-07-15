@@ -5,7 +5,7 @@ export const BASE_URL = "http://localhost:8080";
 export const MOCKED_BASE_URL = "http://demo3881522.mockable.io";
 export const API = {
   loginUrl: API_1_BASE_URL + '/api/v1/user/login', // POST
-  registerUrl: BASE_URL + '/api/v1/user/register', // POST
+  registerUrl: API_1_BASE_URL + '/api/v1/user/register', // POST
 };
 
 export const LOCAL_DATE_FORMAT = "YYYY-MM-DD";
@@ -20,6 +20,13 @@ export const DOCTOR = "DOCTOR";
 export const ADMIN = "ADMIN";
 export const SUPER_ADMIN = "SUPER_ADMIN";
 export const PATIENT = "PATIENT";
+
+export const ACCESS_TOKEN = "accessToken";
+
+export const attachmentType = {
+  siteLogo: 'siteLogo',
+  adImage: 'adImage'
+};
 
 export const userRoles = [RECEPTIONIST, DOCTOR, ADMIN, SUPER_ADMIN, PATIENT];
 
@@ -36,7 +43,7 @@ export const useStyles = makeStyles(theme => ({
 
 export const handleErrors = (response) => {
   if (! response.ok) {
-    throw response;
+    throw response.statusText;
   }
   return response;
 }

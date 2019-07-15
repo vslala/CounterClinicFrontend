@@ -1,12 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as globalconstants from '../../global-constants';
-import { Paper, FormControl, TextField, Select, MenuItem, InputLabel, Button, OutlinedInput, Typography } from '@material-ui/core';
-import { doctors } from './mokedDoctors';
+import { Paper, FormControl, TextField, Select, MenuItem, InputLabel, Button, OutlinedInput, Typography, Snackbar } from '@material-ui/core';
+// import { doctors } from './mokedDoctors';
 import moment from 'moment';
 
 function CreateSlots(props) {
 
+    useEffect(() => {
+        fetchDoctors();
+    }, [])
+
+    const fetchDoctors = () => {
+        fetch(`${globalconstants.BASE_URL}/user/all/doctor`)
+        .then(response => response.json())
+        .then( doctors => {
+            console.log("Fetched doctors from the database", doctors);
+            setDoctors(doctors);
+        })
+    }
+
     const classes = globalconstants.useStyles();
+
+    const [snackbarState, setSnackbarState] = useState({
+        open: false,
+        message: 'Slots have been created successfully!'
+    });
+
+    const [doctors, setDoctors] = useState([]);
 
     const [formData, setFormData] = useState({
         selectedDoctor: [],
@@ -23,10 +43,46 @@ function CreateSlots(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log("Form Data:", formData);
+        let accessToken = localStorage.getItem(globalconstants.ACCESS_TOKEN);
+        const postData = {
+            daysOfWeek: formData.selectedDaysOfWeek,
+            doctorId: formData.selectedDoctor.userId,
+            durationInMinutes: formData.durationInMinutes,
+            endTime: formData.slotEndTime.endTime,
+            startTime: formData.slotStartTime.startTime
+        };
+        fetch('http://206.189.30.73:8084/api/v1/appointment/doctor/slots', {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': accessToken
+            },
+            body: JSON.stringify(postData)
+        })
+        .then(response => response.json())
+        .then(responseText => {
+            console.log("Response from slot creation: ", responseText);
+            setSnackbarState({
+                ...snackbarState,
+                open: true,
+                message: "Slots have been created successfully!"
+            })
+        });
+
     }
+
+
 
     return (
         <Paper className={classes.root} style={{padding: 10}}>
+            <Snackbar 
+                open={snackbarState.open}
+                message={snackbarState.message}
+                anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "center"
+                }}
+            />
             <Typography variant="h3">{props.title? props.title : 'Create Time Slots'}</Typography>
             <form onSubmit={handleSubmit}>
                 <FormControl fullWidth margin="normal" variant="outlined">
@@ -47,8 +103,8 @@ function CreateSlots(props) {
                             <em>None</em>
                         </MenuItem>
                         {
-                            doctors.map( doctor => (
-                                <MenuItem value={doctor}>{ doctor.fullName }</MenuItem>
+                            doctors.map( (doctor, index) => (
+                                <MenuItem key={index} value={doctor}>{ doctor.fullName }</MenuItem>
                             ))
                         }
                     </Select>
@@ -71,8 +127,8 @@ function CreateSlots(props) {
                             <em>None</em>
                         </MenuItem>
                         {
-                            ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"].map(dayOfWeek => (
-                                <MenuItem value={dayOfWeek}>{dayOfWeek}</MenuItem>
+                            ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"].map( (dayOfWeek, index) => (
+                                <MenuItem key={index} value={dayOfWeek}>{dayOfWeek}</MenuItem>
                             ))
                         }
                     </Select>
@@ -105,7 +161,7 @@ function CreateSlots(props) {
                         id="slot-duration"
                         name="slotDuration"
                         type="number"
-                        label="Slot Duration"
+                        label="Slot Duration (minutes)"
                         onChange={handleChange('slotDuration')}
                         value={formData.slotDuration}
                     ></TextField>
