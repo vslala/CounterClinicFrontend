@@ -75,10 +75,10 @@ function FileUpload(props) {
                     vertical: "bottom"
                 }}
             />
-            <Paper className = {classes.root}>
+            <Paper className = {classes.root} >
                 { uploadedImage(selectedFile) }
                 <Input fullWidth type="file" id="file-upload" name="fileUpload" onChange={handleChange} />
-                <Button fullWidth variant="contained" onClick={handleFileUpload} >Upload</Button>
+                <Button fullWidth variant="contained" color="primary" onClick={handleFileUpload} >Upload</Button>
             </Paper>
         </Grid>
     );
@@ -86,7 +86,8 @@ function FileUpload(props) {
 
 FileUpload.propTypes = {
     fileUploadUrl: PropTypes.string.isRequired,
-    attachmentType: PropTypes.string.isRequired
+    attachmentType: PropTypes.string.isRequired,
+    frameHeight: PropTypes.number.isRequired
 }
 
 export default FileUpload;

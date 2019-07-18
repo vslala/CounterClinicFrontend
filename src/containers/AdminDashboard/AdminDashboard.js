@@ -8,6 +8,7 @@ import CreateSlots from '../../components/CreateSlots/CreateSlots';
 import CounterClinicAppBar from '../../components/AppBar';
 import { Add, FormatListBulleted, Settings, CalendarToday } from '@material-ui/icons';
 import FileUpload from '../../components/FileUpload/FileUpload';
+import SiteSettings from '../../components/SiteSettings/SiteSettings';
 
 export default function AdminDashboard(props) {
 
@@ -34,17 +35,34 @@ export default function AdminDashboard(props) {
         if (path === 'settings') {
             return (
                 <Grid className={classes.root} container justify="center">
-                    <Grid item xs={6}>
-                        <Paper className={classes.root}>
-                            <Typography variant="h4">Upload Site Logo</Typography>
-                            <FileUpload fileUploadUrl={`${globalconstants.BASE_URL}/user/file-upload`} attachmentType={globalconstants.attachmentType.siteLogo} />
-                        </Paper>
+                    <Grid container>
+                        <Grid item xs={6}>
+                            <Paper className={classes.root} style={{padding: 20}}>
+                                <Typography variant="h4">Upload Site Logo</Typography>
+                                <FileUpload fileUploadUrl={`${globalconstants.BASE_URL}/user/file-upload`} 
+                                    attachmentType={globalconstants.attachmentType.siteLogo} 
+                                    frameHeight={500}
+                                />
+                            </Paper>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Paper className={classes.root} style={{padding: 20}}>
+                                <Typography variant="h4">Upload Ad Image</Typography>
+                                <FileUpload fileUploadUrl={`${globalconstants.BASE_URL}/user/file-upload`} 
+                                    attachmentType={globalconstants.attachmentType.adImage} 
+                                    frameHeight={500}
+                                />
+                            </Paper>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={6}>
-                        <Paper className={classes.root}>
-                            <Typography variant="h4">Upload Advertisement Image</Typography>
-                            <FileUpload fileUploadUrl={`${globalconstants.BASE_URL}/user/file-upload`} attachmentType={globalconstants.attachmentType.adImage} />
-                        </Paper>
+                    <Grid container>
+                        <Grid item xs={2}></Grid>
+                        <Grid item xs={10}>
+                            <Paper className={classes.root} style={{padding: 20}}>
+                            <Typography variant="h4">Site Settings</Typography>
+                                <SiteSettings />
+                            </Paper>
+                        </Grid>
                     </Grid>
                 </Grid>
             );

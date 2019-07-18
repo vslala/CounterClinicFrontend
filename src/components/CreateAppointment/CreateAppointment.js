@@ -23,13 +23,13 @@ export default function CreateAppointment() {
     }
 
     const fetchDoctors = () => {
-        fetch('http://localhost:8080/user/all/doctor')
+        fetch(globalconstants.API.fetchAllDoctors)
         .then( (resp) => resp.json())
         .then( (doctors) => setDoctors(doctors));
     }
 
     const fetchQRCode = (appointmentId) => {
-        fetch(globalconstants.BASE_URL + '/walk-in-appointment/' + appointmentId + '/qrcode')
+        fetch(`${globalconstants.API.fetchQrCodeByAppointmentIdUrl}/${appointmentId}`)
         .then( (response) => response.json())
         .then( (data) => {
             console.log(data);
@@ -62,7 +62,7 @@ export default function CreateAppointment() {
         console.log(walkInAppointment.doctorId);
         console.log(data);
 
-        fetch('http://localhost:8080/user/create-appointment', {
+        fetch(globalconstants.API.createNewAppointmentUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

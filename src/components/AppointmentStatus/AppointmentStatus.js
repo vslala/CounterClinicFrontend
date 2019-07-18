@@ -14,7 +14,7 @@ export default function AppointmentStatus() {
     const [appointmentStatus, setAppointmentStatus] = useState({});
 
     const fetchAppointmentStatus = () => {
-        fetch(globalconstants.BASE_URL + '/walk-in-appointment/appointment-status/latest')
+        fetch(globalconstants.API.fetchLatestAppointmentStatusUrl)
         .then( (response) => response.json())
         .then( (appointmentStatus) => {
             console.log("Appointment Status")
@@ -25,7 +25,7 @@ export default function AppointmentStatus() {
     }
 
     const connect = () => {
-        var socket = new SockJs(globalconstants.BASE_URL + '/gs-guide-websocket');
+        var socket = new SockJs(globalconstants.API.websocketUrl);
         var stompClient = Stomp.over(socket);
         stompClient.connect({}, (frame) => {
             setConnected(true);

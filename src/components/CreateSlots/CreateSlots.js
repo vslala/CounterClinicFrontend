@@ -11,7 +11,7 @@ function CreateSlots(props) {
     }, [])
 
     const fetchDoctors = () => {
-        fetch(`${globalconstants.BASE_URL}/user/all/doctor`)
+        fetch(globalconstants.API.fetchAllDoctors)
         .then(response => response.json())
         .then( doctors => {
             console.log("Fetched doctors from the database", doctors);
@@ -29,7 +29,7 @@ function CreateSlots(props) {
     const [doctors, setDoctors] = useState([]);
 
     const [formData, setFormData] = useState({
-        selectedDoctor: [],
+        selectedDoctor: {},
         selectedDaysOfWeek: [],
         slotDuration: 15,
         slotStartTime: moment('10:00', globalconstants.LOCAL_TIME_FORMAT).format(globalconstants.LOCAL_TIME_FORMAT),
@@ -47,11 +47,12 @@ function CreateSlots(props) {
         const postData = {
             daysOfWeek: formData.selectedDaysOfWeek,
             doctorId: formData.selectedDoctor.userId,
-            durationInMinutes: formData.durationInMinutes,
-            endTime: formData.slotEndTime.endTime,
-            startTime: formData.slotStartTime.startTime
+            durationInMinutes: formData.slotDuration,
+            endTime: formData.slotEndTime,
+            startTime: formData.slotStartTime
         };
-        fetch('http://206.189.30.73:8084/api/v1/appointment/doctor/slots', {
+        console.log("Post Data: ", postData);
+        fetch(globalconstants.API.fetchDoctorSlots, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -59,7 +60,7 @@ function CreateSlots(props) {
             },
             body: JSON.stringify(postData)
         })
-        .then(response => response.json())
+        // .then(response => response.json())
         .then(responseText => {
             console.log("Response from slot creation: ", responseText);
             setSnackbarState({
@@ -82,6 +83,7 @@ function CreateSlots(props) {
                     vertical: "bottom",
                     horizontal: "center"
                 }}
+                autoHideDuration={6000}
             />
             <Typography variant="h3">{props.title? props.title : 'Create Time Slots'}</Typography>
             <form onSubmit={handleSubmit}>
@@ -95,7 +97,7 @@ function CreateSlots(props) {
                             />
                         }
                         variant="outlined"
-                        multiple
+                        // multiple
                         value={formData.selectedDoctor}
                         onChange={handleChange('selectedDoctor')}
                     >
