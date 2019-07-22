@@ -16,7 +16,7 @@ const initialState = {
     qrCode: {},
     // loggedInUser: {},
     loggedInUser: {
-        "userId": 2,
+        "userId": 21,
         "firstName": "Reception",
         "lastName": "Worker",
         "email": "pvrano@gmail.com",
@@ -24,7 +24,7 @@ const initialState = {
         "username": "reception",
         "preferredLanguage": "ENGLISH",
         "roles": [
-            "ADMIN"
+            "DOCTOR"
         ],
         "fullName": "Priyanka Yadav"
     }

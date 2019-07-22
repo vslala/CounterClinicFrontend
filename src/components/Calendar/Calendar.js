@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -15,28 +16,28 @@ import uuidv4  from 'uuid/v4';
 /* 
     Mocked Data
 */
-const slots = [
-    {
-        slotId: 1,
-        startTime: '00:00',
-        endTime: '01:00'
-    },
-    {
-        slotId: 2,
-        startTime: '01:01',
-        endTime: '02:00'
-    },
-    {
-        slotId: 3,
-        startTime: '02:01',
-        endTime: '03:00'
-    },
-    {
-        slotId: 4,
-        startTime: '03:01',
-        endTime: '04:00'
-    }
-];
+// const slots = [
+//     {
+//         slotId: 1,
+//         startTime: '00:00',
+//         endTime: '01:00'
+//     },
+//     {
+//         slotId: 2,
+//         startTime: '01:01',
+//         endTime: '02:00'
+//     },
+//     {
+//         slotId: 3,
+//         startTime: '02:01',
+//         endTime: '03:00'
+//     },
+//     {
+//         slotId: 4,
+//         startTime: '03:01',
+//         endTime: '04:00'
+//     }
+// ];
 
 function CreateEvent(props) {
     const [formData, setFormData] = useState({
@@ -49,8 +50,21 @@ function CreateEvent(props) {
         // endTime: props.endTime
     });
 
+    const [slots, setSlots] = useState([]);
+    useEffect(() => {
+        props.fetchSlots(props.startDate).then(slots => {
+            setSlots(slots);
+        });
+    }, []);
+
     const handleChange = (name) => (e) => {
-        setFormData({...formData, [name]:e.target.value});
+        let value = e.target.value;
+        setFormData({...formData, [name]:value});
+        if (name === 'startDate') {
+            props.fetchSlots(value).then(slots => {
+                setSlots(slots);
+            });
+        }
     }
 
     const handleFormSubmit = (e) => {
@@ -184,23 +198,29 @@ function CreateEvent(props) {
     );
 }
 
-function Calendar() {
+CreateEvent.propTypes = {
+    fetchSlots: PropTypes.func.isRequired
+}
+
+function Calendar(props) {
 
     const [modal, setModal] = useState({
         open: false,
         handleClose: () => setModal({...modal, ['open']:false}),
         title: '',
-        content: <CreateEvent startDate={moment().format(globalconstants.LOCAL_DATE_FORMAT)} />
+        fetchSlots: props.fetchSlots,
+        content: <CreateEvent startDate={moment().format(globalconstants.LOCAL_DATE_FORMAT)} fetchSlots={props.fetchSlots} />
     });
 
-    const [events, setEvents] = useState([
-        { // this object will be "parsed" into an Event Object
-          id: 123,
-          title: 'The Title', // a property!
-          start: '2019-07-12', // a property!
-          end: '2019-07-13' // a property! ** see important note below about 'end' **
-        }
-    ]);
+    // const [events, setEvents] = useState([
+    //     { // this object will be "parsed" into an Event Object
+    //       id: 123,
+    //       title: 'The Title', // a property!
+    //       start: '2019-07-12', // a property!
+    //       end: '2019-07-13' // a property! ** see important note below about 'end' **
+    //     }
+    // ]);
+    const [events, setEvents] = useState(props.events);
 
     const updateEvent = (formData) => {
         console.log("Update Event Fired!");
@@ -247,6 +267,7 @@ function Calendar() {
             content: <CreateEvent 
                 id={event.id}
                 title={event.title}
+                fetchSlots={props.fetchSlots}
                 slot={event.extendedProps.slot}
                 startDate={moment(event.start).format(globalconstants.LOCAL_DATE_FORMAT)}
                 buttonText="Update Event"
@@ -281,7 +302,8 @@ function Calendar() {
             open:true, 
             title: 'Create Appointment', 
             content: <CreateEvent 
-                startDate={date.startStr} 
+                startDate={date.startStr}
+                fetchSlots={props.fetchSlots}
                 createEvent={createEvent}
             />
         });
@@ -317,7 +339,7 @@ function Calendar() {
                 header={{ center:'dayGridMonth,timeGridWeek' }}
                 editable={true}
                 selectable={true}
-                events={events}
+                events={props.events}
                 eventClick={handleEventClick}
                 select={handleDateClick}
                 eventDrop={handleEventDrop}
@@ -327,5 +349,10 @@ function Calendar() {
     
   
   }
+
+Calendar.propTypes = {
+    events: PropTypes.arrayOf(PropTypes.object).isRequired,
+    fetchSlots: PropTypes.func.isRequired
+}
 
 export default Calendar;

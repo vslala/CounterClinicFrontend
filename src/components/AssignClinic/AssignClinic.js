@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import * as globalconstants from '../../global-constants';
-import { Paper, Select, MenuItem, FormControl, Button, OutlinedInput, InputLabel, Typography } from '@material-ui/core';
+import { Paper, Select, MenuItem, FormControl, Button, OutlinedInput, InputLabel, Typography, Snackbar } from '@material-ui/core';
 import { InputOutlined } from '@material-ui/icons';
 
 function AssignClinic() {
@@ -15,7 +15,7 @@ function AssignClinic() {
     });
 
     const fetchDoctors = () => {
-        fetch(globalconstants.BASE_URL + '/user/all/doctor')
+        fetch(globalconstants.API.fetchAllDoctors)
         .then(response => response.json())
         .then(users => {
             console.log("List of doctors: ", doctors);
@@ -24,7 +24,7 @@ function AssignClinic() {
     }
 
     const fetchClinics = () => {
-        fetch(globalconstants.BASE_URL + '/clinic/all')
+        fetch(globalconstants.API.fetchAllClinics)
         .then(response => response.json())
         .then(availableClinics => {
             console.log("List of available clinics: ", clinics);
@@ -46,6 +46,9 @@ function AssignClinic() {
         });
     }
 
+    const showSnackbar = (message) => {
+        setSnackbar({open: true, message: message});
+    }
     const handleFormSubmit = (e) => {
         e.preventDefault();
         console.log("Assigning clinic to user", formData);
@@ -59,11 +62,21 @@ function AssignClinic() {
         .then(response => response.json())
         .then(assignedUser => {
             console.log("Assigned User", assignedUser);
-
+            showSnackbar("Successfully assigned Clinic to the doctor.");
         })
     }
+
+    const [snackbar, setSnackbar] = useState({open: false, message: '', })
     return (
         <Paper className={classes.root} style={{padding: 10}}>
+            <Snackbar 
+                anchorOrigin={{
+                    horizontal: "center",
+                    vertical: "bottom"
+                }}
+                message={snackbar.message}
+                open={snackbar.open}
+            />
             <Typography variant="h5">Assign Clinic to Doctor</Typography>
             <form autoComplete="off" onSubmit={handleFormSubmit}>
                 <FormControl fullWidth margin="normal" variant="outlined">

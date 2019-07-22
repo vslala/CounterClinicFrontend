@@ -14,7 +14,7 @@ export default function ReceptionDashboard(props) {
     const getPage = (path) => {
         if (props.path.params.path === 'calendar') {
             return (
-                <Paper className={classes.root}>
+                <Paper className={classes.root} style={{padding: 20}}>
                     <Calendar />
                 </Paper>
             );

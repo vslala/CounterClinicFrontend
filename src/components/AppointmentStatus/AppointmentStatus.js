@@ -11,7 +11,14 @@ export default function AppointmentStatus() {
 
     const classes = globalconstants.useStyles();
     const [connected, setConnected] = useState(false);
-    const [appointmentStatus, setAppointmentStatus] = useState({});
+    const [appointmentStatus, setAppointmentStatus] = useState({
+        appointmentStatusId: '-',
+        currentAppointmentId: '-',
+        avgWaitingTime: '-',
+        appointmentStartTimeFormatted: '--:--',
+        doctorBreakDuration: '0',
+        patientsInVisitedQueue: '-',
+    });
 
     const fetchAppointmentStatus = () => {
         fetch(globalconstants.API.fetchLatestAppointmentStatusUrl)

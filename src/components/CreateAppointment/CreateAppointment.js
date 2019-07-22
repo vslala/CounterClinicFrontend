@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Select, InputLabel, Button, Container, FormControl, MenuItem, Fade, LinearProgress, Paper, Typography } from '@material-ui/core';
+import { TextField, Select, InputLabel, Button, Container, FormControl, MenuItem, Fade, LinearProgress, Paper, Typography, Snackbar } from '@material-ui/core';
 import store from '../../store';
 import { createNewAppointment, createNewQRCode } from '../../actions';
 import * as globalconstants from '../../global-constants';
@@ -24,8 +24,13 @@ export default function CreateAppointment() {
 
     const fetchDoctors = () => {
         fetch(globalconstants.API.fetchAllDoctors)
+        .then(globalconstants.handleErrors)
         .then( (resp) => resp.json())
-        .then( (doctors) => setDoctors(doctors));
+        .then( (doctors) => setDoctors(doctors))
+        .catch( error => {
+            console.log("Error while trying to fetch doctors.");
+
+        });
     }
 
     const fetchQRCode = (appointmentId) => {
@@ -70,6 +75,7 @@ export default function CreateAppointment() {
             },
             body: data
         })
+        .then(globalconstants.handleErrors)
         .then( (resp) => resp.json())
         .then( (respJson) => {
             setLoading(false);
@@ -84,7 +90,14 @@ export default function CreateAppointment() {
             fetchQRCode(respJson.walkInAppointmentId);
             handleOpen(respJson.walkInAppointmentId);
         })
-        .catch( () => setLoading(false) );
+        .catch( (error) => {
+            setLoading(false);
+            setSnackbar({
+                ...snackbar,
+                open: true,
+                message: `Error encountered while creating new appointment. Error: ${error}`
+            });
+         });
         
     }
 
@@ -94,9 +107,15 @@ export default function CreateAppointment() {
 
     const [loading, setLoading] = useState(false);
 
+    const [snackbar, setSnackbar] = useState({open: false, message: ''});
+
     return (
         // <div>
             <Paper className={classes.root} style={{padding: 10}}>
+                <Snackbar 
+                    open={snackbar.open}
+                    message={snackbar.message}
+                />
                 <AlertDialog 
                     open={open}
                     handleClose={handleClose}

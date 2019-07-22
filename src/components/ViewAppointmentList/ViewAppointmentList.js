@@ -16,7 +16,7 @@ export default function ViewAppointmentList() {
     const appointments = useSelector(state => state.appointments);
 
     const fetchAppointments = () => {
-        fetch('http://localhost:8080/walk-in-appointment/all')
+        fetch(globalconstants.API.fetchAllAppointmentsUrl)
         .then( (respJson) => respJson.json() )
         .then( (json) => {
             store.dispatch(setAppointments(json));
@@ -30,7 +30,7 @@ export default function ViewAppointmentList() {
 
     // delete individual appointment by id
     const deleteAppointment = (walkInAppointmentId) => {
-        fetch('http://localhost:8080/walk-in-appointment/id/' + walkInAppointmentId, {
+        fetch(`${globalconstants.API.fetchAppointmentByIdUrl}/${walkInAppointmentId}`, {
             method: "DELETE",
         })
         .then( (response) => response.json())
@@ -111,7 +111,7 @@ export default function ViewAppointmentList() {
             <AlertDialog open={open} 
                 handleOpen={handleOpen} 
                 handleClose={handleClose} 
-                title={<Typography variant="h6">QRCode: {qrCode.qrCodeName}</Typography>}
+                title={"QRCode: " + qrCode.qrCodeName}
                 content={<img 
                     src={globalconstants.BASE_URL + '/' + qrCode.qrCodeUrlPath} 
                     alt={qrCode.qrCodeName}

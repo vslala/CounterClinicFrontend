@@ -1,12 +1,15 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-export const ONLINE_APPOINTMENT_API = "http://206.189.30.73:8084";
+export const ONLINE_APPOINTMENT_API = "http://206.189.30.73:8081";
 export const BASE_URL = "http://localhost:8080";
 export const MOCKED_BASE_URL = "http://demo3881522.mockable.io";
 export const API = {
-  loginUrl: ONLINE_APPOINTMENT_API + '/api/v1/user/login', // POST
-  registerUrl: ONLINE_APPOINTMENT_API + '/api/v1/user/register', // POST
+  loginUrl: ONLINE_APPOINTMENT_API + '/api/v1/users/login', // POST
+  registerUrl: ONLINE_APPOINTMENT_API + '/api/v1/users/register', // POST
 
+  online: {
+    fetchAllAppointmentsUrl: ONLINE_APPOINTMENT_API + '/api/v1/appointments',
+  },
 
   updateSettingUrl: BASE_URL + '/user/setting', // POST
   fetchSettingsUrl: BASE_URL + '/user/settings', // GET
@@ -19,14 +22,18 @@ export const API = {
   fetchAllSuperAdmins: BASE_URL + '/user/all/super_admin', // GET
   fetchAllPatients: BASE_URL + '/user/all/patient', // GET
 
-  fetchDoctorSlots: ONLINE_APPOINTMENT_API + '/api/v1/appointments/doctors/slots', // GET
+  fetchDoctorSlots: ONLINE_APPOINTMENT_API + '/api/v1/appointments/doctors/availableSlots', // GET
 
   createNewAppointmentUrl: BASE_URL  + '/user/create-appointment', // POST
 
   fetchQrCodeByAppointmentIdUrl: BASE_URL + '/walk-in-appointment/qrcode', // GET
-  fetchLatestAppointmentStatus: BASE_URL + '/walk-in-appointment/appointment-status/latest', // GET
+  fetchLatestAppointmentStatusUrl: BASE_URL + '/walk-in-appointment/appointment-status/latest', // GET
+  fetchAllAppointmentsUrl: BASE_URL + 'walk-in-appointment/all', // GET
+  fetchAppointmentByIdUrl: BASE_URL + 'walk-in-appointment/id', // GET
 
   websocketUrl: BASE_URL + '/gs-guide-websocket',
+
+  fetchAllClinics: BASE_URL + '/clinic/all', // GET
 };
 
 export const LOCAL_DATE_FORMAT = "YYYY-MM-DD";
@@ -43,6 +50,7 @@ export const SUPER_ADMIN = "SUPER_ADMIN";
 export const PATIENT = "PATIENT";
 
 export const ACCESS_TOKEN = "accessToken";
+export const LOGGED_IN_USER = "loggedInUser";
 
 export const attachmentType = {
   siteLogo: 'siteLogo',
