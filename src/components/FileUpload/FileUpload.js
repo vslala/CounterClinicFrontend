@@ -16,7 +16,12 @@ function FileUpload(props) {
     const [setting, setSetting] = useState({});
 
     const fetchImage = (attachmentType) => {
-        fetch(`${globalconstants.BASE_URL}/user/setting/${attachmentType}`)
+        fetch(`${globalconstants.BASE_URL}/user/setting/${attachmentType}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': globalconstants.accessToken(),
+            }
+        })
         .then(globalconstants.handleErrors)
         .then(response => response.json())
         .then(fileSetting => {

@@ -11,7 +11,8 @@ import { withRouter, Redirect } from 'react-router-dom';
 
 function LayoutAuthenticated(props) {
 
-    const loggedInUser = useSelector(state => state.loggedInUser);
+    // const loggedInUser = useSelector(state => state.loggedInUser);
+    const loggedInUser = JSON.parse(localStorage.getItem(globalconstants.LOGGED_IN_USER));
 
     if (!loggedInUser || !loggedInUser.roles) {
         return <Redirect to={"/login"} />

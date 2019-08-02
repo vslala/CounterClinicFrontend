@@ -8,7 +8,12 @@ export default function AppointmentDetail(props) {
     const [appointmentWrapper, setAppointmentWrapper] = useState({})
 
     const fetchAppointment = (appointmentId) => {
-        fetch(globalconstants.BASE_URL + '/walk-in-appointment/wrapped/id/' + appointmentId)
+        fetch(globalconstants.BASE_URL + '/walk-in-appointment/wrapped/id/' + appointmentId, {
+            method: 'GET',
+            headers: {
+                'Authorization': globalconstants.accessToken(),
+            }
+        })
         .then( (response) => response.json() )
         .then( (data) => {
             console.log("Appointment Info");

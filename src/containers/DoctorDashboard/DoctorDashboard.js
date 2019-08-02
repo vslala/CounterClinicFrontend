@@ -10,14 +10,14 @@ import moment from 'moment';
 
 export default function DoctorDashboard(props) {
 
-    const loggedInUser = useSelector(state => state.loggedInUser);
+    // const loggedInUser = useSelector(state => state.loggedInUser);
+    const loggedInUser = JSON.parse(localStorage.getItem(globalconstants.LOGGED_IN_USER));
     var fetchBookedAppointments = new Promise( (resolve, reject) => {
-        let accessToken = localStorage.getItem(globalconstants.ACCESS_TOKEN);
         
         fetch(`${globalconstants.API.online.fetchAllAppointmentsUrl}?doctorId=${loggedInUser.userId}`, {
             method: 'GET',
             headers: {
-                'Authorization': accessToken
+                'Authorization': globalconstants.accessToken()
             }
         })
         .then(globalconstants.handleErrors)
@@ -36,7 +36,7 @@ export default function DoctorDashboard(props) {
         fetch(`${globalconstants.API.fetchDoctorSlots}?appointmentDate=${selectedDate}&doctorId=${loggedInUser.userId}`, {
             method: 'GEt',
             headers: {
-                'Authorization': localStorage.getItem(globalconstants.ACCESS_TOKEN)
+                'Authorization': globalconstants.accessToken()
             }
         })
         .then(globalconstants.handleErrors)
@@ -51,8 +51,7 @@ export default function DoctorDashboard(props) {
         });
     });
 
-    const [bookedAppointments, setBookedAppointments] = useState([]);
-    const [calendarEvents, setCalendarEvents] = useState([]);  
+    const [bookedAppointments, setBookedAppointments] = useState([]);  
     const classes = globalconstants.useStyles();
 
     useEffect(() => {
@@ -74,27 +73,10 @@ export default function DoctorDashboard(props) {
 
     const getPage = (path) => {
         if (props.path.params.path === 'calendar') {
-            /*
-            {
-                "appointmentId": 1,
-                "appointmentDate": "2019-07-17",
-                "doctorFirstName": "Priyanka",
-                "doctorLastName": "Yadav",
-                "patientFirstName": "Pyaare",
-                "patientLastName": "Mohan",
-                "slot": {
-                    "slotId": 168,
-                    "startTime": "10:00:00",
-                    "endTime": "10:30:00"
-                },
-                "totalFees": 500,
-                "amountPaid": 0
-            }
-            */
             
             console.log("Calendar Events: ", bookedAppointments);
             return (
-                <Paper className={classes.root}>
+                <Paper className={classes.root} style={{padding: 10}}>
                     <Calendar events={bookedAppointments} fetchSlots={fetchDoctorSlots} />
                 </Paper>
             );

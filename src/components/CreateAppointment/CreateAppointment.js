@@ -5,6 +5,7 @@ import { createNewAppointment, createNewQRCode } from '../../actions';
 import * as globalconstants from '../../global-constants';
 import AlertDialog from '../AlertDialog/AlertDialog';
 import AppointmentDetail from '../ApointmentDetail';
+import moment from 'moment';
 
 export default function CreateAppointment() {
 
@@ -23,7 +24,12 @@ export default function CreateAppointment() {
     }
 
     const fetchDoctors = () => {
-        fetch(globalconstants.API.fetchAllDoctors)
+        fetch(globalconstants.API.fetchAllDoctors, {
+            method: 'GET',
+            headers: {
+                'Authorization': globalconstants.accessToken(),
+            }
+        })
         .then(globalconstants.handleErrors)
         .then( (resp) => resp.json())
         .then( (doctors) => setDoctors(doctors))
@@ -34,7 +40,12 @@ export default function CreateAppointment() {
     }
 
     const fetchQRCode = (appointmentId) => {
-        fetch(`${globalconstants.API.fetchQrCodeByAppointmentIdUrl}/${appointmentId}`)
+        fetch(`${globalconstants.API.fetchQrCodeByAppointmentIdUrl}/${appointmentId}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': globalconstants.accessToken(),
+            }
+        })
         .then( (response) => response.json())
         .then( (data) => {
             console.log(data);
@@ -71,7 +82,7 @@ export default function CreateAppointment() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJpc3MiOiJjb3VudGVyY2xpbmljIn0.W00g99FmJCpnaWCRB2xlBlX1AVKPHja8TbYTsiMJiIo'
+                'Authorization': globalconstants.accessToken()
             },
             body: data
         })
@@ -86,7 +97,7 @@ export default function CreateAppointment() {
                 patientLastName: '',
                 doctorId: 0 
             });
-            store.dispatch(createNewAppointment(respJson));
+            store.dispatch(createNewAppointment({...respJson, createdAt: moment().format(globalconstants.LOCAL_DATE_TIME_FORMAT)}));
             fetchQRCode(respJson.walkInAppointmentId);
             handleOpen(respJson.walkInAppointmentId);
         })

@@ -9,25 +9,33 @@ import { setLatestAppointmentStatus } from '../../actions';
 
 export default function AppointmentStatus() {
 
+    const loggedInUser = JSON.parse(localStorage.getItem(globalconstants.LOGGED_IN_USER));
+
     const classes = globalconstants.useStyles();
     const [connected, setConnected] = useState(false);
     const [appointmentStatus, setAppointmentStatus] = useState({
         appointmentStatusId: '-',
         currentAppointmentId: '-',
-        avgWaitingTime: '-',
+        avgWaitingTime: '0',
         appointmentStartTimeFormatted: '--:--',
         doctorBreakDuration: '0',
         patientsInVisitedQueue: '-',
+        totalAppointments: 0,
     });
 
     const fetchAppointmentStatus = () => {
-        fetch(globalconstants.API.fetchLatestAppointmentStatusUrl)
+        fetch(globalconstants.API.fetchLatestAppointmentStatusUrl, {
+            method: 'GET',
+            headers: {
+                'Authorization': globalconstants.accessToken()
+            }
+        })
         .then( (response) => response.json())
-        .then( (appointmentStatus) => {
+        .then( (appointmentStatusResponse) => {
             console.log("Appointment Status")
-            console.log(appointmentStatus);
-            setAppointmentStatus(appointmentStatus);
-            store.dispatch(setLatestAppointmentStatus(appointmentStatus));
+            console.log(appointmentStatusResponse);
+            setAppointmentStatus(appointmentStatusResponse);
+            store.dispatch(setLatestAppointmentStatus(appointmentStatusResponse));
         })
     }
 
@@ -39,9 +47,11 @@ export default function AppointmentStatus() {
             console.log("Connected: "  + frame);
             stompClient.subscribe('/topic/appointment-status', (response) => {
                 console.log("Received from websocket");
-                let appointmentStatus = JSON.parse(response.body);
-                console.log(appointmentStatus);
-                setAppointmentStatus(appointmentStatus);
+                let appointmentStatusResponse = JSON.parse(response.body);
+                console.log(appointmentStatusResponse);
+                if (loggedInUser.userId == appointmentStatusResponse.doctorId) {
+                    setAppointmentStatus(appointmentStatusResponse);
+                }
             });
         }, (message) => {
             // on disconnect
@@ -89,17 +99,17 @@ export default function AppointmentStatus() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    <TableRow>
+                    {/* <TableRow>
                         <TableCell align="left">Appointment Status ID</TableCell>
                         <TableCell align="center">{appointmentStatus.appointmentStatusId}</TableCell>
-                    </TableRow>
+                    </TableRow> */}
                     <TableRow>
                         <TableCell align="left">Current Appointment ID</TableCell>
                         <TableCell align="center">{appointmentStatus.currentAppointmentId}</TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell align="left">Average Waiting Time of Queue</TableCell>
-                        <TableCell align="center">{appointmentStatus.avgWaitingTime}</TableCell>
+                        <TableCell align="center">{appointmentStatus.avgWaitingTime} minutes</TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell align="left">Current Appointment Start Time</TableCell>
@@ -112,6 +122,10 @@ export default function AppointmentStatus() {
                     <TableRow>
                         <TableCell align="left">Appointments Completed Today</TableCell>
                         <TableCell align="center">{appointmentStatus.patientsInVisitedQueue}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell align="left">Total Appointments for Today</TableCell>
+                        <TableCell align="center">{appointmentStatus.totalAppointments}</TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell align="left">Appointment Time</TableCell>

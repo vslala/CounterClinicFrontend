@@ -28,8 +28,8 @@ export const API = {
 
   fetchQrCodeByAppointmentIdUrl: BASE_URL + '/walk-in-appointment/qrcode', // GET
   fetchLatestAppointmentStatusUrl: BASE_URL + '/walk-in-appointment/appointment-status/latest', // GET
-  fetchAllAppointmentsUrl: BASE_URL + 'walk-in-appointment/all', // GET
-  fetchAppointmentByIdUrl: BASE_URL + 'walk-in-appointment/id', // GET
+  fetchAllAppointmentsUrl: BASE_URL + '/walk-in-appointment/all', // GET
+  fetchAppointmentByIdUrl: BASE_URL + '/walk-in-appointment/id', // GET
 
   websocketUrl: BASE_URL + '/gs-guide-websocket',
 
@@ -70,9 +70,14 @@ export const useStyles = makeStyles(theme => ({
     },
 }));
 
+export const accessToken = () => {
+  let accessToken = localStorage.getItem(ACCESS_TOKEN);
+  return accessToken;
+}
+
 export const handleErrors = (response) => {
   if (! response.ok) {
-    throw response.statusText;
+    throw response.json();
   }
   return response;
 }

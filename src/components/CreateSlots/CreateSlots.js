@@ -11,7 +11,12 @@ function CreateSlots(props) {
     }, [])
 
     const fetchDoctors = () => {
-        fetch(globalconstants.API.fetchAllDoctors)
+        fetch(globalconstants.API.fetchAllDoctors, {
+            method: 'GET',
+            headers: {
+                'Authorization': globalconstants.accessToken(),
+            }
+        })
         .then(response => response.json())
         .then( doctors => {
             console.log("Fetched doctors from the database", doctors);
@@ -43,7 +48,6 @@ function CreateSlots(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log("Form Data:", formData);
-        let accessToken = localStorage.getItem(globalconstants.ACCESS_TOKEN);
         const postData = {
             daysOfWeek: formData.selectedDaysOfWeek,
             doctorId: formData.selectedDoctor.userId,
@@ -56,7 +60,7 @@ function CreateSlots(props) {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': accessToken
+                'Authorization': globalconstants.accessToken()
             },
             body: JSON.stringify(postData)
         })

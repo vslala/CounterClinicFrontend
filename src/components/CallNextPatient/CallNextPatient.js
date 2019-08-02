@@ -1,32 +1,52 @@
-import React from 'react';
-import { Box, Paper, Button, Typography } from '@material-ui/core';
+import React, {useState} from 'react';
+import { Box, Paper, Button, Typography, Snackbar } from '@material-ui/core';
 import * as globalconstants from '../../global-constants'; 
 
 export default function CallNextPatient() {
 
     const classes = globalconstants.useStyles();
 
+    const [snackbar, setSnackbar] = useState({
+        open: false,
+        message: ""
+    });
+    const showSnackbar = (message) => {
+        setSnackbar({...snackbar, open: true, message: message});
+        setTimeout(() => {
+            setSnackbar({...snackbar, open: false});
+        }, 6000);
+    } 
+
     const callNextPatient = (e) => {
-        fetch(globalconstants.BASE_URL + '/walk-in-appointment/call-next-patient')
-        .then( (response) => {
-            if (!response.ok) {
-                throw Error(response.statusText);
+        fetch(globalconstants.BASE_URL + '/walk-in-appointment/call-next-patient', {
+            method: 'GET',
+            headers: {
+                'Authorization': globalconstants.accessToken()
             }
-            return response.json();
-        }) 
+        })
+        .then(globalconstants.handleErrors)
+        .then( (response) => response.json()) 
         .then( (appointmentStatus) => {
             console.log(appointmentStatus);
         })
-        .catch( (error) => {
-            console.log("Error calling next patient.");
-            if (error.errorCode === '0001') {
-                console.log(error.message);
+        .catch( (error) => error)
+        .then(error => {
+            if (error.errorCode === "0001") {
+                showSnackbar(error.message);
             }
         })
     }
 
     return (
         <Paper className={classes.root} style={{padding: 10}}>
+            <Snackbar 
+                anchorOrigin={{
+                    horizontal: "center",
+                    vertical: "bottom"
+                }}
+                open={snackbar.open}
+                message={snackbar.message}
+            />
             <Box >
                 <Typography variant="h5">Call Next Patient</Typography>
                 <Typography variant="body1">

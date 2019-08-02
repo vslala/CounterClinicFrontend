@@ -24,13 +24,25 @@ function ViewUserList() {
     const [user, setUser] = useState({});
 
     const fetchAllUsers = () => {
-        fetch(globalconstants.BASE_URL + '/user/all')
+        fetch(globalconstants.BASE_URL + '/user/all', {
+            method: 'GET',
+            headers: {
+                'Authorization': globalconstants.accessToken()
+            }
+        })
+        .then(globalconstants.handleErrors)
         .then( (response) => response.json())
         .then( (users) => {
             console.log("Users List");
             console.log(users);
             setUsers(users);
         })
+        .then(error => {
+            console.log("Encountered error while trying to communicated with the backend services");
+            setModal({...modal, openSnackbar: true, errorMessage: 'Encountered error while trying to communicated with the backend.'});
+        })
+        .then(() => {
+            setModal({...modal, openSnackbar: false});        })
     }
 
     useEffect(() => {
@@ -47,6 +59,7 @@ function ViewUserList() {
         fetch(globalconstants.BASE_URL + '/user/update-user', {
             method: 'PATCH',
             headers: {
+                'Authorization': globalconstants.accessToken(),
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(user)
@@ -101,7 +114,10 @@ function ViewUserList() {
 
     const deleteUser = (userId) => (e) => {
         fetch(globalconstants.BASE_URL + '/user/' + userId, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+                'Authorization': globalconstants.accessToken()
+            }
         })
         .then(response => response.json())
         .then(data => {

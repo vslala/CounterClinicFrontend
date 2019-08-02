@@ -20,7 +20,12 @@ export default function TakeBreak() {
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
-        fetch(globalconstants.BASE_URL + '/walk-in-appointment/take-break?breakDuration=' + breakDuration)
+        fetch(globalconstants.BASE_URL + '/walk-in-appointment/take-break?breakDuration=' + breakDuration, {
+            method: 'GET',
+            headers: {
+                'Authorization': globalconstants.accessToken(),
+            }
+        })
         .then( (response) => response.json())
         .then( (appointmentStatus) => {
             console.log("Appointment Status with Break Time");
@@ -43,7 +48,12 @@ export default function TakeBreak() {
 
     const endBreak = () => {
         
-        fetch(globalconstants.BASE_URL + '/walk-in-appointment/take-break?breakDuration=' + (breakDuration * -1))
+        fetch(globalconstants.BASE_URL + '/walk-in-appointment/take-break?breakDuration=' + (breakDuration * -1), {
+            method: 'GET',
+            headers: {
+                'Authorization': globalconstants.accessToken(),
+            }
+        })
         .then( (response) => response.json())
         .then( (appointmentStatus) => {
             setBreakDuration(appointmentStatus.doctorBreakDuration);

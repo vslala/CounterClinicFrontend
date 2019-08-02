@@ -48,7 +48,7 @@ function LoginForm(props) {
             console.log("Data: ", data);
             console.log("Got logged in user", data.user);
             store.dispatch(setLoggedInUser(data.user));
-            localStorage.setItem(globalconstants.LOGGED_IN_USER, data.loggedInUser);
+            localStorage.setItem(globalconstants.LOGGED_IN_USER, JSON.stringify(data.user));
             localStorage.setItem(globalconstants.ACCESS_TOKEN, data.accessToken);
             // window.location = "/dashboard";
             props.history.push('/dashboard');

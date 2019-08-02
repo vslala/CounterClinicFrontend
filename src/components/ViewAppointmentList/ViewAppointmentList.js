@@ -8,6 +8,7 @@ import Info from '@material-ui/icons/Info';
 import AlertDialog from "../AlertDialog/AlertDialog";
 import * as globalconstants from '../../global-constants';
 import AppointmentDetail from "../ApointmentDetail";
+import moment from 'moment';
 
 export default function ViewAppointmentList() {
     
@@ -16,12 +17,18 @@ export default function ViewAppointmentList() {
     const appointments = useSelector(state => state.appointments);
 
     const fetchAppointments = () => {
-        fetch(globalconstants.API.fetchAllAppointmentsUrl)
+        fetch(globalconstants.API.fetchAllAppointmentsUrl, {
+            method: 'GET',
+            headers: {
+                'Authorization': globalconstants.accessToken()
+            }
+        })
+        .then(globalconstants.handleErrors)
         .then( (respJson) => respJson.json() )
         .then( (json) => {
             store.dispatch(setAppointments(json));
         })
-        .catch( () => {console.log("error fetching the appointments")});
+        .catch( (error) => {console.log("error fetching the appointments. Error: ", error)});
     }
 
     useEffect(() => {
@@ -32,6 +39,9 @@ export default function ViewAppointmentList() {
     const deleteAppointment = (walkInAppointmentId) => {
         fetch(`${globalconstants.API.fetchAppointmentByIdUrl}/${walkInAppointmentId}`, {
             method: "DELETE",
+            headers: {
+                'Authorization': globalconstants.accessToken()
+            }
         })
         .then( (response) => response.json())
         .then( (data) => {
@@ -44,13 +54,22 @@ export default function ViewAppointmentList() {
     const [qrCode, setQrCode] = useState({});
 
     const fetchQrCode = (appointmentId) => {
-        fetch(globalconstants.BASE_URL + '/' + 'walk-in-appointment/' + appointmentId + '/qrcode')
+        fetch(`${globalconstants.API.fetchQrCodeByAppointmentIdUrl}/${appointmentId}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': globalconstants.accessToken()
+            }
+        })
+        .then(globalconstants.handleErrors)
         .then( (response) => response.json())
         .then( (data) => {
             console.log("Fetched QRCode data");
             console.log(data);
             setQrCode(data);
         })
+        .catch( error => {
+            console.log("Error fetching qr code from the server. Error: ", error);
+        });
     }
 
     const handleOpen = (appointmentId) => {
@@ -73,13 +92,19 @@ export default function ViewAppointmentList() {
         setInfoOpen(false);
     }
 
-    const tableRows = appointments.map( (appointment) => (
+    const tableRows = appointments.map( (appointment) => {  
+        let appointmentDate = moment().format(globalconstants.LOCAL_DATE_TIME_FORMAT);
+        if (appointment.createdAt) {
+            appointmentDate = moment.utc(appointment.createdAt)
+                .local().format(globalconstants.LOCAL_DATE_TIME_FORMAT);
+        }
+        return (
         <TableRow key={appointment.walkInAppointmentId}>
             <TableCell align="center">{ appointment.walkInAppointmentId }</TableCell>
             <TableCell align="center">{ appointment.patientFirstName }</TableCell>
             <TableCell align="center">{ appointment.patientLastName }</TableCell>
             <TableCell align="center">{ appointment.appointedDoctorId }</TableCell>
-            <TableCell align="center">{ appointment.createdAt }</TableCell>
+            <TableCell align="center">{ appointmentDate }</TableCell>
             <TableCell align="center">
                 <Button onClick={() => handleOpen(appointment.walkInAppointmentId)} >
                     QRCode
@@ -96,7 +121,8 @@ export default function ViewAppointmentList() {
                 </Button>
             </TableCell>
         </TableRow>
-    ));
+        );
+    });
 
     
     return (

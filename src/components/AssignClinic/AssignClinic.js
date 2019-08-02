@@ -15,7 +15,12 @@ function AssignClinic() {
     });
 
     const fetchDoctors = () => {
-        fetch(globalconstants.API.fetchAllDoctors)
+        fetch(globalconstants.API.fetchAllDoctors, {
+            method: 'GET',
+            headers: {
+                'Authorization': globalconstants.accessToken()
+            }
+        })
         .then(response => response.json())
         .then(users => {
             console.log("List of doctors: ", doctors);
@@ -24,7 +29,12 @@ function AssignClinic() {
     }
 
     const fetchClinics = () => {
-        fetch(globalconstants.API.fetchAllClinics)
+        fetch(globalconstants.API.fetchAllClinics, {
+            method: 'GET',
+            headers: {
+                'Authorization': globalconstants.accessToken()
+            }
+        })
         .then(response => response.json())
         .then(availableClinics => {
             console.log("List of available clinics: ", clinics);
@@ -48,6 +58,9 @@ function AssignClinic() {
 
     const showSnackbar = (message) => {
         setSnackbar({open: true, message: message});
+        setTimeout(() => {
+            setSnackbar({...snackbar, open: false});
+        }, 6000)
     }
     const handleFormSubmit = (e) => {
         e.preventDefault();
@@ -56,6 +69,7 @@ function AssignClinic() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': globalconstants.accessToken()
             },
             body: JSON.stringify(formData)
         })
@@ -64,6 +78,10 @@ function AssignClinic() {
             console.log("Assigned User", assignedUser);
             showSnackbar("Successfully assigned Clinic to the doctor.");
         })
+        .catch(error => {
+            showSnackbar("There is some problem assigning clinic to the doctor.");
+        })
+        
     }
 
     const [snackbar, setSnackbar] = useState({open: false, message: '', })
@@ -74,6 +92,7 @@ function AssignClinic() {
                     horizontal: "center",
                     vertical: "bottom"
                 }}
+                autoHideDuration={6}
                 message={snackbar.message}
                 open={snackbar.open}
             />
