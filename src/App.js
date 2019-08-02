@@ -6,23 +6,31 @@ import Grid from '@material-ui/core/Grid';
 import NavigationDrawer from './components/NavigationDrawer';
 import { Route, BrowserRouter } from 'react-router-dom';
 import ViewAppointmentList from './components/ViewAppointmentList';
+import ReceptionDashboard from './containers/ReceptionDashboard/ReceptionDashboard';
+import store from './store';
+import { Provider } from 'react-redux';
+import LayoutAuthenticated from './containers/LayoutAuthenticated';
+import PrintAppointmentInfo from './containers/PrintAppointmentInfo';
+import Register from './containers/Register/Register';
+import Login from './containers/Login/Login';
+import LayoutUnauthenticated from './containers/LayoutUnauthenticated/LayoutUnauthenticated';
 
 function App() {
 
   const routing = (
     <BrowserRouter>
     <div className="App">
-      <CounterClinicAppBar title="Create Appointment" />
-
       <div style={{ marginTop: 20, padding: 30}}>
         <Grid container>
-          <Grid container item xs={6}>
-            
+          <Grid item xs={12}>
               <div>
-                  <Route exact path="/create-appointment" component={CreateAppointment}></Route>
-                  <Route exact path="/view-all-appointments" component={ViewAppointmentList}></Route>
+                  <Route exact path="/print/appointment-details/:appointmentId" component={PrintAppointmentInfo}></Route>
+                  <Route path="/dashboard/:path" component={LayoutAuthenticated}></Route>
+                  <Route exact path="/dashboard" component={LayoutAuthenticated}></Route>
+                  <Route exact path="/register" component={Register}></Route>
+                  <Route exact path="/login" component={Login}></Route>
+                  <Route exact path="/" component={LayoutUnauthenticated}></Route>
               </div>
-            
           </Grid>
         </Grid>
       </div>
@@ -32,7 +40,11 @@ function App() {
     
   );
 
-  return routing;
+  return (
+    <Provider store={store}>
+      {routing}
+    </Provider>
+  );
 }
 
 export default App;

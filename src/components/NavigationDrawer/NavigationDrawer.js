@@ -1,44 +1,67 @@
-import React, { Component, useState, theme } from 'react'
-import { Drawer, List, ListItem, ListItemText, Typography, IconButton } from '@material-ui/core';
+import React from 'react'
+import { Drawer, List, ListItem, ListItemText, IconButton, Link, ClickAwayListener } from '@material-ui/core';
 import * as constants from './NavigationDrawerStyle';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import { Link as Href } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+import * as globalconstants from '../../global-constants';
 
-export default function NavigationDrawer({isOpen = false, handleDrawerClose}) {
+export default function NavigationDrawer(props) {
     const classes = constants.useStyles();
+
+    const navigateTo = (e) => {
+        let href = e.currentTarget.dataset.href;
+        console.log(href);
+
+        // window.location = href;
+        props.history.push(href);
+    }
+
+    const handleLogout = () => {
+        localStorage.setItem(globalconstants.ACCESS_TOKEN, null);
+        props.history.push("/login");
+    }
+
     return (
-        <Drawer open={isOpen} className={classes.drawer}
-            variant="persistent"
-            anchor="left"
-            classes={{
-                paper: classes.drawerPaper
-            }}>
-            <div className={classes.drawerHeader}>
-                <IconButton onClick={handleDrawerClose} 
-                    edge="start"
-                    color="inherit">
-                    <ChevronLeftIcon />
-                </IconButton>
-            </div>
-            <List>
-                
-                    {
-                        [
-                            {key: 1, text: "Create New Appointment", link: "/create-appointment"},
-                            {key: 2, text: "View All Appointments", link: "/view-all-appointments"}
-                        ].map( (navLink) => (
-                            <ListItem key={navLink.key}>
-                                <Href to={navLink.link} onClick={handleDrawerClose}>
-                                    <ListItemText primary={navLink.text}></ListItemText>
-                                </Href>
-                            </ListItem>
-                        ) )
-                    }
+        <ClickAwayListener onClickAway={props.handleDrawerClose}>
+            <Drawer open={props.isOpen} className={classes.drawer}
+                variant="persistent"
+                anchor="left"
+                classes={{
+                    paper: classes.drawerPaper
+                }}>
+                <div className={classes.drawerHeader}>
+                    <IconButton onClick={props.handleDrawerClose} 
+                        edge="start"
+                        color="inherit">
+                        <ChevronLeftIcon />
+                    </IconButton>
+                </div>
+                <List>
                     
-                
-            </List>
-        </Drawer>
+                        {
+                            props.navLinks.map( (navLink, index) => (
+                                
+                                <ListItem button data-href={navLink.link} key={index} 
+                                onClick={navigateTo}>
+                                    <Link to={navLink.link} variant="body1">
+                                        <ListItemText primary={navLink.text}></ListItemText>
+                                    </Link>
+                                    
+                                </ListItem>
+                                
+                                
+                            ) )
+                        }
+                    <ListItem button key={props.navLinks.length + 1} 
+                        onClick={handleLogout}>
+                            <Link variant="body1">
+                                <ListItemText primary="Logout"></ListItemText>
+                            </Link>
+                    </ListItem>
+                    
+                </List>
+            </Drawer>
+        </ClickAwayListener>
     );
     
 }

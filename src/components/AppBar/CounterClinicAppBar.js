@@ -18,7 +18,8 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export default function CounterClinicAppBar({title}) {
+export default function CounterClinicAppBar(props) {
+    console.log("Inside Navigation Bar");
     const classes = useStyles();
     const [drawerState, setDrawerState] = useState({isOpen: false});
 
@@ -45,7 +46,12 @@ export default function CounterClinicAppBar({title}) {
 
     return (
         <div className={classes.root}>
-            <NavigationDrawer isOpen={drawerState.isOpen} handleDrawerClose={handleDrawerClose} />
+            <NavigationDrawer 
+              history={props.history}
+              isOpen={drawerState.isOpen} 
+              handleDrawerClose={handleDrawerClose} 
+              navLinks={props.navLinks}
+              />
             <AppBar>
                 <Toolbar>
                     <IconButton className={classes.menuButton}
@@ -56,7 +62,7 @@ export default function CounterClinicAppBar({title}) {
                             <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" color="inherit">
-                        { title }
+                        { props.title }
                     </Typography>
                 </Toolbar>
             </AppBar>
