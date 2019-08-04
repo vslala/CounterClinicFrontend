@@ -14,14 +14,13 @@ function Register(props) {
     }
 //globalconstants.BASE_URL + '/user/register-user'
     return (
-        <Paper>
+        
             <RegisterUser 
                 roles={["DOCTOR", "RECEPTIONIST", "ADMIN", "SUPER_ADMIN", "PATIENT"]} 
                 submitUrl={globalconstants.API.registerUrl}
                 afterRegister={handleAfterRegister}
                 loginUrl={"/login"}
                 />
-        </Paper>
     );
 }
 

@@ -34,7 +34,7 @@ export default function AppointmentDetail(props) {
         );
     return (
         <Paper style={{textAlign: "center"}}>
-            <List style={{width: 400}}>
+            <List style={{minWidth: 400}}>
                 <ListItem key={uuidv4()}>
                     <img alt={appointmentWrapper.qrCode.qrCodeName}
                         src={globalconstants.BASE_URL + '/' + appointmentWrapper.qrCode.qrCodeUrlPath} />
@@ -53,6 +53,14 @@ export default function AppointmentDetail(props) {
                     </Grid>
                     <Grid item xs={7}>
                         <Typography align="right" variant="body1">{appointmentWrapper.appointedDoctor.fullName}</Typography>
+                    </Grid>
+                </ListItem>
+                <ListItem key={uuidv4()}>
+                    <Grid item xs={4}>
+                        <Typography align="right" variant="body1">Your Number</Typography>
+                    </Grid>
+                    <Grid item xs={8}>
+                        <Typography align="right" variant="body1">{appointmentWrapper.walkInAppointment.appointmentNumber}</Typography>
                     </Grid>
                 </ListItem>
                 <ListItem key={uuidv4()}>

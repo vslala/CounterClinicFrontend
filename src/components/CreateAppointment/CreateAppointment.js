@@ -103,12 +103,21 @@ export default function CreateAppointment() {
         })
         .catch( (error) => {
             setLoading(false);
-            setSnackbar({
-                ...snackbar,
-                open: true,
-                message: `Error encountered while creating new appointment. Error: ${error}`
-            });
-         });
+            error.then((errorResponse) => {
+                console.log(errorResponse);
+                setSnackbar({
+                    ...snackbar,
+                    open: true,
+                    message: errorResponse.message
+                });
+            })
+            
+        })
+        .then(() => {
+            setTimeout(() => {
+                setSnackbar({...snackbar, open: false});
+            }, 6000);
+        });
         
     }
 
@@ -144,6 +153,7 @@ export default function CreateAppointment() {
                                 value={walkInAppointment.patientFirstName}
                                 onChange={handleChange('patientFirstName')}
                                 fullWidth
+                                required
                                 />
                         </FormControl>
                         <FormControl fullWidth margin="normal">
@@ -156,6 +166,7 @@ export default function CreateAppointment() {
                                 value={walkInAppointment.patientLastName}
                                 onChange={handleChange('patientLastName')}
                                 fullWidth
+                                required
                                 />
                         </FormControl>
                         <FormControl fullWidth margin="normal">

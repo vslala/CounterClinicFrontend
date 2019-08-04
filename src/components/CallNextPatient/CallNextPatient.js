@@ -29,12 +29,15 @@ export default function CallNextPatient() {
         .then( (appointmentStatus) => {
             console.log(appointmentStatus);
         })
-        .catch( (error) => error)
-        .then(error => {
-            if (error.errorCode === "0001") {
-                showSnackbar(error.message);
-            }
+        .catch( (error) => {
+            error.then(errorMessage => {
+                if (errorMessage.errorCode === "0002") {
+                    showSnackbar(errorMessage.message);
+                }
+            })
+            
         })
+        
     }
 
     return (

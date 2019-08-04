@@ -24,12 +24,13 @@ export const API = {
 
   fetchDoctorSlots: ONLINE_APPOINTMENT_API + '/api/v1/appointments/doctors/availableSlots', // GET
 
-  createNewAppointmentUrl: BASE_URL  + '/user/create-appointment', // POST
+  createNewAppointmentUrl: BASE_URL  + '/walk-in-appointment/create-appointment', // POST
 
   fetchQrCodeByAppointmentIdUrl: BASE_URL + '/walk-in-appointment/qrcode', // GET
   fetchLatestAppointmentStatusUrl: BASE_URL + '/walk-in-appointment/appointment-status/latest', // GET
   fetchAllAppointmentsUrl: BASE_URL + '/walk-in-appointment/all', // GET
-  fetchAppointmentByIdUrl: BASE_URL + '/walk-in-appointment/id', // GET
+  fetchAppointmentByIdUrl: BASE_URL + '/walk-in-appointment/wrapped/id', // GET
+  fetchAppointmentStatus: BASE_URL + '/walk-in-appointment/appointment-status', // GET
 
   websocketUrl: BASE_URL + '/gs-guide-websocket',
 
@@ -80,4 +81,34 @@ export const handleErrors = (response) => {
     throw response.json();
   }
   return response;
+}
+
+export const fetcher = {
+  fetchAppointmentInfo: (appointmentId) => {
+    return new Promise((resolve, reject) => {
+      fetch(`${API.fetchAppointmentByIdUrl}/${appointmentId}`)
+      .then(handleErrors)
+      .then(response => response.json())
+      .then(appointmentInfo => {
+        resolve(appointmentInfo);
+      })
+      .catch(error => {
+        reject(error);
+      })
+    });
+  },
+
+  fetchAppointmentStatus: (appointmentId, doctorId) => {
+    return new Promise((resolve, reject) => {
+
+      fetch(`${API.fetchAppointmentStatus}?doctorId=${doctorId}&appointmentId=${appointmentId}`)
+      .then(handleErrors)
+      .then(response => response.json())
+      .then(appointmentStatus => resolve(appointmentStatus))
+      .catch(error => {
+        reject(error);
+      })
+
+    });
+  }
 }

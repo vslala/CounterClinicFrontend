@@ -55,10 +55,9 @@ function RegisterUser(props) {
     }
 
     return (
-        <Grid container>
-            <Grid item xs={3}></Grid>
-            <Grid item xs={6}>
-                <Paper className={classes.root} style={{padding: 10}}>
+        <Grid container justify="center" alignItems="center">
+            
+                <Paper className={classes.root} style={{padding: 10, maxWidth: 400}}>
                     <Typography variant="h4">Register New User</Typography>
                     <form onSubmit={handleSubmit} autoComplete="off">
                         
@@ -167,7 +166,6 @@ function RegisterUser(props) {
                     </Button>
                     
                 </Paper>
-            </Grid>
         </Grid>
     );
 } 

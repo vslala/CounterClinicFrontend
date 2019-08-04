@@ -14,6 +14,7 @@ import PrintAppointmentInfo from './containers/PrintAppointmentInfo';
 import Register from './containers/Register/Register';
 import Login from './containers/Login/Login';
 import LayoutUnauthenticated from './containers/LayoutUnauthenticated/LayoutUnauthenticated';
+import PatientWalkInAppointmentStatus from './containers/PatientWalkInAppointmentStatus/PatientWalkInAppointmentStatus';
 
 function App() {
 
@@ -29,6 +30,7 @@ function App() {
                   <Route exact path="/dashboard" component={LayoutAuthenticated}></Route>
                   <Route exact path="/register" component={Register}></Route>
                   <Route exact path="/login" component={Login}></Route>
+                  <Route exact path="/walk-in/appointment-status" component={PatientWalkInAppointmentStatus}></Route>
                   <Route exact path="/" component={LayoutUnauthenticated}></Route>
               </div>
           </Grid>
