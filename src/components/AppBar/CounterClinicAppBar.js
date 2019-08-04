@@ -41,7 +41,7 @@ export default function CounterClinicAppBar(props) {
     });
 
     const handleDrawerClose = () => {
-      toggleDrawer();
+      setDrawerState({...drawerState, isOpen: false});
     }
 
     return (

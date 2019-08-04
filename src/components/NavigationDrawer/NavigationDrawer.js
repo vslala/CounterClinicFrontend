@@ -1,9 +1,10 @@
 import React from 'react'
-import { Drawer, List, ListItem, ListItemText, IconButton, Link, ClickAwayListener } from '@material-ui/core';
+import { Drawer, List, ListItem, ListItemText, IconButton, Link, ClickAwayListener, Divider, ListItemIcon } from '@material-ui/core';
 import * as constants from './NavigationDrawerStyle';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { withRouter } from 'react-router-dom';
 import * as globalconstants from '../../global-constants';
+import { DashboardSharp } from '@material-ui/icons';
 
 export default function NavigationDrawer(props) {
     const classes = constants.useStyles();
@@ -22,7 +23,7 @@ export default function NavigationDrawer(props) {
     }
 
     return (
-        <ClickAwayListener onClickAway={props.handleDrawerClose}>
+        <ClickAwayListener onClickAway={() => {console.log("Click away listener activated!");}}>
             <Drawer open={props.isOpen} className={classes.drawer}
                 variant="persistent"
                 anchor="left"
@@ -41,13 +42,18 @@ export default function NavigationDrawer(props) {
                         {
                             props.navLinks.map( (navLink, index) => (
                                 
-                                <ListItem button data-href={navLink.link} key={index} 
-                                onClick={navigateTo}>
+                                [
+                                <ListItem 
+                                    button data-href={navLink.link} 
+                                    key={index} 
+                                    onClick={navigateTo}
+                                >
                                     <Link to={navLink.link} variant="body1">
                                         <ListItemText primary={navLink.text}></ListItemText>
                                     </Link>
-                                    
-                                </ListItem>
+                                </ListItem>,
+                                <Divider />
+                                ]
                                 
                                 
                             ) )
