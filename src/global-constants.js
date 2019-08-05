@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 export const ONLINE_APPOINTMENT_API = "http://206.189.30.73:8081";
-export const BASE_URL = "http://localhost:8080";
+export const BASE_URL = "http://192.168.0.101:8080";
 export const MOCKED_BASE_URL = "http://demo3881522.mockable.io";
 export const API = {
   loginUrl: ONLINE_APPOINTMENT_API + '/api/v1/users/login', // POST
@@ -31,6 +31,8 @@ export const API = {
   fetchAllAppointmentsUrl: BASE_URL + '/walk-in-appointment/all', // GET
   fetchAppointmentByIdUrl: BASE_URL + '/walk-in-appointment/wrapped/id', // GET
   fetchAppointmentStatus: BASE_URL + '/walk-in-appointment/appointment-status', // GET
+  fetchLatestAppointmentStatusByDoctorId: BASE_URL + '/walk-in-appointment/appointment-status/latest', // GET/{doctorId}
+  deleteWalkInAppointment: BASE_URL + '/walk-in-appointment/id', // DELETE {appointmentId}
 
   websocketUrl: BASE_URL + '/gs-guide-websocket',
 
@@ -110,5 +112,17 @@ export const fetcher = {
       })
 
     });
+  },
+
+  fetchLatestAppointmentStatus: (doctorId) => {
+    return new Promise((resolve, reject) => {
+      fetch(`${API.fetchLatestAppointmentStatusByDoctorId}/${doctorId}`)
+      .then(handleErrors)
+      .then(response => response.json())
+      .then(appointmentStatus => resolve(appointmentStatus))
+      .catch(error => {
+        reject(error);
+      })
+    })
   }
 }

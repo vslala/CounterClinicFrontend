@@ -37,7 +37,7 @@ export default function ViewAppointmentList() {
 
     // delete individual appointment by id
     const deleteAppointment = (walkInAppointmentId) => {
-        fetch(`${globalconstants.API.fetchAppointmentByIdUrl}/${walkInAppointmentId}`, {
+        fetch(`${globalconstants.API.deleteWalkInAppointment}/${walkInAppointmentId}`, {
             method: "DELETE",
             headers: {
                 'Authorization': globalconstants.accessToken()

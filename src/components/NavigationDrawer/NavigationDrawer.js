@@ -5,6 +5,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { withRouter } from 'react-router-dom';
 import * as globalconstants from '../../global-constants';
 import { DashboardSharp } from '@material-ui/icons';
+import uuidv4  from 'uuid/v4';
 
 export default function NavigationDrawer(props) {
     const classes = constants.useStyles();
@@ -45,20 +46,20 @@ export default function NavigationDrawer(props) {
                                 [
                                 <ListItem 
                                     button data-href={navLink.link} 
-                                    key={index} 
+                                    key={uuidv4()} 
                                     onClick={navigateTo}
                                 >
                                     <Link to={navLink.link} variant="body1">
                                         <ListItemText primary={navLink.text}></ListItemText>
                                     </Link>
                                 </ListItem>,
-                                <Divider />
+                                <Divider key={uuidv4()} />
                                 ]
                                 
                                 
                             ) )
                         }
-                    <ListItem button key={props.navLinks.length + 1} 
+                    <ListItem key={uuidv4()} button key={props.navLinks.length + 1} 
                         onClick={handleLogout}>
                             <Link variant="body1">
                                 <ListItemText primary="Logout"></ListItemText>

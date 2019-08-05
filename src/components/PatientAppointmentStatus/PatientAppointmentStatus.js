@@ -8,18 +8,53 @@ import Countdown from 'react-countdown-now';
 
 function PatientAppointmentStatus(props) {
 
-    const { appointmentInfo } = props;
+    const { appointmentInfo, display, approxTimeRemaining, handleTick } = props;
 
-    const [timeRemaining, setTimeRemaining] = useState(15*60*1000)
+    console.log(`appointmentInfo: ${appointmentInfo}, display: ${display.show}, approxTimeRemaining: ${approxTimeRemaining}`);
+
+    const [timeRemaining, setTimeRemaining] = useState(approxTimeRemaining);
 
     useEffect(() => {
-
+        setTimeRemaining(approxTimeRemaining);
     }, []);
+
+    const displayTimeRemaining = (hours, minutes, seconds) => (
+        <List style={{minWidth: 400}}>
+            <ListItem key={uuidv4()}>
+                <Grid item xs={4}>
+                    <Typography align="right" variant="body1">Hours</Typography>
+                </Grid>
+                <Grid item xs={8}>
+                    <Typography align="right" variant="body1">{hours}</Typography>
+                </Grid>
+            </ListItem>
+            <ListItem key={uuidv4()}>
+                <Grid item xs={4}>
+                    <Typography align="right" variant="body1">Minutes</Typography>
+                </Grid>
+                <Grid item xs={8}>
+                    <Typography align="right" variant="body1">{minutes}</Typography>
+                </Grid>
+            </ListItem>
+            <ListItem key={uuidv4()}>
+                <Grid item xs={4}>
+                    <Typography align="right" variant="body1">Seconds</Typography>
+                </Grid>
+                <Grid item xs={8}>
+                    <Typography align="right" variant="body1">{seconds}</Typography>
+                </Grid>
+            </ListItem>
+        </List>
+    );
 
     return (
         <div>
-            <Paper>
-                <List style={{minWidth: 600}}>
+            <Paper style={{padding: 10}}>
+                <Grid container justify="center" alignItems="center">
+                    <Typography variant="h4">Appointment Status</Typography>
+                    <Divider style={{borderBottom: 1}}/>
+                </Grid>
+                <List style={{minWidth: 300}}>
                     <ListItem key={uuidv4()}>
                         <Grid item xs={4}>
                             <Typography align="right" variant="body1">Your Number</Typography>
@@ -55,50 +90,29 @@ function PatientAppointmentStatus(props) {
                     </ListItem>
                 </List>
             </Paper>
-            <Paper>
+            {/* Countdown timer starts here */}
+            <Divider />
+            <Paper style={{marginTop: 10, padding: 10}}>
                 <Grid container justify="center" alignItems="center">
-                    <Grid item xs={12}>
-                        <Typography variant="h5">Time Remaining</Typography>
-                        <Divider />
-                    </Grid>
-            
-                    <Countdown 
-                        date={Date.now() + timeRemaining}
-                        onTick={() => {
-                            // write the logic to update the renderer view
-                        }}
-                        renderer={({hours, minutes, seconds, completed}) => {
-                            return (
-                                <List style={{minWidth: 400}}>
-                                    <ListItem key={uuidv4()}>
-                                        <Grid item xs={4}>
-                                            <Typography align="right" variant="body1">Hours</Typography>
-                                        </Grid>
-                                        <Grid item xs={8}>
-                                            <Typography align="right" variant="body1">{hours}</Typography>
-                                        </Grid>
-                                        <ListItem key={uuidv4()}>
-                                        <Grid item xs={4}>
-                                            <Typography align="right" variant="body1">Minutes</Typography>
-                                        </Grid>
-                                        <Grid item xs={8}>
-                                            <Typography align="right" variant="body1">{minutes}</Typography>
-                                        </Grid>
-                                    </ListItem>
-                                    <ListItem key={uuidv4()}>
-                                        <Grid item xs={4}>
-                                            <Typography align="right" variant="body1">Seconds</Typography>
-                                        </Grid>
-                                        <Grid item xs={8}>
-                                            <Typography align="right" variant="body1">{seconds}</Typography>
-                                        </Grid>
-                                    </ListItem>
-                                    </ListItem>
-                                    
-                                </List>
-                            );
-                        }}
-                    />
+                    {
+                        display.show ? (
+                            [
+                            <Grid key={uuidv4()} item xs={12}>
+                                <Typography variant="h5">Time Remaining</Typography>
+                                <Divider />
+                            </Grid>,
+                            <Countdown 
+                                key={uuidv4()}
+                                date={Date.now() + approxTimeRemaining}
+                                onTick={handleTick}
+                                renderer={({hours, minutes, seconds, completed}) => {
+                                    return displayTimeRemaining(hours, minutes, seconds);
+                                }}
+                            />
+                            ]
+                        ) : display.item
+                    }
+                    
                 </Grid>
             </Paper>
         </div>
@@ -107,8 +121,9 @@ function PatientAppointmentStatus(props) {
 
 PatientAppointmentStatus.propTypes = {
     appointmentInfo: PropTypes.object.isRequired,
-    patientsLeft: PropTypes.number.isRequired,
-    avgWaitingTime: PropTypes.number.isRequired
+    display: PropTypes.object.isRequired,
+    approxTimeRemaining: PropTypes.number.isRequired,
+    handleTick: PropTypes.func.isRequired
 }
 
 

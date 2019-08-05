@@ -31,6 +31,39 @@ function PatientWalkInAppointmentStatus(props) {
     const [appointmentStatus, setAppointmentStatus] = useState({
 
     });
+
+    const refreshAppointmentStatus = () => {
+        fetchAppointmentInfo().then((appointmentInfo) => {
+            if (moment().isAfter(moment(appointmentInfo.walkInAppointment.createdAt, globalconstants.LOCAL_DATE_TIME_FORMAT), 'day')) {
+                setDisplay({
+                    error: true,
+                    errorMessage: <Typography variant="h5">Your appointment has passed!</Typography>
+                });
+                return;
+            }
+            setAppointmentInfo(appointmentInfo);
+
+            fetchAppointmentStatus()
+            .then((appointmentStatus) => {
+                setAppointmentStatus(appointmentStatus);
+                if (!appointmentStatus.appointmentStartTime) {
+                    setDisplay({
+                        show: false,
+                        item: <Typography variant="h5">Doctor has not yet started taking patients.</Typography>
+                    });
+                    return;
+                }
+                calculateDisplay(appointmentInfo, appointmentStatus);
+            })
+        })
+        .catch(error => {
+            console.log("Encountered Error: ", error);
+            setDisplay({
+                error: true,
+                errorMessage: <Typography variant="h5">Invalid Appointment!</Typography>
+            })
+        })
+    }
     
 
     const connectClinicBackend = () => {
@@ -45,7 +78,7 @@ function PatientWalkInAppointmentStatus(props) {
                 let appointmentStatusResponse = JSON.parse(response.body);
                 console.log(appointmentStatusResponse);
                 if (doctorId == appointmentStatusResponse.doctorId) {
-                    fetchAppointmentStatus();
+                    refreshAppointmentStatus();
                 }
             });
         }, (message) => {
@@ -56,33 +89,84 @@ function PatientWalkInAppointmentStatus(props) {
     }
 
     const fetchAppointmentInfo = () => {
-        globalconstants.fetcher.fetchAppointmentInfo(appointmentId)
-        .then(appointmentInfo => {
-            console.log("Appointment Info: ", appointmentInfo);
-            setAppointmentInfo(appointmentInfo);
+        return new Promise((resolve, reject) => {
+            globalconstants.fetcher.fetchAppointmentInfo(appointmentId)
+            .then(appointmentInfo => {
+                console.log("Appointment Info: ", appointmentInfo);
+                setAppointmentInfo(appointmentInfo);
+                resolve(appointmentInfo);
+            })
+            .catch(error => {
+                console.log("Encountered Error: ", error);
+                reject(error);
+            });
         })
-        .catch(error => {
-            console.log("Encountered Error: ", error);
-        })
+        
     }
 
+    
+
     const fetchAppointmentStatus = () => {
-        globalconstants.fetcher.fetchAppointmentStatus(appointmentId, doctorId)
-        .then(appointmentStatus => {
-            console.log("Appointment Status: ", appointmentStatus);
-            setAppointmentStatus(appointmentStatus);
+        return new Promise((resolve, reject) => {
+            console.log("Fetching appointment status from the backend.");
+            globalconstants.fetcher.fetchLatestAppointmentStatus(doctorId)
+            .then(appointmentStatus => {
+                console.log("Appointment Status: ", appointmentStatus);
+                setAppointmentStatus(appointmentStatus);
+                resolve(appointmentStatus);
+            })
+            .catch(error => {
+                console.log("Encountered Error while fetching appointment status: ", error);
+                reject(error);
+            })
         })
-        .catch(error => {
-            console.log("Encountered Error while fetching appointment status: ", error);
-        })
+        
+    }
+
+    var timeRemaining = 15*60000;
+    const [approxTimeRemaining, setApproxTimeRemaining] = useState(timeRemaining);
+    const [display, setDisplay] = useState({
+        show: false,
+        item: <Typography variant="h5">Doctor has not yet started taking patients.</Typography>,
+        error: false,
+        errorMessage: null
+    });
+
+    const handleClockTick = () => {
+        timeRemaining -= 1000;
+        if (timeRemaining < appointmentStatus.avgWaitingTime * 60 * 1000) {
+            timeRemaining += 5 * 60 * 1000 ; // increase time by 5 minutes;
+        }
+    }
+
+    const calculateDisplay = (appointmentInfo, appointmentStatus) => {
+        let patientsLeft = appointmentInfo.walkInAppointment.appointmentNumber - appointmentStatus.patientsInVisitedQueue;
+        if (patientsLeft < 2) {
+            setDisplay({
+                show: true,
+                item: <Typography variant="h5">Get Ready, You are Next!</Typography>,
+                error:false
+            });
+            return;
+        }
+
+        console.log(`avg waiting time: ${appointmentStatus.avgWaitingTime}, patients left: ${patientsLeft}`);
+        timeRemaining = appointmentStatus.avgWaitingTime == 0 ? 15*60*1000 : (appointmentStatus.avgWaitingTime * patientsLeft) * 60 * 1000;
+        setDisplay({
+            show: true,
+            item: null,
+            error: false
+        });
+        setApproxTimeRemaining(timeRemaining);
     }
 
     useEffect(() => {
         connectClinicBackend();
-        fetchAppointmentInfo();
-        fetchAppointmentStatus();
+        refreshAppointmentStatus();
+        
     }, []);
 
+    
     
     if (! urlParams.has("doctorId") || ! urlParams.has("appointmentId")) {
         return errorBox;
@@ -91,17 +175,23 @@ function PatientWalkInAppointmentStatus(props) {
 
     return (
         <div>
-            <Grid justify="center" alignItems="center" container>
-                <PatientAppointmentStatus appointmentInfo={{
-                    appointmentNumber: appointmentInfo.walkInAppointment.appointmentNumber,
-                    patientsInVisitedQueue: appointmentStatus.patientsInVisitedQueue,
-                    doctorName: appointmentInfo.appointedDoctor.fullName,
-                    appointmentStartTimeFormatted: moment.utc(appointmentStatus.appointmentStartTimeFormatted, globalconstants.LOCAL_DATE_TIME_FORMAT)
-                        .local().format(globalconstants.LOCAL_TIME_FORMAT),
-                    avgWaitingTime: appointmentStatus.avgWaitingTime,
-                    patientsLeft: (appointmentInfo.walkInAppointment.appointmentNumber - appointmentStatus.patientsInVisitedQueue)
-                }} />
-            </Grid>
+            {
+                display.error ? display.errorMessage : (
+                    <Grid justify="center" alignItems="center" container>
+                        <PatientAppointmentStatus appointmentInfo={{
+                            appointmentNumber: appointmentInfo.walkInAppointment.appointmentNumber,
+                            patientsInVisitedQueue: appointmentStatus.patientsInVisitedQueue ? appointmentStatus.patientsInVisitedQueue : 0,
+                            doctorName: appointmentInfo.appointedDoctor.fullName,
+                            appointmentStartTimeFormatted: appointmentStatus.appointmentStartTimeFormatted ? moment.utc(appointmentStatus.appointmentStartTimeFormatted, globalconstants.LOCAL_DATE_TIME_FORMAT)
+                                .local().format(globalconstants.LOCAL_TIME_FORMAT) : '--',
+                        }} 
+                        handleTick={handleClockTick}
+                        approxTimeRemaining={approxTimeRemaining}
+                        display={display}
+                        />
+                    </Grid>
+                )
+            }
         </div>
     );
 }

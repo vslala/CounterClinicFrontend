@@ -81,7 +81,7 @@ export default function AppointmentDetail(props) {
                 </ListItem>
                 <ListItem key={uuidv4()}>
                     <Grid item xs={6}>
-                        <Typography align="right" variant="body1">Total Patients In Queue</Typography>
+                        <Typography align="right" variant="body1">Total Patients Visited</Typography>
                     </Grid>
                     <Grid item xs={6}>
                         <Typography align="right" variant="body1">{appointmentWrapper.appointmentStatus.patientsInVisitedQueue}</Typography>
