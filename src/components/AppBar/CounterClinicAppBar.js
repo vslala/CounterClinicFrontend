@@ -23,14 +23,6 @@ export default function CounterClinicAppBar(props) {
     const classes = useStyles();
     const [drawerState, setDrawerState] = useState({isOpen: false});
 
-    // const toggleDrawer = () => event => {
-    //   if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-    //     return;
-    //   }
-    //   setDrawerState({ ...drawerState, ["isOpen"]: !drawerState.isOpen });
-    // };
-
-    
     const toggleDrawer = useCallback( () => {
       setDrawerState( (oldState) => {
         console.log("Old State: " + oldState.isOpen);
@@ -41,6 +33,7 @@ export default function CounterClinicAppBar(props) {
     });
 
     const handleDrawerClose = () => {
+        console.log("Closing navigation drawer");
       setDrawerState({...drawerState, isOpen: false});
     }
 
@@ -49,7 +42,7 @@ export default function CounterClinicAppBar(props) {
             <NavigationDrawer 
               history={props.history}
               isOpen={drawerState.isOpen} 
-              handleDrawerClose={handleDrawerClose} 
+              handleDrawerClose={handleDrawerClose}
               navLinks={props.navLinks}
               />
             <AppBar>
