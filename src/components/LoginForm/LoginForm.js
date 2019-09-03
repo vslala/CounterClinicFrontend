@@ -1,10 +1,22 @@
-import React, { useState } from 'react';
-import { Paper, FormControl, TextField, Button, Typography, Box, Container, CardMedia, Avatar, Grid, LinearProgress, Fade, Link, Snackbar, IconButton } from '@material-ui/core';
+import React, {useState} from 'react';
+import {
+    Avatar,
+    Button,
+    Fade,
+    FormControl,
+    Grid,
+    IconButton,
+    LinearProgress,
+    Link,
+    Paper,
+    Snackbar,
+    TextField,
+    Typography
+} from '@material-ui/core';
 import * as globalconstants from '../../global-constants';
-import { setLoggedInUser } from '../../actions';
-import LayoutAuthenticated from '../../containers/LayoutAuthenticated';
+import {setLoggedInUser} from '../../actions';
 import store from '../../store';
-import { withRouter } from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import CloseIcon from '@material-ui/icons/Close';
 
 function LoginForm(props) {

@@ -1,13 +1,11 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import * as globalconstants from '../../global-constants';
 import ReceptionDashboard from '../ReceptionDashboard/ReceptionDashboard';
 import CounterClinicAppBar from '../../components/AppBar';
-import { Paper, Box } from '@material-ui/core';
+import {Box, Paper} from '@material-ui/core';
 import DoctorDashboard from '../DoctorDashboard';
 import AdminDashboard from '../AdminDashboard/AdminDashboard';
-import LayoutUnauthenticated from '../LayoutUnauthenticated/LayoutUnauthenticated';
-import { withRouter, Redirect } from 'react-router-dom'; 
+import {Redirect, withRouter} from 'react-router-dom';
 
 function LayoutAuthenticated(props) {
 

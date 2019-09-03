@@ -1,14 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './App.css';
-import CreateAppointment from './components/CreateAppointment'
-import CounterClinicAppBar from './components/AppBar/CounterClinicAppBar';
 import Grid from '@material-ui/core/Grid';
-import NavigationDrawer from './components/NavigationDrawer';
-import { Route, BrowserRouter } from 'react-router-dom';
-import ViewAppointmentList from './components/ViewAppointmentList';
-import ReceptionDashboard from './containers/ReceptionDashboard/ReceptionDashboard';
+import {BrowserRouter, Route} from 'react-router-dom';
 import store from './store';
-import { Provider } from 'react-redux';
+import {Provider} from 'react-redux';
 import LayoutAuthenticated from './containers/LayoutAuthenticated';
 import PrintAppointmentInfo from './containers/PrintAppointmentInfo';
 import Register from './containers/Register/Register';

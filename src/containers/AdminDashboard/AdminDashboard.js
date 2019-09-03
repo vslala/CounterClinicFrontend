@@ -1,12 +1,11 @@
 import React from 'react';
-import { Grid, Paper, Button, Typography } from '@material-ui/core';
-import { Route } from 'react-router-dom';
+import {Button, Grid, Paper, Typography} from '@material-ui/core';
 import * as globalconstants from '../../global-constants';
 import RegisterUser from '../../components/RegisterUser';
 import ViewUserList from '../../components/ViewUserList';
 import CreateSlots from '../../components/CreateSlots/CreateSlots';
 import CounterClinicAppBar from '../../components/AppBar';
-import { Add, FormatListBulleted, Settings, CalendarToday } from '@material-ui/icons';
+import {Add, CalendarToday, FormatListBulleted, Settings} from '@material-ui/icons';
 import FileUpload from '../../components/FileUpload/FileUpload';
 import SiteSettings from '../../components/SiteSettings/SiteSettings';
 

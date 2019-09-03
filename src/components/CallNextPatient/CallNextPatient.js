@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import { Box, Paper, Button, Typography, Snackbar } from '@material-ui/core';
-import * as globalconstants from '../../global-constants'; 
+import {Box, Button, Paper, Snackbar, Typography} from '@material-ui/core';
+import * as globalconstants from '../../global-constants';
 
 export default function CallNextPatient() {
 

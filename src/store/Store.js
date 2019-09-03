@@ -1,7 +1,7 @@
-import { createLogger } from 'redux-logger';
-import { createStore, applyMiddleware } from 'redux';
+import {createLogger} from 'redux-logger';
+import {applyMiddleware, createStore} from 'redux';
 import reducer from '../reducers';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import {composeWithDevTools} from 'redux-devtools-extension';
 import ReduxPromise from 'redux-promise';
 
 const logger = createLogger();

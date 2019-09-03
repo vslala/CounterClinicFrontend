@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { withRouter } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import { handleErrors } from '../../global-constants';
-import { Paper, Grid, Typography, List, ListItem, Divider } from '@material-ui/core';
-import uuidv4  from 'uuid/v4';
+import {Divider, Grid, List, ListItem, Paper, Typography} from '@material-ui/core';
+import uuidv4 from 'uuid/v4';
 import Countdown from 'react-countdown-now';
 
 function PatientAppointmentStatus(props) {

@@ -1,11 +1,9 @@
 import React from 'react'
-import { Drawer, List, ListItem, ListItemText, IconButton, Link, ClickAwayListener, Divider, ListItemIcon } from '@material-ui/core';
+import {ClickAwayListener, Divider, Drawer, IconButton, Link, List, ListItem, ListItemText} from '@material-ui/core';
 import * as constants from './NavigationDrawerStyle';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import { withRouter } from 'react-router-dom';
 import * as globalconstants from '../../global-constants';
-import { DashboardSharp } from '@material-ui/icons';
-import uuidv4  from 'uuid/v4';
+import uuidv4 from 'uuid/v4';
 
 export default function NavigationDrawer(props) {
     const classes = constants.useStyles();

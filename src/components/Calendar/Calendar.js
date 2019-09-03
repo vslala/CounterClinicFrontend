@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -8,10 +8,10 @@ import '@fullcalendar/core/main.css';
 import '@fullcalendar/daygrid/main.css';
 import '@fullcalendar/timegrid/main.css';
 import AlertDialog from '../AlertDialog';
-import { FormControl, TextField, Button, Select, MenuItem, InputLabel } from '@material-ui/core';
+import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from '@material-ui/core';
 import moment from 'moment';
 import * as globalconstants from '../../global-constants';
-import uuidv4  from 'uuid/v4';
+import uuidv4 from 'uuid/v4';
 
 /* 
     Mocked Data

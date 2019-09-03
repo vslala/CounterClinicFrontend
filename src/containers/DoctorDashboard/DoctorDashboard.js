@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux'
-import { Grid, Paper } from '@material-ui/core';
+import React, {useEffect, useState} from 'react';
+import {Grid, Paper} from '@material-ui/core';
 import CallNextPatient from '../../components/CallNextPatient';
 import AppointmentStatus from '../../components/AppointmentStatus/AppointmentStatus';
 import * as globalconstants from '../../global-constants';

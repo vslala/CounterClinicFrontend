@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { Typography, Table, TableHead, TableBody, TableRow, TableCell, Paper, Button } from "@material-ui/core";
-import { useSelector } from "react-redux";
+import React, {useEffect, useState} from "react";
+import {Button, Paper, Table, TableBody, TableCell, TableHead, TableRow} from "@material-ui/core";
+import {useSelector} from "react-redux";
 import store from '../../store';
-import { setAppointments } from "../../actions";
+import {setAppointments} from "../../actions";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import Info from '@material-ui/icons/Info';
 import AlertDialog from "../AlertDialog/AlertDialog";

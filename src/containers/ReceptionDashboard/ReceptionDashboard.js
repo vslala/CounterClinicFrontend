@@ -1,8 +1,7 @@
-import React, { useState } from "react";
-import { Grid, Paper } from "@material-ui/core";
+import React from "react";
+import {Grid, Paper} from "@material-ui/core";
 import CreateAppointment from "../../components/CreateAppointment";
 import ViewAppointmentList from "../../components/ViewAppointmentList";
-import QRCode from "../../components/QRCode/QRCode";
 import * as globalconstants from "../../global-constants";
 import Calendar from '../../components/Calendar';
 import AssignClinic from "../../components/AssignClinic/AssignClinic";

@@ -1,7 +1,7 @@
 import React from 'react';
-import PrintProvider, { Print, NoPrint } from 'react-easy-print';
+import PrintProvider, {NoPrint, Print} from 'react-easy-print';
 import AppointmentDetail from '../../components/ApointmentDetail';
-import { Button } from '@material-ui/core';
+import {Button} from '@material-ui/core';
 
 export default function PrintAppointmentInfo(props) {
 

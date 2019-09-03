@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 
 export const ONLINE_APPOINTMENT_API = "http://206.189.30.73:8081";
 export const BASE_URL = "http://192.168.0.101:8080";

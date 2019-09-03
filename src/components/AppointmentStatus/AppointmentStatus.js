@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Paper, Button, Table, TableRow, TableCell, TableHead, TableBody, Typography } from '@material-ui/core';
+import React, {useEffect, useState} from 'react';
+import {Button, Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography} from '@material-ui/core';
 import * as globalconstants from '../../global-constants';
 import SockJs from 'sockjs-client';
 import Stomp from 'stompjs';
 import Clock from 'react-live-clock';
 import store from '../../store';
-import { setLatestAppointmentStatus } from '../../actions';
+import {setLatestAppointmentStatus} from '../../actions';
 
 export default function AppointmentStatus() {
 

@@ -1,7 +1,19 @@
 import React, {useState} from 'react';
-import { Input, Paper, Grid, FormControl, TextField, Select, MenuItem, Button, FormLabel, Typography, InputLabel, Link } from '@material-ui/core';
+import {
+    Button,
+    FormControl,
+    Grid,
+    Input,
+    InputLabel,
+    Link,
+    MenuItem,
+    Paper,
+    Select,
+    TextField,
+    Typography
+} from '@material-ui/core';
 import * as globalconstants from '../../global-constants';
-import { withRouter } from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 
 function RegisterUser(props) {
 

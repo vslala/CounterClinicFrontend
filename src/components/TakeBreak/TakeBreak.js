@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { FormControl, TextField, FormLabel, Button, Paper, Typography } from '@material-ui/core';
+import React, {useState} from 'react';
+import {Button, FormControl, Paper, TextField, Typography} from '@material-ui/core';
 import * as globalconstants from '../../global-constants';
 import AlertDialog from '../AlertDialog';
 import AppointmentStatus from '../AppointmentStatus/AppointmentStatus';

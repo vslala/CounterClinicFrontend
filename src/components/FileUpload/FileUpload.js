@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import { Paper, Input, Grid, Button, Snackbar } from '@material-ui/core';
+import {Button, Grid, Input, Paper, Snackbar} from '@material-ui/core';
 import * as globalconstants from '../../global-constants';
 
 function FileUpload(props) {

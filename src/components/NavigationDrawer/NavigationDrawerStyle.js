@@ -1,5 +1,4 @@
-import clsx from 'clsx';
-import { makeStyles, useTheme, Theme } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 
 export const drawerWidth = 240;
 

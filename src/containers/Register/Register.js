@@ -1,8 +1,6 @@
 import React from 'react';
-import { Paper, Link } from '@material-ui/core';
 import * as globalconstants from '../../global-constants';
 import RegisterUser from '../../components/RegisterUser';
-import LoginForm from '../../components/LoginForm/LoginForm';
 
 function Register(props) {
 

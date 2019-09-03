@@ -1,8 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { Paper, FormControl, Typography, Grid, Table, TableHead, TableRow, TableCell, TableBody, Button, FormGroup, TextField, Snackbar, IconButton } from '@material-ui/core';
+import React, {useEffect, useState} from 'react';
+import {
+    Button,
+    FormControl,
+    FormGroup,
+    IconButton,
+    Paper,
+    Snackbar,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+    TextField,
+    Typography
+} from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import * as globalconstants from '../../global-constants';
-import { DeleteForever } from '@material-ui/icons';
+import {DeleteForever} from '@material-ui/icons';
 import AlertDialog from '../AlertDialog';
 
 function ViewUserList() {

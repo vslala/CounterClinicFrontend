@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Paper } from "@material-ui/core";
-import { useSelector } from 'react-redux';
+import React from 'react';
+import {Paper} from "@material-ui/core";
+import {useSelector} from 'react-redux';
 import * as globalconstants from "../../global-constants";
-import { createNewQRCode } from "../../actions";
-import store from "../../store";
 
 
 export default function QRCode() {

@@ -1,9 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import * as globalconstants from '../../global-constants';
-import { Paper, Typography, Table, TableHead, TableRow, TableBody, TableCell, Button, Dialog, TextField, FormControl } from '@material-ui/core';
+import {
+    Button,
+    FormControl,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+    TextField,
+    Typography
+} from '@material-ui/core';
 import AlertDialog from '../AlertDialog';
-import { Edit, DeleteForever } from '@material-ui/icons';
+import {DeleteForever, Edit} from '@material-ui/icons';
 
 function EditSettingForm(props) {
 

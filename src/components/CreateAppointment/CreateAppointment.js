@@ -1,7 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { TextField, Select, InputLabel, Button, Container, FormControl, MenuItem, Fade, LinearProgress, Paper, Typography, Snackbar } from '@material-ui/core';
+import React, {useEffect, useState} from 'react';
+import {
+    Button,
+    Container,
+    Fade,
+    FormControl,
+    InputLabel,
+    LinearProgress,
+    MenuItem,
+    Paper,
+    Select,
+    Snackbar,
+    TextField,
+    Typography
+} from '@material-ui/core';
 import store from '../../store';
-import { createNewAppointment, createNewQRCode } from '../../actions';
+import {createNewAppointment, createNewQRCode} from '../../actions';
 import * as globalconstants from '../../global-constants';
 import AlertDialog from '../AlertDialog/AlertDialog';
 import AppointmentDetail from '../ApointmentDetail';

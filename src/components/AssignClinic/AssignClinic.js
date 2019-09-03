@@ -1,7 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import * as globalconstants from '../../global-constants';
-import { Paper, Select, MenuItem, FormControl, Button, OutlinedInput, InputLabel, Typography, Snackbar } from '@material-ui/core';
-import { InputOutlined } from '@material-ui/icons';
+import {
+    Button,
+    FormControl,
+    InputLabel,
+    MenuItem,
+    OutlinedInput,
+    Paper,
+    Select,
+    Snackbar,
+    Typography
+} from '@material-ui/core';
 
 function AssignClinic() {
 
