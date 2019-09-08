@@ -1,24 +1,7 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import {
-    Avatar,
-    Button,
-    Fade,
-    FormControl,
-    Grid,
-    IconButton,
-    LinearProgress,
-    Link,
-    Paper,
-    Snackbar,
-    TextField,
-    Typography
-} from '@material-ui/core';
-import * as globalconstants from '../../global-constants';
-import {setLoggedInUser} from '../../actions';
-import store from '../../store';
+import {Avatar, Button, FormControl, Grid, TextField, Typography} from '@material-ui/core';
 import {withRouter} from 'react-router-dom';
-import CloseIcon from '@material-ui/icons/Close';
 
 function LoginForm(props) {
 

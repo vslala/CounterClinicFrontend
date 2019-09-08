@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import LoginForm from '../../components/LoginForm/LoginForm';
 import * as globalconstants from '../../global-constants';
-import {Redirect, withRouter} from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
 import store from "../../store";
 import {setLoggedInUser} from "../../actions";
-import {Fade, IconButton, LinearProgress, Link, Snackbar, Paper, Grid} from "@material-ui/core";
+import {Fade, Grid, IconButton, LinearProgress, Link, Paper, Snackbar} from "@material-ui/core";
 import CloseIcon from "@material-ui/core/SvgIcon/SvgIcon";
 
 function Login(props) {
@@ -29,7 +29,10 @@ function Login(props) {
             body: data
         })
             .then(globalconstants.handleErrors)
-            .then(response => response.json())
+            .then(response => {
+                console.log("Converting to json");
+                return response.json();
+            })
             .then(data => {
                 setShowLoader(false);
                 console.log("Got logged in user", data.user);

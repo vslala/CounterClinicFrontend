@@ -7,7 +7,6 @@ import {Redirect} from "react-router-dom";
 describe('Login Container Tests', () => {
 
     let mockedFetch;
-
     const mockFetch = async (mockSuccessResponse) => {
         let mockJsonPromise = Promise.resolve(mockSuccessResponse);
         let mockFetchPromise = Promise.resolve({
@@ -17,9 +16,10 @@ describe('Login Container Tests', () => {
         mockedFetch = await jest.spyOn(global, 'fetch').mockImplementation(() => mockFetchPromise);
     };
 
+    let mockedLocalStorage;
     let mockLocalStorage = (mockGetValue) => {
-        const getItemSpy = jest.spyOn(Object.getPrototypeOf(window.localStorage), 'getItem');
-        getItemSpy.mockReturnValue(mockGetValue);
+        mockedLocalStorage = jest.spyOn(Object.getPrototypeOf(window.localStorage), 'getItem');
+        mockedLocalStorage.mockReturnValue(mockGetValue);
     }
 
     let mockHistory = {push: jest.fn()};
@@ -29,7 +29,10 @@ describe('Login Container Tests', () => {
     })
 
     afterEach(() => {
-        jest.resetAllMocks();
+        if (mockedFetch)
+            mockedFetch.mockReset();
+        if (mockedLocalStorage)
+            mockedLocalStorage.mockReset();
     })
 
     it('should check if the user is already logged in and redirected to the dashboard', function () {
@@ -43,8 +46,17 @@ describe('Login Container Tests', () => {
         expect(wrapper.find(LoginForm).length).toBe(1);
     });
 
-    it('should call handleLogin method on clicking the login button inside LoginForm', function () {
+    it('should call handleLogin method on clicking the login button inside LoginForm', () => {
+        mockFetch({
+            user: {
+                userId: 1,
+                firstName: 'Foo',
+                lastName: 'Bar',
+                fullName: 'Foo Bar'
+            }
+        });
+        mockLocalStorage("{}");
         let wrapper = shallow(<Login history={mockHistory} />);
-        expect(wrapper.find(LoginForm).simulate('submit'));
+        wrapper.find(LoginForm).prop('handleLogin')({username: 'vslala', password: 'simplepass'});
     });
 })
