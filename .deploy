@@ -12,23 +12,19 @@ echo "LIST IMAGES: $IMAGES"
 
 
 delete_image() {
- echo "Deleting Image ${IMAGE_NAME}:${IMAGE_TAG}"
  sudo docker container stop "$CONTAINER_NAME"
  sudo docker rm container "$CONTAINER_NAME"
  sudo docker rmi "${IMAGE_NAME}:${IMAGE_TAG}"
 }
 
 build() {
- echo "Pulling latest changes from origin/master..."
- sudo git pull origin master
-
- echo "Packaging the app"
- sudo npm run build
+ git pull origin master
+ mvn clean install
  sudo docker build --no-cache --tag "${IMAGE_NAME}:${IMAGE_TAG}" .
 }
 
 run_container() {
- sudo docker run -it -d -p5000:80 --name "${CONTAINER_NAME}" "${IMAGE_NAME}:${IMAGE_TAG}"
+ sudo docker run -it -d -p8080:8080 --env-file="${ENV_FILE}"  --name "${CONTAINER_NAME}" "${IMAGE_NAME}:${IMAGE_TAG}"
 }
 
 if [ -z "$IMAGES" ]
