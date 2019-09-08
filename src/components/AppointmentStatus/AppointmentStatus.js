@@ -37,6 +37,9 @@ export default function AppointmentStatus() {
             setAppointmentStatus(appointmentStatusResponse);
             store.dispatch(setLatestAppointmentStatus(appointmentStatusResponse));
         })
+        .catch((error) => {
+            console.log("Error trying to fetch the appointment status");
+        })
     }
 
     const connect = () => {

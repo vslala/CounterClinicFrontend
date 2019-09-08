@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import PropTypes from 'prop-types';
 import {
     Avatar,
     Button,
@@ -23,8 +24,6 @@ function LoginForm(props) {
 
     const classes = globalconstants.useStyles();
 
-    const [showLoader, setShowLoader] = useState(false);
-
     const [snackbarState, setSnackbarState] = useState({
         open: false,
         handleClose: () => setSnackbarState({...snackbarState, open: false}),
@@ -43,51 +42,12 @@ function LoginForm(props) {
     const handleFormSubmit = (e) => {
         e.preventDefault();
         let data = JSON.stringify(formData);
-        console.log("Login Details: ", data);
-        let loginApi = globalconstants.API.loginUrl ? globalconstants.API.loginUrl : globalconstants.MOCKED_BASE_URL + '/login';
-        fetch(loginApi, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'TimezoneOffset': new Date().getTimezoneOffset
-            },
-            body: data
-        })
-        .then(globalconstants.handleErrors)
-        .then(response => response.json())
-        .then(data => {
-            setShowLoader(false);
-            console.log("Data: ", data);
-            console.log("Got logged in user", data.user);
-            store.dispatch(setLoggedInUser(data.user));
-            localStorage.setItem(globalconstants.LOGGED_IN_USER, JSON.stringify(data.user));
-            localStorage.setItem(globalconstants.ACCESS_TOKEN, data.accessToken);
-            // window.location = "/dashboard";
-            props.history.push('/dashboard');
-        })
-        .catch(error => {
-            setShowLoader(false);
-            console.log(error);
-            setSnackbarState({...snackbarState, open: true, message: "Error logging in. Please contact the admin."})
-        })
+        props.handleLogin(data);
+
     }
 
     return (
         <Grid container justify="center">
-            <Snackbar anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'center'
-            }}
-            open={snackbarState.open}
-            onClose={snackbarState.handleClose}
-            ContentProps={{
-                "aria-describedby": "message-id"
-            }}
-            message={<span id="message-id">{snackbarState.message}</span>}
-            action={[
-                <IconButton key="close" aria-label="Close" color="inherit" onClick={snackbarState.handleClose}><CloseIcon /> </IconButton>,
-            ]}
-            />
             <Paper className={classes.root} style={{padding: 10, maxWidth: 400}}>
                 <Typography variant="h3">Login Here!</Typography>
                 <Grid container justify="center" alignItems="center">
@@ -120,13 +80,13 @@ function LoginForm(props) {
                             variant="contained" 
                             color="primary" 
                             type="submit"
-                            onClick={() => setShowLoader(true)}
+                            onClick={() => props.showProgressBar()}
                         >
                             Login
                         </Button>
                     </FormControl>
                     <Fade
-                        in={showLoader}
+                        in={props.shouldShowLoader}
                         unmountOnExit
                     >
                         <LinearProgress  />
@@ -140,5 +100,10 @@ function LoginForm(props) {
     );
 }
 
+LoginForm.propTypes = {
+    showProgressBar: PropTypes.func.isRequired,
+    shouldShowLoader: PropTypes.bool.isRequired,
+    history: PropTypes.any.isRequired
+}
 
 export default withRouter(LoginForm);

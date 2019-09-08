@@ -1,7 +1,27 @@
 import {makeStyles} from '@material-ui/core/styles';
 
+const API_HOST_LOCAL = 'localhost:8080';
+const API_HOST_TEST = '206.189.30.73:8080';
+const API_HOST_PRE_PROD = '35.200.192.70:80';
+const API_HOST_PROD = '35.200.192.70:80';
+
+const UI_HOST_LOCAL = 'localhost';
+const UI_HOST_TEST = '206.189.30.73';
+const UI_HOST_PRE_PROD = 'change_me';
+const UI_HOST_PROD = '34.93.113.60';
+
+
+const HOST_NAMES = {
+  [UI_HOST_LOCAL]: API_HOST_LOCAL,
+  [UI_HOST_TEST]: API_HOST_TEST,
+  [UI_HOST_PRE_PROD]: API_HOST_PRE_PROD,
+  [UI_HOST_PROD]: API_HOST_PROD,
+};
+
+
+
 export const ONLINE_APPOINTMENT_API = "http://206.189.30.73:8081";
-export const BASE_URL = "http://192.168.0.101:8080";
+export const BASE_URL = HOST_NAMES[window.location.hostname];
 export const MOCKED_BASE_URL = "http://demo3881522.mockable.io";
 export const API = {
   loginUrl: ONLINE_APPOINTMENT_API + '/api/v1/users/login', // POST
@@ -11,32 +31,32 @@ export const API = {
     fetchAllAppointmentsUrl: ONLINE_APPOINTMENT_API + '/api/v1/appointments',
   },
 
-  updateSettingUrl: BASE_URL + '/user/setting', // POST
-  fetchSettingsUrl: BASE_URL + '/user/settings', // GET
-  deleteSettingUrl: BASE_URL + '/user/setting/delete',
+  updateSettingUrl: `http://${BASE_URL}/user/setting`, // POST
+  fetchSettingsUrl: `http://${BASE_URL}/user/settings`, // GET
+  deleteSettingUrl: `http://${BASE_URL}/user/setting/delete`,
 
   // fetch users by role
-  fetchAllDoctors: BASE_URL + '/user/all/doctor', // GET
-  fetchAllReceptionists: BASE_URL + '/user/all/receptionist', // GET
-  fetchAllAdmins: BASE_URL + '/user/all/admin', // GET
-  fetchAllSuperAdmins: BASE_URL + '/user/all/super_admin', // GET
-  fetchAllPatients: BASE_URL + '/user/all/patient', // GET
+  fetchAllDoctors: `http://${BASE_URL}/user/all/doctor`, // GET
+  fetchAllReceptionists: `http://${BASE_URL}/user/all/receptionist`, // GET
+  fetchAllAdmins: `http://${BASE_URL}/user/all/admin`, // GET
+  fetchAllSuperAdmins: `http://${BASE_URL}/user/all/super_admin`, // GET
+  fetchAllPatients: `http://${BASE_URL}/user/all/patient`, // GET
 
   fetchDoctorSlots: ONLINE_APPOINTMENT_API + '/api/v1/appointments/doctors/availableSlots', // GET
 
-  createNewAppointmentUrl: BASE_URL  + '/walk-in-appointment/create-appointment', // POST
+  createNewAppointmentUrl: `http://${BASE_URL}/walk-in-appointment/create-appointment`, // POST
 
-  fetchQrCodeByAppointmentIdUrl: BASE_URL + '/walk-in-appointment/qrcode', // GET
-  fetchLatestAppointmentStatusUrl: BASE_URL + '/walk-in-appointment/appointment-status/latest', // GET
-  fetchAllAppointmentsUrl: BASE_URL + '/walk-in-appointment/all', // GET
-  fetchAppointmentByIdUrl: BASE_URL + '/walk-in-appointment/wrapped/id', // GET
-  fetchAppointmentStatus: BASE_URL + '/walk-in-appointment/appointment-status', // GET
-  fetchLatestAppointmentStatusByDoctorId: BASE_URL + '/walk-in-appointment/appointment-status/latest', // GET/{doctorId}
-  deleteWalkInAppointment: BASE_URL + '/walk-in-appointment/id', // DELETE {appointmentId}
+  fetchQrCodeByAppointmentIdUrl: `http://${BASE_URL}/walk-in-appointment/qrcode`, // GET
+  fetchLatestAppointmentStatusUrl: `http://${BASE_URL} + '/walk-in-appointment/appointment-status/latest`, // GET
+  fetchAllAppointmentsUrl: `http://${BASE_URL}/walk-in-appointment/all`, // GET
+  fetchAppointmentByIdUrl: `http://${BASE_URL}/walk-in-appointment/wrapped/id`, // GET
+  fetchAppointmentStatus: `http://${BASE_URL}/walk-in-appointment/appointment-status`, // GET
+  fetchLatestAppointmentStatusByDoctorId: `http://${BASE_URL}/walk-in-appointment/appointment-status/latest`, // GET/{doctorId}
+  deleteWalkInAppointment: `http://${BASE_URL}/walk-in-appointment/id`, // DELETE {appointmentId}
 
-  websocketUrl: BASE_URL + '/gs-guide-websocket',
+  websocketUrl: `http://${BASE_URL}/gs-guide-websocket`,
 
-  fetchAllClinics: BASE_URL + '/clinic/all', // GET
+  fetchAllClinics: `http://${BASE_URL}/clinic/all`, // GET
 };
 
 export const LOCAL_DATE_FORMAT = "YYYY-MM-DD";

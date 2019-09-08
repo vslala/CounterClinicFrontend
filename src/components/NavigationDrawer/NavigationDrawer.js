@@ -18,6 +18,7 @@ export default function NavigationDrawer(props) {
 
     const handleLogout = () => {
         localStorage.setItem(globalconstants.ACCESS_TOKEN, null);
+        localStorage.setItem(globalconstants.LOGGED_IN_USER, null);
         props.history.push("/login");
     }
 

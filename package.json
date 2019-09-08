@@ -76,10 +76,5 @@
         "lines": 0
       }
     }
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run coverage"
-    }
   }
 }
