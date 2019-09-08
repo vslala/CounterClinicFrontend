@@ -83,14 +83,14 @@ export const attachmentType = {
 export const userRoles = [RECEPTIONIST, DOCTOR, ADMIN, SUPER_ADMIN, PATIENT];
 
 export const useStyles = makeStyles(theme => ({
-    root: {
-      width: '90%',
-      marginTop: theme.spacing(3),
-      overflowX: 'auto',
-    },
-    table: {
-      minWidth: 650,
-    },
+  root: {
+    width: '90%',
+    marginTop: theme.spacing(3),
+    overflowX: 'auto',
+  },
+  table: {
+    minWidth: 650,
+  },
 }));
 
 export const accessToken = () => {
@@ -109,14 +109,14 @@ export const fetcher = {
   fetchAppointmentInfo: (appointmentId) => {
     return new Promise((resolve, reject) => {
       fetch(`${API.fetchAppointmentByIdUrl}/${appointmentId}`)
-      .then(handleErrors)
-      .then(response => response.json())
-      .then(appointmentInfo => {
-        resolve(appointmentInfo);
-      })
-      .catch(error => {
-        reject(error);
-      })
+          .then(handleErrors)
+          .then(response => response.json())
+          .then(appointmentInfo => {
+            resolve(appointmentInfo);
+          })
+          .catch(error => {
+            reject(error);
+          })
     });
   },
 
@@ -124,12 +124,12 @@ export const fetcher = {
     return new Promise((resolve, reject) => {
 
       fetch(`${API.fetchAppointmentStatus}?doctorId=${doctorId}&appointmentId=${appointmentId}`)
-      .then(handleErrors)
-      .then(response => response.json())
-      .then(appointmentStatus => resolve(appointmentStatus))
-      .catch(error => {
-        reject(error);
-      })
+          .then(handleErrors)
+          .then(response => response.json())
+          .then(appointmentStatus => resolve(appointmentStatus))
+          .catch(error => {
+            reject(error);
+          })
 
     });
   },
@@ -137,12 +137,12 @@ export const fetcher = {
   fetchLatestAppointmentStatus: (doctorId) => {
     return new Promise((resolve, reject) => {
       fetch(`${API.fetchLatestAppointmentStatusByDoctorId}/${doctorId}`)
-      .then(handleErrors)
-      .then(response => response.json())
-      .then(appointmentStatus => resolve(appointmentStatus))
-      .catch(error => {
-        reject(error);
-      })
+          .then(handleErrors)
+          .then(response => response.json())
+          .then(appointmentStatus => resolve(appointmentStatus))
+          .catch(error => {
+            reject(error);
+          })
     })
   }
 }
