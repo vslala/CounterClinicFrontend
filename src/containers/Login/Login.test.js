@@ -24,6 +24,14 @@ describe('Login Container Tests', () => {
 
     let mockHistory = {push: jest.fn()};
 
+    beforeEach(() => {
+        mockLocalStorage("{}");
+    })
+
+    afterEach(() => {
+        jest.resetAllMocks();
+    })
+
     it('should check if the user is already logged in and redirected to the dashboard', function () {
         mockLocalStorage('{"userId": 1, "roles": ["DOCTOR"]}');
         let wrapper = shallow(<Login history={mockHistory} />);
@@ -37,6 +45,6 @@ describe('Login Container Tests', () => {
 
     it('should call handleLogin method on clicking the login button inside LoginForm', function () {
         let wrapper = shallow(<Login history={mockHistory} />);
-        expect(wrapper.find(LoginForm).simulate('handleLogin'));
+        expect(wrapper.find(LoginForm).simulate('submit'));
     });
 })

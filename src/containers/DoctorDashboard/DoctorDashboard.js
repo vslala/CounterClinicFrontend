@@ -27,7 +27,7 @@ export default function DoctorDashboard(props) {
         })
         .catch(error => {
             console.log("Error encountered while trying to fetch the booked appointments for the doctor.", error);
-            reject(Error(error));
+            reject(error);
         });
     });
 

@@ -6,6 +6,7 @@ import {Box, Paper} from '@material-ui/core';
 import DoctorDashboard from '../DoctorDashboard';
 import AdminDashboard from '../AdminDashboard/AdminDashboard';
 import {Redirect, withRouter} from 'react-router-dom';
+import LayoutUnauthenticated from "../LayoutUnauthenticated";
 
 function LayoutAuthenticated(props) {
 
@@ -13,8 +14,8 @@ function LayoutAuthenticated(props) {
     const loggedInUser = JSON.parse(localStorage.getItem(globalconstants.LOGGED_IN_USER));
 
     if (!loggedInUser || !loggedInUser.roles) {
-        return <Redirect to={"/login"} />
-        // return <LayoutUnauthenticated />
+        // return <Redirect to={"/login"} />
+        return <LayoutUnauthenticated />
     }
 
     if (loggedInUser.roles.includes(globalconstants.DOCTOR)) {

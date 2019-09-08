@@ -4,28 +4,18 @@ import * as globalconstants from '../../global-constants';
 import {Redirect, withRouter} from 'react-router-dom';
 import store from "../../store";
 import {setLoggedInUser} from "../../actions";
-import {IconButton, Snackbar} from "@material-ui/core";
+import {Fade, IconButton, LinearProgress, Link, Snackbar, Paper, Grid} from "@material-ui/core";
 import CloseIcon from "@material-ui/core/SvgIcon/SvgIcon";
 
 function Login(props) {
 
+    const classes = globalconstants.useStyles();
+
+    const [showLoader, setShowLoader] = useState(false);
+
     // const loggedInUser = useSelector(state => state.loggedInUser);
     const loggedInUser = JSON.parse(localStorage.getItem(globalconstants.LOGGED_IN_USER));
 
-
-    const [showLoader, setShowLoader] = useState(false);
-    const showProgressBar = () => setShowLoader(true);
-
-    const [snackbarState, setSnackbarState] = useState({
-        open: false,
-        handleClose: () => setSnackbarState({...snackbarState, open: false}),
-        message: "",
-    });
-
-    console.log("Logged In User", loggedInUser);
-    if (loggedInUser && loggedInUser.roles) {
-        return <Redirect to={"/dashboard"} />
-    }
 
     const handleLogin = (data) => {
         console.log("Login Details: ", data);
@@ -38,41 +28,68 @@ function Login(props) {
             },
             body: data
         })
-        .then(globalconstants.handleErrors)
-        .then(response => response.json())
-        .then(data => {
-            setShowLoader(false);
-            console.log("Got logged in user", data.user);
-            store.dispatch(setLoggedInUser(data.user));
-            localStorage.setItem(globalconstants.LOGGED_IN_USER, JSON.stringify(data.user));
-            localStorage.setItem(globalconstants.ACCESS_TOKEN, data.accessToken);
-            // window.location = "/dashboard";
-            props.history.push('/dashboard');
-        })
-        .catch(error => {
-            setShowLoader(false);
-            console.log(error);
-            setSnackbarState({...snackbarState, open: true, message: "Error logging in. Please contact the admin."})
-        })
+            .then(globalconstants.handleErrors)
+            .then(response => response.json())
+            .then(data => {
+                setShowLoader(false);
+                console.log("Got logged in user", data.user);
+                store.dispatch(setLoggedInUser(data.user));
+                localStorage.setItem(globalconstants.LOGGED_IN_USER, JSON.stringify(data.user));
+                localStorage.setItem(globalconstants.ACCESS_TOKEN, data.accessToken);
+                // window.location = "/dashboard";
+                props.history.push('/dashboard');
+            })
+            .catch(error => {
+                setShowLoader(false);
+                console.log(error);
+                setSnackbarState({...snackbarState, open: true, message: "Error logging in. Please contact the admin."})
+            });
+    }
+
+    //
+    // SnackbarState
+    const [snackbarState, setSnackbarState] = useState({
+        open: false,
+        handleClose: () => setSnackbarState({...snackbarState, open: false}),
+        message: "",
+    });
+
+    console.log("Logged In User", loggedInUser);
+    if (loggedInUser && loggedInUser.roles) {
+        return <Redirect to={"/dashboard"}/>
     }
 
     return (
         <div>
-            <Snackbar
-              anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-              open={snackbarState.open}
-              onClose={snackbarState.handleClose}
-              ContentProps={{"aria-describedby": "message-id"}}
-              message={<span id="message-id">{snackbarState.message}</span>}
-              action={[
-                  <IconButton key="close" aria-label="Close" color="inherit" onClick={snackbarState.handleClose}><CloseIcon /> </IconButton>,
-              ]}
-            />
-            <LoginForm history={props.history}
-                       handleLogin={handleLogin}
-                       setShowLoader={showProgressBar}
-                       shouldShowLoader={showLoader}
-                       loginApiEndpoint={globalconstants.MOCKED_BASE_URL + '/login'} />
+            <Grid container justify="center">
+                <Paper style={{padding: 10, maxWidth: 400}} r>
+                    <Snackbar
+                        anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
+                        open={snackbarState.open}
+                        onClose={snackbarState.handleClose}
+                        ContentProps={{"aria-describedby": "message-id"}}
+                        message={<span id="message-id">{snackbarState.message}</span>}
+                        action={[
+                            <IconButton key="close" aria-label="Close" color="inherit"
+                                        onClick={snackbarState.handleClose}><CloseIcon/>
+                            </IconButton>,
+                        ]}
+                    />
+
+                    <LoginForm history={props.history}
+                               handleLogin={handleLogin}
+                               setShowLoader={setShowLoader}
+                               loginApiEndpoint={globalconstants.MOCKED_BASE_URL + '/login'}/>
+
+                    <Fade in={showLoader} unmountOnExit>
+                        <LinearProgress/>
+                    </Fade>
+
+                    <Link to={"/register"} data-link="/register" variant="body1"
+                          onClick={(e) => props.history.push(e.target.dataset.link)}
+                    >Register Here!</Link>
+                </Paper>
+            </Grid>
         </div>
     );
 }

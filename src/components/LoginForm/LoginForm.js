@@ -22,14 +22,6 @@ import CloseIcon from '@material-ui/icons/Close';
 
 function LoginForm(props) {
 
-    const classes = globalconstants.useStyles();
-
-    const [snackbarState, setSnackbarState] = useState({
-        open: false,
-        handleClose: () => setSnackbarState({...snackbarState, open: false}),
-        message: "",
-    });
-
     const [formData, setFormData] = useState({
         username: '',
         password: ''
@@ -48,11 +40,10 @@ function LoginForm(props) {
 
     return (
         <Grid container justify="center">
-            <Paper className={classes.root} style={{padding: 10, maxWidth: 400}}>
                 <Typography variant="h3">Login Here!</Typography>
                 <Grid container justify="center" alignItems="center">
-                    <Avatar src={"https://via.placeholder.com/150"} 
-                        style={{margin: 10, height: 200, width: 200}} 
+                    <Avatar src={"https://via.placeholder.com/150"}
+                        style={{margin: 10, height: 200, width: 200}}
                     />
                 </Grid>
                 <form onSubmit={handleFormSubmit} autoComplete="off">
@@ -63,7 +54,7 @@ function LoginForm(props) {
                             onChange={handleChange('username')}
                             value={formData.username}
                             label="Username"
-                        />  
+                        />
                     </FormControl>
                     <FormControl fullWidth margin="normal">
                         <TextField variant="outlined" fullWidth
@@ -76,34 +67,24 @@ function LoginForm(props) {
                         />
                     </FormControl>
                     <FormControl fullWidth margin="normal">
-                        <Button fullWidth 
-                            variant="contained" 
-                            color="primary" 
+                        <Button fullWidth
+                            variant="contained"
+                            color="primary"
                             type="submit"
-                            onClick={() => props.showProgressBar()}
+                            onClick={() => props.setShowLoader(true)}
                         >
                             Login
                         </Button>
                     </FormControl>
-                    <Fade
-                        in={props.shouldShowLoader}
-                        unmountOnExit
-                    >
-                        <LinearProgress  />
-                    </Fade>
-                    <Link to={"/register"} data-link="/register" variant="body1"
-                        onClick={(e) => props.history.push(e.target.dataset.link)}
-                    >Register Here!</Link>
                 </form>
-            </Paper>
         </Grid>
     );
 }
 
 LoginForm.propTypes = {
-    showProgressBar: PropTypes.func.isRequired,
-    shouldShowLoader: PropTypes.bool.isRequired,
-    history: PropTypes.any.isRequired
+    history: PropTypes.any.isRequired,
+    handleLogin: PropTypes.func.isRequired,
+    setShowLoader: PropTypes.func.isRequired
 }
 
 export default withRouter(LoginForm);
