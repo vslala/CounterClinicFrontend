@@ -65,7 +65,7 @@ function Login(props) {
     return (
         <div>
             <Grid container justify="center">
-                <Paper style={{padding: 10, maxWidth: 400}} r>
+                <Paper style={{padding: 10, maxWidth: 400}}>
                     <Snackbar
                         anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
                         open={snackbarState.open}

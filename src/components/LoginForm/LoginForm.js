@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {Avatar, Button, FormControl, Grid, TextField, Typography} from '@material-ui/core';
-import {withRouter} from 'react-router-dom';
 
 function LoginForm(props) {
 
@@ -70,4 +69,4 @@ LoginForm.propTypes = {
     setShowLoader: PropTypes.func.isRequired
 }
 
-export default withRouter(LoginForm);
+export default LoginForm;
